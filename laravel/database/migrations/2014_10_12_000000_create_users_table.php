@@ -17,6 +17,11 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->integer('age')->nullable();
+            $table->date('birthday')->nullable();
+            $table->boolean('gender')->nullable();
+            $table->text('about_me')->nullable();
+            $table->string('language')->nullable();
             $table->float('rating')->default(0);
             $table->decimal('wallet')->default(0);
             $table->unsignedBigInteger('provider_id')->unique();

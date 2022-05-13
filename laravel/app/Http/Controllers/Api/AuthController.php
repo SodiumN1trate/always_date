@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -20,13 +21,21 @@ class AuthController extends Controller
         $user = User::whereEmail($driverUser->email)->first();
         if(!$user) {
             $user = User::create([
-                "name"=>$driverUser->name,
-                "email"=>$driverUser->email,
-                "provider_id"=>$driverUser->id
+                'name' => $driverUser->name,
+                'email' => $driverUser->email,
+                'provider_id' => $driverUser->id,
             ]);
         }
 
         $userToken = $user->createToken('login')->accessToken;
-        return response()->json(['user'=>$user, 'access_token'=>$userToken], 200);
+        return response()->json([
+            'message' => [
+                'type' => 'success',
+                'data' => 'Jūs veiksmīgi autentificējāties!',
+            ],
+            'data' => new UserResource($user),
+            'access_token' => $userToken,
+            ]
+        );
     }
 }

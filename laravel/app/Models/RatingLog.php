@@ -9,5 +9,9 @@ class RatingLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "rater_id", "rating"];
+    protected $fillable = [
+        'user_id',
+        'rater_id',
+        'rating',
+    ];
 }

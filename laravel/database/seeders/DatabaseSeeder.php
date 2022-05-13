@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-//        User::create([
-//            "name"=>"Test user",
-//            "email"=>"tester@rvt.lv",
-//            "provider_id"=>1231232414112312
-//        ]);
+        User::create([
+            "name"=>"Test user",
+            "email"=>"tester@rvt.lv",
+            "provider_id"=>1231232414112312
+        ]);
 
         RatingLog::create([
             "user_id"=> 1,

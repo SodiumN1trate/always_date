@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -17,15 +18,21 @@ class UserController extends Controller
     public function rate(Request $request)
     {
         $validated = $request->validate([
-            "user_id" => 'required',
-            "rater_id" => 'required',
-            "rating" => 'required'
+            'user_id' => 'required',
+            'rater_id' => 'required',
+            'rating' => 'required',
         ]);
-//        var_dump(RatingLog::where("user_id", $validated["user_id"])->where("rater_id", $validated["rater_id"])->get());
-        $raterRates = RatingLog::where("user_id", $validated["user_id"])->where("rater_id", $validated["rater_id"])->get();
+
+        $raterRates = RatingLog::where('user_id', $validated['user_id'])
+            ->where('rater_id', $validated['rater_id'])->get();
 
         if (count($raterRates) > 1) {
-            return response()->json(['message' => 'Jūs jau esat novērtējuši.'], 400);
+            return response()->json([
+                    'message' => [
+                        'type' => 'error',
+                        'data' => 'Jūs jau esat novērtējuši.',
+                    ]
+                ], 400);
         } else {
             RatingLog::create($validated);
             $user = User::find($validated['user_id']);
@@ -35,7 +42,9 @@ class UserController extends Controller
                 $ratingSum += $value['rating'];
             }
             $user->update(['rating' => round($ratingSum / count($userRates), 2)]);
-            return response()->json(["data" => $user]);
+            return response()->json([
+                'data' => new UserResource($user),
+                ]);
         }
     }
 }
