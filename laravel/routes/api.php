@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\LifeSchoolController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -22,4 +23,5 @@ Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/user', [UserController::class, 'user']);
     Route::post('/user/rate', [UserController::class, 'rate']);
+    Route::apiResource('/life_school', LifeSchoolController::class);
 });
