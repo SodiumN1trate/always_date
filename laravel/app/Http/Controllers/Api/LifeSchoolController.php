@@ -28,8 +28,8 @@ class LifeSchoolController extends Controller
      */
     public function store(LifeSchoolRequest $request)
     {
-        $schoolLife = LifeSchool::create($request->validated());
-        return new LifeSchoolResource($schoolLife);
+        $lifeSchool = LifeSchool::create($request->validated());
+        return new LifeSchoolResource($lifeSchool);
     }
 
     /**
@@ -38,9 +38,9 @@ class LifeSchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(LifeSchool $schoolLife)
+    public function show(LifeSchool $lifeSchool)
     {
-        return new LifeSchoolResource($schoolLife);
+        return new LifeSchoolResource($lifeSchool);
     }
 
     /**
@@ -50,10 +50,10 @@ class LifeSchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LifeSchoolRequest $request, LifeSchool $schoolLife)
+    public function update(LifeSchoolRequest $request, LifeSchool $lifeSchool)
     {
-        $schoolLife->update($request->validated());
-        return new LifeSchoolResource($schoolLife);
+        $lifeSchool->update($request->validated());
+        return new LifeSchoolResource($lifeSchool);
     }
 
     /**
@@ -62,9 +62,9 @@ class LifeSchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LifeSchool $schoolLife)
+    public function destroy(LifeSchool $lifeSchool)
     {
-        $schoolLife->delete();
-        return new LifeSchoolResource($schoolLife);
+        $lifeSchool->delete();
+        return new LifeSchoolResource($lifeSchool);
     }
 }
