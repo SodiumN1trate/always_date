@@ -73,23 +73,7 @@ class MatchLogController extends Controller
     {
         return new MatchLogResource($matchLog);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(MatchLog $matchLog, Request $request)
-    {
-        $matchLog->update($request->validate([
-            'user_1' => '',
-            'user_2' => '',
-            'mark' => '',
-        ]));
-        return new MatchLogResource($matchLog);
-    }
+    
     /**
      * Remove the specified resource from storage.
      *
