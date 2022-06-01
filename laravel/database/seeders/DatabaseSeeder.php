@@ -21,11 +21,13 @@ class DatabaseSeeder extends Seeder
             "email"=>"tester@rvt.lv",
             "provider_id"=>1231232414112312
         ]);
+//
+//        RatingLog::create([
+//            "user_id"=> 1,
+//            "rater_id"=> 2,
+//            "rating"=> 5
+//        ]);
 
-        RatingLog::create([
-            "user_id"=> 1,
-            "rater_id"=> 2,
-            "rating"=> 5
-        ]);
+
     }
 }
