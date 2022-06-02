@@ -23,7 +23,7 @@ class UserController extends Controller
         ]);
 
         $raterRates = RatingLog::where('user_id', $validated['user_id'])
-            ->where('rater_id', $this->user())->get();
+            ->where('rater_id', $this->user()->id)->get();
 
         if (count($raterRates) > 1) {
             return response()->json([

@@ -16,11 +16,9 @@ class CreateMatchLogsTable extends Migration
         Schema::create('match_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_1')
-                ->constrained('users')
-                ->restrictOnDelete();
+                ->constrained('users');
             $table->foreignId('user_2')
-                ->constrained('users')
-                ->restrictOnDelete();
+                ->constrained('users');
             $table->boolean('is_match')->nullable();
             $table->timestamps();
         });
