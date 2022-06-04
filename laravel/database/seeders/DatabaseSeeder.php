@@ -27,5 +27,7 @@ class DatabaseSeeder extends Seeder
             "rater_id"=> 2,
             "rating"=> 5
         ]);
+
+
     }
 }
