@@ -12,4 +12,8 @@ class ReportType extends Model
     protected $fillable = [
         'title',
     ];
+
+    public function reports() {
+        return $this->hasMany(ReportLog::class);
+    }
 }
