@@ -28,8 +28,8 @@ class ReportLogController extends Controller
     public function store(Request $request)
     {
         $reportLog = $request->validate([
-            'profile_id' => '',
-            'report_type' => '',
+            'profile_id' => 'required',
+            'report_type' => 'required',
         ]);
 
         $userReports = ReportLog::where('reporter_id', auth()->user()->id)
