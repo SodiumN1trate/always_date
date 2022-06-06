@@ -11,6 +11,7 @@ class LifeSchool extends Model
 
     protected $fillable = [
         'title',
+        'gender',
         'description',
     ];
 }
