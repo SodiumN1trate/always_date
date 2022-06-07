@@ -17,8 +17,7 @@ class LifeSchoolController extends Controller
      */
     public function index()
     {
-        $lifeSchoolByGender = LifeSchool::where('gender', auth()->user()->gender)->get();
-        return LifeSchoolResource::collection($lifeSchoolByGender);
+        return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)->get());
     }
 
     /**
@@ -29,7 +28,6 @@ class LifeSchoolController extends Controller
      */
     public function store(LifeSchoolRequest $request)
     {
-        error_log($request['gender']);
         if ($request['gender'] <= -1 || $request['gender'] >= 2) {
             return response()->json([
                 'message' => [
@@ -55,7 +53,6 @@ class LifeSchoolController extends Controller
                'message' => [
                    'type' => 'error',
                    'data' => 'Nedrīkst skatīt cita dzimuma dzīves skolu.',
-
                ]
             ]);
         } else {
