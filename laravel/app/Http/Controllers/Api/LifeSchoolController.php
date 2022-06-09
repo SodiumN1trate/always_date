@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LifeSchoolRequest;
@@ -17,7 +17,7 @@ class LifeSchoolController extends Controller
      */
     public function index()
     {
-        return LifeSchoolResource::collection(LifeSchool::all());
+        return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)->get());
     }
 
     /**
@@ -28,6 +28,14 @@ class LifeSchoolController extends Controller
      */
     public function store(LifeSchoolRequest $request)
     {
+        if ($request['gender'] <= -1 || $request['gender'] >= 2) {
+            return response()->json([
+                'message' => [
+                    'type' => 'error',
+                    'data' => 'Nevar noteikt dzimumu.'
+                ]
+            ]);
+        }
         $lifeSchool = LifeSchool::create($request->validated());
         return new LifeSchoolResource($lifeSchool);
     }
@@ -40,7 +48,16 @@ class LifeSchoolController extends Controller
      */
     public function show(LifeSchool $lifeSchool)
     {
-        return new LifeSchoolResource($lifeSchool);
+        if ($lifeSchool['gender'] != auth()->user()->gender) {
+            return response()->json([
+               'message' => [
+                   'type' => 'error',
+                   'data' => 'Nedrīkst skatīt cita dzimuma dzīves skolu.',
+               ]
+            ]);
+        } else {
+            return new LifeSchoolResource($lifeSchool);
+        }
     }
 
     /**

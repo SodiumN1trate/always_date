@@ -17,6 +17,7 @@ class LifeSchoolResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'gender' => $this->gender,
             'description' => $this->description,
         ];
     }

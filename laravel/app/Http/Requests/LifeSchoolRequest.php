@@ -25,6 +25,7 @@ class LifeSchoolRequest extends FormRequest
     {
         return [
             'title' => 'required',
+            'gender' => 'required',
             'description' => 'required',
         ];
     }

@@ -16,6 +16,7 @@ class CreateLifeSchoolsTable extends Migration
         Schema::create('life_schools', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->boolean('gender');
             $table->text('description');
             $table->timestamps();
         });
