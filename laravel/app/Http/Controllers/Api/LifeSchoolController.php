@@ -32,7 +32,7 @@ class LifeSchoolController extends Controller
             return response()->json([
                 'message' => [
                     'type' => 'error',
-                    'data' => 'Nevar noteikt dzimumu.'
+                    'data' => 'Nevar noteikt dzimumu.',
                 ]
             ]);
         }

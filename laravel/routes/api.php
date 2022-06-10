@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LifeSchoolCommentController;
 use App\Http\Controllers\api\LifeSchoolController;
 use App\Http\Controllers\Api\MatchLogController;
 use App\Http\Controllers\Api\ReportLogController;
@@ -27,7 +28,9 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/user', [UserController::class, 'user']);
     Route::post('/user/rate', [UserController::class, 'rate']);
     Route::apiResource('/life_school', LifeSchoolController::class);
+    Route::apiResource('/life_school_comment', LifeSchoolCommentController::class);
     Route::apiResource('/match', MatchLogController::class);
     Route::apiResource('/report_type', ReportTypeController::class);
     Route::apiResource('/report_log', ReportLogController::class);
+    Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
 });
