@@ -75,11 +75,11 @@ class LifeSchoolCommentController extends Controller
 
     public function rate(Request $request) {
         $rate = $request->validate([
-            'life_School_comment_id' => 'required',
+            'life_school_comment_id' => 'required',
             'rating' => 'required',
         ]);
 
-        $ratedComment = CommentRating::where('life_School_comment_id', $rate['life_School_comment_id'])
+        $ratedComment = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
             ->where('rater_id', auth()->user()->id)->first();
 
         if ($ratedComment) {
@@ -102,10 +102,10 @@ class LifeSchoolCommentController extends Controller
             CommentRating::create($rate);
         }
 
-       $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_School_comment_id'])->first();
-        $LifeSchoolLikes = CommentRating::where('life_School_comment_id', $rate['life_School_comment_id'])
+       $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
+        $LifeSchoolLikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
             ->where('rating', 1)->get();
-        $LifeSchoolDislikes = CommentRating::where('life_School_comment_id', $rate['life_School_comment_id'])
+        $LifeSchoolDislikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
             ->where('rating', 0)->get();
 
         $LifeSchoolComment->update([

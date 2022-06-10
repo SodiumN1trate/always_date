@@ -16,7 +16,7 @@ class CommentRatingResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'life_School_comment_id' => $this->life_School_comment_id,
+            'life_school_comment_id' => $this->life_school_comment_id,
             'rater_id' => $this->rater_id,
             'rating' => $this->rating,
         ];
