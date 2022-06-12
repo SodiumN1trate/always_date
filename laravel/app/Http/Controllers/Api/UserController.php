@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function user()
     {
-        return auth()->user();
+        return new UserResource(auth()->user());
     }
 
     public function index(Request $request)
@@ -56,7 +56,7 @@ class UserController extends Controller
             $user->update(['rating' => round($ratingSum / count($userRates), 2)]);
             return response()->json([
                 'data' => new UserResource($user),
-                ]);
+            ]);
         }
     }
 }
