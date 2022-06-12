@@ -30,6 +30,7 @@ class User extends Authenticatable
         'provider_id',
         'wallet',
         'rating',
+        'read_school_exp',
     ];
 
     /**
