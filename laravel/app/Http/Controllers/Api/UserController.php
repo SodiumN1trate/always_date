@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
@@ -15,9 +16,16 @@ class UserController extends Controller
         return auth()->user();
     }
 
-    public function index(Request $request) {;
+    public function index(Request $request)
+    {
         $users = User::filter($request->all())->paginate(10);
         return UserResource::collection($users);
+    }
+
+    public function update(UserRequest $request)
+    {
+        auth()->user()->update($request->validated());
+        return new UserResource(auth()->user());
     }
 
     public function rate(Request $request)
