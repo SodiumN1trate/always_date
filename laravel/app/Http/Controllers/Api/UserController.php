@@ -15,6 +15,11 @@ class UserController extends Controller
         return auth()->user();
     }
 
+    public function index(Request $request) {;
+        $users = User::filter($request->all())->paginate(10);
+        return UserResource::collection($users);
+    }
+
     public function rate(Request $request)
     {
         $validated = $request->validate([
