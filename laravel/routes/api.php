@@ -25,8 +25,9 @@ Route::get('/authorize', [AuthController::class, 'redirectToProvider']);
 Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::get('/user', [UserController::class, 'user']);
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [UserController::class, 'user']);
+    Route::put('/me', [UserController::class, 'update']);
+    Route::get('/users', [UserController::class, 'index']);
     Route::post('/user/rate', [UserController::class, 'rate']);
     Route::apiResource('/life_school', LifeSchoolController::class);
     Route::apiResource('/life_school_comment', LifeSchoolCommentController::class);

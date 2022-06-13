@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\LifeSchool;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -16,6 +17,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'avatar' => $this->avatar,
             'name' => $this->name,
             'email' => $this->email,
             'provider_id' => $this->provider_id,
@@ -26,6 +28,8 @@ class UserResource extends JsonResource
             'gender' => $this->gender,
             'about_me' => $this->about_me,
             'language' => $this->language,
+            'read_school_exp' => $this->read_school_exp.'/'.LifeSchool::all()->count(),
+            'is_vip' => $this->is_vip,
         ];
     }
 }

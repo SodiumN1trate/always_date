@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->text('avatar')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->integer('age')->nullable();
@@ -25,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->float('rating')->default(0);
             $table->decimal('wallet')->default(0);
             $table->unsignedBigInteger('provider_id')->unique();
+            $table->integer('read_school_exp')->default(0);
+            $table->boolean('is_vip')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

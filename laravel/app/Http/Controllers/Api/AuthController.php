@@ -27,6 +27,7 @@ class AuthController extends Controller
         $user = User::whereEmail($driverUser->email)->first();
         if(!$user) {
             $user = User::create([
+                'avatar' => $driverUser->avatar,
                 'name' => $driverUser->name,
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
@@ -41,8 +42,18 @@ class AuthController extends Controller
             ],
             'data' => new UserResource($user),
             'access_token' => $userToken,
-            ]
-        );
+        ]);
+    }
+
+    public function logout() {
+        auth()->user()->token()->revoke();
+
+        return response()->json([
+           'message' => [
+               'type' => 'success',
+               'data' => 'Veiksmīga izrakstīšanās.'
+           ]
+        ]);
     }
 
     public function logout(){
