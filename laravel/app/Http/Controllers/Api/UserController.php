@@ -34,17 +34,25 @@ class UserController extends Controller
             'user_id' => 'required',
             'rating' => 'required',
         ]);
+        $validated['rater_id'] = auth()->user()->id;
 
         $raterRates = RatingLog::where('user_id', $validated['user_id'])
-            ->where('rater_id', $this->user()->id)->get();
+            ->where('rater_id', auth()->user()->id)->get();
 
-        if (count($raterRates) > 1) {
+        if (count($raterRates) > 0) {
             return response()->json([
-                    'message' => [
-                        'type' => 'error',
-                        'data' => 'Jūs jau esat novērtējuši.',
-                    ]
-                ], 400);
+                'message' => [
+                    'type' => 'error',
+                    'data' => 'Jūs jau esat novērtējuši.',
+                ]
+            ], 400);
+        } elseif ($validated['user_id'] == auth()->user()->id) {
+            return response()->json([
+                'message' => [
+                    'type' => 'error',
+                    'data' => 'Nevar novērtēt pats sevi.',
+                ]
+            ]);
         } else {
             RatingLog::create($validated);
             $user = User::find($validated['user_id']);
@@ -54,9 +62,7 @@ class UserController extends Controller
                 $ratingSum += $value['rating'];
             }
             $user->update(['rating' => round($ratingSum / count($userRates), 2)]);
-            return response()->json([
-                'data' => new UserResource($user),
-            ]);
+            return new UserResource($user);
         }
     }
 }
