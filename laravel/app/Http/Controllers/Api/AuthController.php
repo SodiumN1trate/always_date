@@ -12,7 +12,13 @@ class AuthController extends Controller
 {
     public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->stateless()->redirect();
+        $url = Socialite::driver('facebook')->stateless()->redirect()->getTargetUrl();
+
+        return response()->json([
+            'data' => [
+                'redirect_url' => $url,
+            ]
+        ]);
     }
 
     public function handleProviderCallback()
@@ -37,5 +43,10 @@ class AuthController extends Controller
             'access_token' => $userToken,
             ]
         );
+    }
+
+    public function logout(){
+        auth()->user()->token()->revoke();
+        return response()->json(["message"=>"Logged out"]);
     }
 }
