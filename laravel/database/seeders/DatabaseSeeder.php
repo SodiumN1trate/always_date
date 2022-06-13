@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\LifeSchool;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\RatingLog;
@@ -28,6 +29,6 @@ class DatabaseSeeder extends Seeder
             "rating"=> 5
         ]);
 
-
+        LifeSchool::factory()->times(100)->create();
     }
 }
