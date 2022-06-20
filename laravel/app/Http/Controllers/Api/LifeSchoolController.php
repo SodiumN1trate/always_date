@@ -30,11 +30,10 @@ class LifeSchoolController extends Controller
     {
         if ($request['gender'] <= -1 || $request['gender'] >= 2) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Nevar noteikt dzimumu.',
                 ]
-            ]);
+            ], 400);
         }
         $lifeSchool = LifeSchool::create($request->validated());
         return new LifeSchoolResource($lifeSchool);
@@ -50,11 +49,10 @@ class LifeSchoolController extends Controller
     {
         if ($lifeSchool['gender'] != auth()->user()->gender) {
             return response()->json([
-               'message' => [
-                   'type' => 'error',
+               'error' => [
                    'data' => 'Nedrīkst skatīt cita dzimuma dzīves skolu.',
                ]
-            ]);
+            ], 400);
         } else {
             return new LifeSchoolResource($lifeSchool);
         }

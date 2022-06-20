@@ -41,18 +41,16 @@ class UserController extends Controller
 
         if (count($raterRates) > 0) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Jūs jau esat novērtējuši.',
                 ]
             ], 400);
         } elseif ($validated['user_id'] == auth()->user()->id) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Nevar novērtēt pats sevi.',
                 ]
-            ]);
+            ], 400);
         } else {
             RatingLog::create($validated);
             $user = User::find($validated['user_id']);
@@ -64,5 +62,33 @@ class UserController extends Controller
             $user->update(['rating' => round($ratingSum / count($userRates), 2)]);
             return new UserResource($user);
         }
+    }
+
+    public function ratedUser() {
+        $ratings = RatingLog::where('user_id', auth()->user()->id)->get();
+        $users = array();
+        $uniqueUser = array();
+
+        foreach ($ratings as $user) {
+            if (!in_array($user['rater_id'], $uniqueUser)) {
+                $users[] = User::where('id', $user['rater_id'])->first();
+                $uniqueUser[] = $user['rater_id'];
+            }
+        }
+        return UserResource::collection($users);
+    }
+
+    public function userRated() {
+        $ratings = RatingLog::where('rater_id', auth()->user()->id)->get();
+        $users = array();
+        $uniqueUser = array();
+
+        foreach ($ratings as $user) {
+            if (!in_array($user['user_id'], $uniqueUser)) {
+                $users[] = User::where('id', $user['user_id'])->first();
+                $uniqueUser[] = $user['user_id'];
+            }
+        }
+        return UserResource::collection($users);
     }
 }

@@ -85,11 +85,10 @@ class LifeSchoolCommentController extends Controller
         if ($ratedComment) {
             if ($rate['rating'] <= -1 || $rate['rating'] >= 2) {
                 return response()->json([
-                    'message' => [
-                        'type' => 'error',
+                    'error' => [
                         'data' => 'Nevar novērtēt komentaru ar nezinānu vērtējumu.',
                     ]
-                ]);
+                ], 400);
             } elseif ($ratedComment['rating'] == $rate['rating']) {
                 $ratedComment['rating'] = -1;
             } else {
