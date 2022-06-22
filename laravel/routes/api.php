@@ -30,6 +30,8 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/user/rate', [UserController::class, 'rate']);
+    Route::get('/user_rated', [UserController::class, 'userRated']);
+    Route::get('/rated_user', [UserController::class, 'ratedUser']);
     Route::apiResource('/life_school', LifeSchoolController::class);
     Route::apiResource('/life_school_comment', LifeSchoolCommentController::class);
     Route::apiResource('/match', MatchLogController::class);

@@ -37,18 +37,16 @@ class ReportLogController extends Controller
 
         if (auth()->user()->id == $reportLog['profile_id']) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Nevar nosūtīt sūdzību par sevi.',
                 ]
-            ]);
+            ], 400);
         } elseif ($userReports) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Nevar nosūtīt vairāk par vienu sūdzību.',
                 ]
-            ]);
+            ], 400);
         } else {
             $reportLog['reporter_id'] = auth()->user()->id;
             $report = ReportLog::create($reportLog);
