@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
             "provider_id"=>1231232414112312
         ]);
 
-        RatingLog::create([
-            "user_id"=> 1,
-            "rater_id"=> 2,
-            "rating"=> 5
-        ]);
+//        RatingLog::create([
+//            "user_id"=> 1,
+//            "rater_id"=> 2,
+//            "rating"=> 5
+//        ]);
 
         LifeSchool::factory()->times(100)->create();
     }
