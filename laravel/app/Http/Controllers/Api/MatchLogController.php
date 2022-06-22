@@ -41,11 +41,10 @@ class MatchLogController extends Controller
 
         if($isMatchExist1) {
             return response()->json([
-                'message' => [
-                    'type' => 'error',
+                'error' => [
                     'data' => 'Vienu reizi var likt vērtējumu.',
                 ]
-            ]);
+            ], 400);
         } elseif ($isMatchExist2) {
             if($matchLog['mark'] >= 1 && $isMatchExist2->is_match === 1) {
                 $isMatchExist2->is_match = 1;
@@ -73,7 +72,7 @@ class MatchLogController extends Controller
     {
         return new MatchLogResource($matchLog);
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
