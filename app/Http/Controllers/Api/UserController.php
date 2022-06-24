@@ -11,6 +11,9 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    /**
+     * @OA\PathItem(path="/api")
+     */
     public function user()
     {
         return new UserResource(auth()->user());

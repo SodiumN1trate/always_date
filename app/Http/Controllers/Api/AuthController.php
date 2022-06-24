@@ -19,9 +19,10 @@ class AuthController extends Controller
     {
         $driverUser = Socialite::driver('facebook')->stateless()->user();
         $user = User::whereEmail($driverUser->email)->first();
+
         if(!$user) {
             $user = User::create([
-                'avatar' => $driverUser->avatar,
+                'avatar' => $driverUser->avatar_original,
                 'name' => $driverUser->name,
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
