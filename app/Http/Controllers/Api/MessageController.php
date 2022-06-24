@@ -37,7 +37,7 @@ class MessageController extends Controller
             ]);
 
             return response()->json([
-                'Success' => 'Ziņa tika nosūtīta!',
+                'Success' => 'Ziņa tika nosūtīta.',
                 'message' => new MessageResource($savedMessage),
             ]);
         }
