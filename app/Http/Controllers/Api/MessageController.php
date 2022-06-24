@@ -24,7 +24,7 @@ class MessageController extends Controller
         if (!$chatRoom) {
             return response()->json([
                 'error' => [
-                    'data' => 'Nevar nosūtīt ziņu svešā chat room',
+                    'data' => 'Nevar nosūtīt ziņu svešā chat room.',
                 ]
             ]);
         } else {
