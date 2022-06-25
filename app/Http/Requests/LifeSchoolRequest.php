@@ -4,6 +4,19 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *      title="Life school request",
+ *      description="",
+ *      type="object",
+ *      required={
+ *          "title",
+ *          "gender",
+ *          "description",
+ *      }
+ * )
+ */
 class LifeSchoolRequest extends FormRequest
 {
     /**
@@ -17,9 +30,11 @@ class LifeSchoolRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * @OA\Property(format="string", description="Dzīves skolas virsraksts", property="title"),
+     * @OA\Property(format="boolean", description="Dzimums priekš dzīves skolas raksta", property="gender"),
+     * @OA\Property(format="string", description="Dzīves skolas raksta apraksts", property="description"),
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {

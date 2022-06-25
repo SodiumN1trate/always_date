@@ -16,71 +16,71 @@ use Illuminate\Support\Facades\Password;
 class LifeSchoolCommentController extends Controller
 {
     /**
-    * @OA\Get(
-    *      path="/life_school_comment",
-    *      operationId="getLifeSchoolComment",
-    *      tags={"Life school comment"},
-    *      summary="Iegūst visus dzīves skolas komentārus",
-    *      description="Iegūst visus dzīves skolas komentārus",
-    *      @OA\Response(
-    *          response=200,
-    *          description="Successful operation",
-    *      ),
-    *      @OA\Response(
-    *          response=400,
-    *          description="Unauthenticated",
-    *      )
-    *)
-    */
+     * @OA\Get(
+     *      path="/life_school_comment",
+     *      operationId="getLifeSchoolComment",
+     *      tags={"Life school comment"},
+     *      summary="Iegūst visus dzīves skolas komentārus",
+     *      description="Iegūst visus dzīves skolas komentārus",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
+     */
     public function index()
     {
         return LifeSchoolCommentResource::collection(LifeSchoolComment::all());
     }
 
     /**
-    * @OA\Post(
-    *      path="/life_school_comment",
-    *      operationId="postLifeSchoolComment",
-    *      tags={"Life school comment"},
-    *      summary="Tiek uzrakstīts un saglabāts komentārs dzīves skolas rakstam",
-    *      description="Ievada komentāru zem kādas dzīves skolas raksta, komentārs glabājas un, glabā visus nepiciešamos datus, lai būtu saistīts ar konkrētu komentāru.",
-    *      @OA\Parameter(
-    *          name="owner_id",
-    *          description="Lietotāja id, kurš izveidoja komentāru",
-    *          required=true,
-    *          in="path",
-    *          @OA\Schema(
-    *              type="integer"
-    *          )
-    *      ),
-    *      @OA\Parameter(
-    *           name="description",
-    *           description="Pats komentārs",
-    *           required=true,
-    *           in="path",
-    *           @OA\Schema(
-    *               type="string"
-    *           )
-    *       ),
-    *      @OA\Parameter(
-    *           name="article_id",
-    *           description="Dzīves skolas raksta id",
-    *           required=true,
-    *           in="path",
-    *           @OA\Schema(
-    *               type="integer"
-    *           )
-    *      ),
-    *      @OA\Response(
-    *          response=200,
-    *          description="Successful operation",
-    *      ),
-    *      @OA\Response(
-    *          response=400,
-    *          description="Unauthenticated.",
-    *      )
-    *)
-    */
+     * @OA\Post(
+     *      path="/life_school_comment",
+     *      operationId="postLifeSchoolComment",
+     *      tags={"Life school comment"},
+     *      summary="Tiek uzrakstīts un saglabāts komentārs dzīves skolas rakstam",
+     *      description="Ievada komentāru zem kādas dzīves skolas raksta, komentārs glabājas un, glabā visus nepiciešamos datus, lai būtu saistīts ar konkrētu komentāru.",
+     *      @OA\Parameter(
+     *          name="owner_id",
+     *          description="Lietotāja id, kurš izveidoja komentāru",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *           name="description",
+     *           description="Pats komentārs",
+     *           required=true,
+     *           in="path",
+     *           @OA\Schema(
+     *               type="string"
+     *           )
+     *       ),
+     *      @OA\Parameter(
+     *           name="article_id",
+     *           description="Dzīves skolas raksta id",
+     *           required=true,
+     *           in="path",
+     *           @OA\Schema(
+     *               type="integer"
+     *           )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated.",
+     *      )
+     *)
+     */
     public function store(LifeSchoolCommentRequest $request)
     {
         $lifeSchoolComment = LifeSchoolComment::create($request->validated());
@@ -88,71 +88,71 @@ class LifeSchoolCommentController extends Controller
     }
 
     /**
-    * @OA\Get(
-    *      path="/life_school_comment/{id}",
-    *      operationId="getLifeSchoolCommentById",
-    *      tags={"Life school comment"},
-    *      summary="Iegūst konkrētu komentāru",
-    *      description="Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
-    *      @OA\Response(
-    *          response=200,
-    *          description="Successful operation",
-    *      ),
-    *      @OA\Response(
-    *          response=400,
-    *          description="Unauthenticated",
-    *      ),
-    * )
-    */
+     * @OA\Get(
+     *      path="/life_school_comment/{id}",
+     *      operationId="getLifeSchoolCommentById",
+     *      tags={"Life school comment"},
+     *      summary="Iegūst konkrētu komentāru",
+     *      description="Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     */
     public function show(LifeSchoolComment $lifeSchoolComment)
     {
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
 
     /**
-    * @OA\Put(
-    *      path="/life_school_comment/{id}",
-    *      operationId="updateLifeSchoolComment",
-    *      tags={"Life school comment"},
-    *      summary="Atjauno vai reģidē komentāru",
-    *      description="Atjauno vai reģidē komentāru pēc id",
-    *      @OA\Parameter(
-    *          name="owner_id",
-    *          description="Lietotāja id, kurš izveidoja komentāru",
-    *          required=false,
-    *          in="path",
-    *          @OA\Schema(
-    *              type="integer"
-    *          )
-    *      ),
-    *     @OA\Parameter(
-    *          name="description",
-    *          description="Pats komentārs",
-    *          required=false,
-    *          in="path",
-    *          @OA\Schema(
-    *              type="string"
-    *          )
-    *     ),
-    *     @OA\Parameter(
-    *          name="article_id",
-    *          description="Dzīves skolas raksta id",
-    *          required=false,
-    *          in="path",
-    *          @OA\Schema(
-    *              type="integer"
-    *          )
-    *      ),
-    *      @OA\Response(
-    *          response=200,
-    *          description="Successful operation",
-    *      ),
-    *      @OA\Response(
-    *          response=400,
-    *          description="Unauthenticated",
-    *      ),
-    *)
-    */
+     * @OA\Put(
+     *      path="/life_school_comment/{id}",
+     *      operationId="updateLifeSchoolComment",
+     *      tags={"Life school comment"},
+     *      summary="Atjauno vai reģidē komentāru",
+     *      description="Atjauno vai reģidē komentāru pēc id",
+     *      @OA\Parameter(
+     *          name="owner_id",
+     *          description="Lietotāja id, kurš izveidoja komentāru",
+     *          required=false,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="description",
+     *          description="Pats komentārs",
+     *          required=false,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="article_id",
+     *          description="Dzīves skolas raksta id",
+     *          required=false,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
+     */
     public function update(LifeSchoolCommentRequest $request, LifeSchoolComment $lifeSchoolComment)
     {
         $lifeSchoolComment->update($request->validated());
@@ -160,22 +160,22 @@ class LifeSchoolCommentController extends Controller
     }
 
     /**
-    * @OA\Delete(
-    *      path="/life_school_comment/{id}",
+     * @OA\Delete(
+     *      path="/life_school_comment/{id}",
      *     operationId="DeleteLifeSchoolComment",
      *     tags={"Life school comment"},
      *     summary="Izdzēš komentāru",
      *     description="Dzēš komentāru pēc id",
-    *      @OA\Response(
-    *          response=200,
-    *          description="Successful operation",
-    *      ),
-    *      @OA\Response(
-    *          response=400,
-    *          description="Unauthenticated",
-    *      ),
-    * )
-    */
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     */
     public function destroy(LifeSchoolComment $lifeSchoolComment)
     {
         $lifeSchoolComment->delete();

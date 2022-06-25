@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="LifeSchoolResource",
+ *     description="Life School resource",
+ *     @OA\Xml(
+ *         name="LifeSchoolResource"
+ *     )
+ * )
+ */
 class LifeSchoolResource extends JsonResource
 {
     /**

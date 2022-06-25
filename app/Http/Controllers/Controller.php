@@ -16,6 +16,15 @@ use Illuminate\Routing\Controller as BaseController;
  *          name="FlokY#0101"
  *      )
  * )
+ * @OA\Server(
+ *      url=L5_SWAGGER_CONST_HOST,
+ *      description="API Server",
+ * )
+ * @OA\SecurityScheme(
+ *       scheme="bearer",
+ *       securityScheme="bearer",
+ *       type="http",
+ * )
  */
 
 class Controller extends BaseController

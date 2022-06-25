@@ -8,6 +8,12 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://127.0.0.1/api/v1",
+            "description": "API Server"
+        }
+    ],
     "paths": {
         "/api": {},
         "/life_school_comment": {
@@ -200,12 +206,24 @@
                 "operationId": "getLifeSchool",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -214,43 +232,33 @@
                 "summary": "Izveido jaunu ierakstu par life school",
                 "description": "Izveido jaunu ierakstu life school",
                 "operationId": "postLifeSchool",
-                "parameters": [
-                    {
-                        "name": "title",
-                        "in": "path",
-                        "description": "Virsrakts dzīves skolai",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "gender",
-                        "in": "path",
-                        "description": "Dzimums kam domāts šī dzīves skola",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "path",
-                        "description": "Dzīves skolas apraksts",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolRequest"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Nevar noteikt dzimumu."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/life_school/{id}": {
@@ -261,14 +269,35 @@
                 "summary": "Atgriež dzīves skolas rakstu pēc id",
                 "description": "Atgriež dzīves skolas rakstu pēc id",
                 "operationId": "getLifeSchoolById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Nedrīkst skatīt cita dzimuma dzīves skolu"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -277,38 +306,23 @@
                 "summary": "Atjaunina datus dzīves skolai",
                 "description": "Atjauno datus dzīves skolai pēc ievadītā id iekš uri",
                 "operationId": "updateLifeSchool",
-                "parameters": [
-                    {
-                        "name": "title",
-                        "in": "path",
-                        "description": "Virsrakts dzīves skolai",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "gender",
-                        "in": "path",
-                        "description": "Dzimums kam domāts šis dzīves skolas raksts, true - sieviete, false - vīrietis",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "name": "description",
-                        "in": "path",
-                        "description": "Dzīves skolas apraksts",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolRequest"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Unauthenticated"
@@ -322,14 +336,71 @@
                 "summary": "Izdzēš ārā dzīves skolas rakstu",
                 "description": "Dzēš ārā dzīves skolas rakstu pēc id",
                 "operationId": "deleteLifeSchool",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Application id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
                         "description": "Unauthenticated"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LifeSchoolRequest": {
+                "title": "Life school request",
+                "description": "",
+                "required": [
+                    "title",
+                    "gender",
+                    "description"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Dzīves skolas virsraksts",
+                        "format": "string"
+                    },
+                    "gender": {
+                        "description": "Dzimums priekš dzīves skolas raksta",
+                        "format": "boolean"
+                    },
+                    "description": {
+                        "description": "Dzīves skolas raksta apraksts",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LifeSchoolResource": {
+                "title": "LifeSchoolResource",
+                "description": "Life School resource",
+                "xml": {
+                    "name": "LifeSchoolResource"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
