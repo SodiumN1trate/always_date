@@ -9,6 +9,328 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api": {}
+        "/api": {},
+        "/life_school_comment": {
+            "get": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Iegūst visus dzīves skolas komentārus",
+                "description": "Iegūst visus dzīves skolas komentārus",
+                "operationId": "getLifeSchoolComment",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Tiek uzrakstīts un saglabāts komentārs dzīves skolas rakstam",
+                "description": "Ievada komentāru zem kādas dzīves skolas raksta, komentārs glabājas un, glabā visus nepiciešamos datus, lai būtu saistīts ar konkrētu komentāru.",
+                "operationId": "postLifeSchoolComment",
+                "parameters": [
+                    {
+                        "name": "owner_id",
+                        "in": "path",
+                        "description": "Lietotāja id, kurš izveidoja komentāru",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "description": "Pats komentārs",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "article_id",
+                        "in": "path",
+                        "description": "Dzīves skolas raksta id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                }
+            }
+        },
+        "/life_school_comment/{id}": {
+            "get": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Iegūst konkrētu komentāru",
+                "description": "Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
+                "operationId": "getLifeSchoolCommentById",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Atjauno vai reģidē komentāru",
+                "description": "Atjauno vai reģidē komentāru pēc id",
+                "operationId": "updateLifeSchoolComment",
+                "parameters": [
+                    {
+                        "name": "owner_id",
+                        "in": "path",
+                        "description": "Lietotāja id, kurš izveidoja komentāru",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "description": "Pats komentārs",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "article_id",
+                        "in": "path",
+                        "description": "Dzīves skolas raksta id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Izdzēš komentāru",
+                "description": "Dzēš komentāru pēc id",
+                "operationId": "DeleteLifeSchoolComment",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/life_school_comment/rate": {
+            "post": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Komentāru vērtēšana",
+                "description": "Lietotās spēj novērtēt komentāru ar like vai dislike. Viss tiek validēts tā, lai lietotājs nevar novērtēt komentru ar nezināmu vērtējumu vai ar 2 vērtējumiem vienlaicīgi",
+                "operationId": "rateLifeSchoolComment",
+                "parameters": [
+                    {
+                        "name": "life_school_comment_id",
+                        "in": "path",
+                        "description": "Komentāra id kurš tiks vērtēts",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rating",
+                        "in": "path",
+                        "description": "Vērtēšana true - like, false - dislike",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Nevar novērtēt komentāru ar nezinānu vērtējumu."
+                    }
+                }
+            }
+        },
+        "/life_school": {
+            "get": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Iegūst visus life school, tikai pēc gender",
+                "description": "Iegūst visas dzīves skolas rakstus, bet atgriežot dzīves skolas tiek filtrētas pēc lietotāja dzimuma",
+                "operationId": "getLifeSchool",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Izveido jaunu ierakstu par life school",
+                "description": "Izveido jaunu ierakstu life school",
+                "operationId": "postLifeSchool",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "path",
+                        "description": "Virsrakts dzīves skolai",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "path",
+                        "description": "Dzimums kam domāts šī dzīves skola",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "description": "Dzīves skolas apraksts",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Nevar noteikt dzimumu."
+                    }
+                }
+            }
+        },
+        "/life_school/{id}": {
+            "get": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Atgriež dzīves skolas rakstu pēc id",
+                "description": "Atgriež dzīves skolas rakstu pēc id",
+                "operationId": "getLifeSchoolById",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Nedrīkst skatīt cita dzimuma dzīves skolu"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Atjaunina datus dzīves skolai",
+                "description": "Atjauno datus dzīves skolai pēc ievadītā id iekš uri",
+                "operationId": "updateLifeSchool",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "path",
+                        "description": "Virsrakts dzīves skolai",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "path",
+                        "description": "Dzimums kam domāts šis dzīves skolas raksts, true - sieviete, false - vīrietis",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "path",
+                        "description": "Dzīves skolas apraksts",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Izdzēš ārā dzīves skolas rakstu",
+                "description": "Dzēš ārā dzīves skolas rakstu pēc id",
+                "operationId": "deleteLifeSchool",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        }
     }
 }
