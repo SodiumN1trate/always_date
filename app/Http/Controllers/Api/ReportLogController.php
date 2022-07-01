@@ -10,9 +10,23 @@ use Illuminate\Http\Request;
 class ReportLogController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/report_log",
+     *      operationId="getReportLog",
+     *      tags={"Report log"},
+     *      summary="Iegūst nosūtītās sūdzības",
+     *      description="Iegūst visas nosūtītās sūdzibas",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ReportLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
      */
     public function index()
     {
@@ -20,10 +34,42 @@ class ReportLogController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/report_log",
+     *      operationId="postReportLog",
+     *      tags={"Report log"},
+     *      summary="Izveido sūdzības par lietotāju",
+     *      description="Izveido jaunu sūdzību par kādu lietotāju",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"profile_id", "report_type"},
+     *                  @OA\Property(format="integer", description="Lietotāja id par kuru tiks nosūtīta sūdzība", property="profile_id"),
+     *                  @OA\Property(format="integer", description="Sūdzības veida id", property="report_type"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ReportLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Nevar nosūtīt sūdzību par sevi.",
+     *      ),
+     *     @OA\Response(
+     *          response=402,
+     *          description="Nevar nosūtīt vairāk par vienu sūdzību.",
+     *      )
+     *)
      */
     public function store(Request $request)
     {
@@ -55,10 +101,32 @@ class ReportLogController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/report_log/{id}",
+     *      operationId="getReportLogById",
+     *      tags={"Report log"},
+     *      summary="Iegūst nosūtīto sūdzību",
+     *      description="Iegūst konkrēto nosūtīto sūdzību par lietotāju",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ReportLog id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ReportLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated.",
+     *      ),
+     * )
      */
     public function show(ReportLog $reportLog)
     {
@@ -66,10 +134,32 @@ class ReportLogController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *      path="/report_log/{id}",
+     *      operationId="deleteReportLog",
+     *      tags={"Report log"},
+     *      summary="Izdzēš sūdzību par lietotāju",
+     *      description="Izdzēs sūdzību par lietotāju pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ReportLog id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ReportLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      */
     public function destroy(ReportLog $reportLog)
     {

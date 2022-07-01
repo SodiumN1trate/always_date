@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="Match log resource",
+ *     description="Match log resource",
+ *     @OA\Xml(
+ *         name="MatchLogResource"
+ *     )
+ * )
+ */
 class MatchLogResource extends JsonResource
 {
     /**

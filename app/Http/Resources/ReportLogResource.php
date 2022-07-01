@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="Report log resource",
+ *     description="Report log resource",
+ *     @OA\Xml(
+ *         name="ReportLogResource"
+ *     )
+ * )
+ */
 class ReportLogResource extends JsonResource
 {
     /**

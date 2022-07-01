@@ -17,7 +17,7 @@ class CreateCommentRatingsTable extends Migration
             $table->id();
             $table->foreignId('life_school_comment_id')->constrained('life_school_comments');
             $table->integer('rater_id');
-            $table->boolean('rating')->nullable();
+            $table->tinyInteger('rating')->nullable();
             $table->timestamps();
         });
     }

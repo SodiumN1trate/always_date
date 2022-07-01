@@ -12,25 +12,134 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
     /**
-     * @OA\PathItem(path="/api")
+     * @OA\Get(
+     *      path="/me",
+     *      operationId="getUser",
+     *      tags={"User"},
+     *      summary="Iegūst lietotāja datus",
+     *      description="Iegūst autorizētā",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
      */
     public function user()
     {
         return new UserResource(auth()->user());
     }
 
+    /**
+     * @OA\Get(
+     *      path="/users{filter}",
+     *      operationId="getUsersByFilter",
+     *      tags={"User"},
+     *      summary="Iegūst lietotājus",
+     *      description="Iegūst lietotājus pēc filtrācijas. Filtrācijas piemēri:<br/>
+     *          Kārtošana - ?sort[]=name&sort[]=desc/asc;<br/>
+     *          Iegūt pēc filtrācijas - ?name=Alberts<br/>
+     *          Iegūt starp skaitļiem(getBetween) - ?age[]=1&age[]=11;<br/>
+     *          Kombinēti(combined) - ?age[]=1&age[]=11&name=Alberts&sort[]=name&sort[]=asc;",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="filter",
+     *          description="Filtrācija un kārtošana izmantojot augstāk dotos piemērus.",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
+     */
     public function index(Request $request)
     {
         $users = User::filter($request->all())->paginate(10);
         return UserResource::collection($users);
     }
 
+    /**
+     * @OA\Put(
+     *      path="/me",
+     *      operationId="updateMe",
+     *      tags={"User"},
+     *      summary="Rediģē lietotāja datus",
+     *      description="Rediģē autorizētā lietotāja datus",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/UserRequest"
+     *              )
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
+     */
     public function update(UserRequest $request)
     {
         auth()->user()->update($request->validated());
         return new UserResource(auth()->user());
     }
 
+    /**
+     * @OA\Post(
+     *      path="/user/rate",
+     *      operationId="postUserRate",
+     *      tags={"User"},
+     *      summary="Lietotāju vērtēšana",
+     *      description="Lietotāju vērtēšana, kur kāds lietotājs, novērtē kādu citu lietoāju",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(format="integer", description="Lietotāja id, kurš tiek vēretēts", property="user_id"),
+     *                  @OA\Property(format="integer", description="Vērtējums ar skaitli", property="rating"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Jūs jau esat novērtējuši.",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Nevar novērtēt pats sevi.",
+     *      )
+     *)
+     */
     public function rate(Request $request)
     {
         $validated = $request->validate([
@@ -67,6 +176,25 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/rated_user",
+     *      operationId="getRatedUser",
+     *      tags={"User"},
+     *      summary="Iegūst visus kas novērtēja autorizēto lietotāju",
+     *      description="Iegūst visus lietotājus, kuri ir novērtējuši autorizētā lietotāja profilu.",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
+     */
     public function ratedUser() {
         $ratings = RatingLog::where('user_id', auth()->user()->id)->get();
         $users = array();
@@ -81,6 +209,25 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/user_rated",
+     *      operationId="getUserRated",
+     *      tags={"User"},
+     *      summary="Iegūst lietotājusi, kuri tika novērtēti ar autorizēto lietotāju",
+     *      description="Iegūst visus lietotājus, kur autorizētais lietotājs ir novērtējis, kādu citu lietotāju.",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
+     */
     public function userRated() {
         $ratings = RatingLog::where('rater_id', auth()->user()->id)->get();
         $users = array();

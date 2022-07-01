@@ -40,6 +40,21 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/logout",
+     *      operationId="userLogout",
+     *      tags={"Auth"},
+     *      summary="Lietotaja izrakstīšanās",
+     *      description="Lietotaja izrakstīšanās no konta",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Veiksmīga izrakstīšanās.",
+     *          @OA\JsonContent()
+     *      )
+     *)
+     */
     public function logout() {
         auth()->user()->token()->revoke();
 

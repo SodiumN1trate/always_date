@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="Message resource",
+ *     description="Message resource",
+ *     @OA\Xml(
+ *         name="MessageResource"
+ *     )
+ * )
+ */
 class MessageResource extends JsonResource
 {
     /**

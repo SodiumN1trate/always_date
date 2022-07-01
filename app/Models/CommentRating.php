@@ -10,7 +10,7 @@ class CommentRating extends Model
     use HasFactory;
 
     protected $fillable = [
-        'life_School_comment_id',
+        'life_school_comment_id',
         'rater_id',
         'rating',
     ];

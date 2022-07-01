@@ -11,9 +11,23 @@ use Illuminate\Http\Request;
 class MatchLogController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/match",
+     *      operationId="getMatchLog",
+     *      tags={"Match log"},
+     *      summary="Atgriež sakritības ierakstus",
+     *      description="Atgriež visus sakritības ierakstus",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
      */
     public function index()
     {
@@ -21,10 +35,34 @@ class MatchLogController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/match",
+     *      operationId="postMatchLog",
+     *      tags={"Match log"},
+     *      summary="Izveido vai atjauno jaunu sakritības ierakstu",
+     *      description="Izveido vai atjauno jaunu sakritības ierakstu",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required = {"user_2"},
+     *                  @OA\Property(format="integer", description="Lietotājs kuram tiks likts vērtējums", property="user_2"),
+     *                  @OA\Property(format="boolean", description="Vērtējums 1 - true, 0 - false", property="mark"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Vienu reizi var likt vērtējumu.",
+     *      )
+     *)
      */
     public function store(Request $request)
     {
@@ -63,25 +101,69 @@ class MatchLogController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/match/{id}",
+     *      operationId="getMatchLogById",
+     *      tags={"Match log"},
+     *      summary="Iegūst sakritības ierakstu",
+     *      description="Iegūst konkrētu sakritības ierakstu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="MatchLog id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated.",
+     *      ),
+     * )
      */
-    public function show(MatchLog $matchLog)
+    public function show(MatchLog $match)
     {
-        return new MatchLogResource($matchLog);
+        return new MatchLogResource($match);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *      path="/match/{id}",
+     *      operationId="deleteMatchLog",
+     *      tags={"Match log"},
+     *      summary="Izdzēš sakritības ierakstu",
+     *      description="Izdzēš sakritības ierakstu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="MatchLog id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      */
-    public function destroy(MatchLog $matchLog)
+    public function destroy(MatchLog $match)
     {
-        $matchLog->delete();
-        return new MatchLogResource($matchLog);
+        $match->delete();
+        return new MatchLogResource($match);
     }
 }

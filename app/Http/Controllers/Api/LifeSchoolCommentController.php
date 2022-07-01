@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRatingRequest;
 use App\Http\Requests\LifeSchoolCommentRequest;
-use App\Http\Resources\CommentRatingResource;
 use App\Http\Resources\LifeSchoolCommentResource;
 use App\Models\CommentRating;
 use App\Models\LifeSchoolComment;
@@ -22,9 +21,11 @@ class LifeSchoolCommentController extends Controller
      *      tags={"Life school comment"},
      *      summary="Iegūst visus dzīves skolas komentārus",
      *      description="Iegūst visus dzīves skolas komentārus",
+     *      security={{ "bearer": {} }},
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -44,36 +45,20 @@ class LifeSchoolCommentController extends Controller
      *      tags={"Life school comment"},
      *      summary="Tiek uzrakstīts un saglabāts komentārs dzīves skolas rakstam",
      *      description="Ievada komentāru zem kādas dzīves skolas raksta, komentārs glabājas un, glabā visus nepiciešamos datus, lai būtu saistīts ar konkrētu komentāru.",
-     *      @OA\Parameter(
-     *          name="owner_id",
-     *          description="Lietotāja id, kurš izveidoja komentāru",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/LifeSchoolCommentRequest",
+     *              )
      *          )
-     *      ),
-     *      @OA\Parameter(
-     *           name="description",
-     *           description="Pats komentārs",
-     *           required=true,
-     *           in="path",
-     *           @OA\Schema(
-     *               type="string"
-     *           )
-     *       ),
-     *      @OA\Parameter(
-     *           name="article_id",
-     *           description="Dzīves skolas raksta id",
-     *           required=true,
-     *           in="path",
-     *           @OA\Schema(
-     *               type="integer"
-     *           )
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -94,9 +79,20 @@ class LifeSchoolCommentController extends Controller
      *      tags={"Life school comment"},
      *      summary="Iegūst konkrētu komentāru",
      *      description="Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchoolComment id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -116,36 +112,29 @@ class LifeSchoolCommentController extends Controller
      *      tags={"Life school comment"},
      *      summary="Atjauno vai reģidē komentāru",
      *      description="Atjauno vai reģidē komentāru pēc id",
+     *      security={{ "bearer": {} }},
      *      @OA\Parameter(
-     *          name="owner_id",
-     *          description="Lietotāja id, kurš izveidoja komentāru",
-     *          required=false,
+     *          name="id",
+     *          description="LifeSchoolComment id",
+     *          required=true,
      *          in="path",
      *          @OA\Schema(
-     *              type="integer"
+     *              type="integer",
      *          )
      *      ),
-     *     @OA\Parameter(
-     *          name="description",
-     *          description="Pats komentārs",
-     *          required=false,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *          name="article_id",
-     *          description="Dzīves skolas raksta id",
-     *          required=false,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/LifeSchoolCommentRequest"
+     *              )
+     *          ),
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -162,13 +151,24 @@ class LifeSchoolCommentController extends Controller
     /**
      * @OA\Delete(
      *      path="/life_school_comment/{id}",
-     *     operationId="DeleteLifeSchoolComment",
+     *     operationId="deleteLifeSchoolComment",
      *     tags={"Life school comment"},
      *     summary="Izdzēš komentāru",
      *     description="Dzēš komentāru pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchoolComment id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -189,27 +189,21 @@ class LifeSchoolCommentController extends Controller
      *      tags={"Life school comment"},
      *      summary="Komentāru vērtēšana",
      *      description="Lietotās spēj novērtēt komentāru ar like vai dislike. Viss tiek validēts tā, lai lietotājs nevar novērtēt komentru ar nezināmu vērtējumu vai ar 2 vērtējumiem vienlaicīgi",
-     *      @OA\Parameter(
-     *          name="life_school_comment_id",
-     *          description="Komentāra id kurš tiks vērtēts",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *     @OA\Parameter(
-     *          name="rating",
-     *          description="Vērtēšana true - like, false - dislike",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="boolean"
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/CommentRatingRequest",
+     *              )
      *          )
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
+     *
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -217,11 +211,9 @@ class LifeSchoolCommentController extends Controller
      *      )
      *)
      */
-    public function rate(Request $request) {
-        $rate = $request->validate([
-            'life_school_comment_id' => 'required',
-            'rating' => 'required',
-        ]);
+    public function rate(CommentRatingRequest $request) {
+        $rate = $request->validated();
+        $rate['rater_id'] = auth()->user()->id;
 
         $ratedComment = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
             ->where('rater_id', auth()->user()->id)->first();
@@ -238,10 +230,8 @@ class LifeSchoolCommentController extends Controller
             } else {
                 $ratedComment['rating'] = $rate['rating'];
             }
-
-            $ratedComment->update(array($ratedComment));
+            $ratedComment->update();
         } else {
-            $rate['rater_id'] = auth()->user()->id;
             CommentRating::create($rate);
         }
 

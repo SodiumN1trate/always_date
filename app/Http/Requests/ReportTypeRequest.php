@@ -4,6 +4,16 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *      title="Report type request",
+ *      description="",
+ *      type="object",
+ *      required={
+ *          "title",
+ *      }
+ * )
+ */
 class ReportTypeRequest extends FormRequest
 {
     /**
@@ -17,9 +27,9 @@ class ReportTypeRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * @OA\Property(format="string", description="Sūdzības veids/īss skaidrojums", property="title"),
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {

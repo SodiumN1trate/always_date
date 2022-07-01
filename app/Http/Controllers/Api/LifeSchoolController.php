@@ -53,7 +53,7 @@ class LifeSchoolController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -84,7 +84,7 @@ class LifeSchoolController extends Controller
      *      security={{ "bearer": {} }},
      *      @OA\Parameter(
      *          name="id",
-     *          description="Application id",
+     *          description="LifeSchool id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -94,7 +94,7 @@ class LifeSchoolController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -122,18 +122,19 @@ class LifeSchoolController extends Controller
      *      tags={"Life school"},
      *      summary="Atjaunina datus dzīves skolai",
      *      description="Atjauno datus dzīves skolai pēc ievadītā id iekš uri",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchool id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
      *      @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="application/x-www-form-urlencoded",
-     *              @OA\Parameter(
-     *                  name="id",
-     *                  description="Application id",
-     *                  required=true,
-     *                  in="path",
-     *                  @OA\Schema(
-     *                      type="integer",
-     *                  )
-     *              ),
      *              @OA\Schema(
      *                  type="object",
      *                  ref="#components/schemas/LifeSchoolRequest"
@@ -143,7 +144,7 @@ class LifeSchoolController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
      *      ),
      *      @OA\Response(
      *          response=400,
@@ -164,9 +165,10 @@ class LifeSchoolController extends Controller
      *      tags={"Life school"},
      *      summary="Izdzēš ārā dzīves skolas rakstu",
      *      description="Dzēš ārā dzīves skolas rakstu pēc id",
+     *      security={{ "bearer": {} }},
      *      @OA\Parameter(
      *          name="id",
-     *          description="Application id",
+     *          description="LifeSchool id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -176,7 +178,7 @@ class LifeSchoolController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
      *      ),
      *      @OA\Response(
      *          response=400,
