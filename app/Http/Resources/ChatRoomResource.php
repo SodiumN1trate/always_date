@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="Chat room resource",
+ *     description="Chat room resource",
+ *     @OA\Xml(
+ *         name="ChatRoomResource"
+ *     )
+ * )
+ */
 class ChatRoomResource extends JsonResource
 {
     /**
