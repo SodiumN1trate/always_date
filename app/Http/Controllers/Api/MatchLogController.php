@@ -60,6 +60,10 @@ class MatchLogController extends Controller
      *      ),
      *      @OA\Response(
      *          response=400,
+     *          description="Nevar novērtēt pats sevi.",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
      *          description="Vienu reizi var likt vērtējumu.",
      *      )
      *)
@@ -77,7 +81,13 @@ class MatchLogController extends Controller
         $isMatchExist2 = MatchLog::where('user_2', auth()->user()->id)
             ->where('user_1', $matchLog['user_2'])->first();
 
-        if($isMatchExist1) {
+        if ($matchLog['user_2'] == auth()->user()->id){
+            return response()->json([
+                'error' =>[
+                    'data' => 'Nevar novērtēt pats sevi.',
+                ]
+            ]);
+        } elseif($isMatchExist1) {
             return response()->json([
                 'error' => [
                     'data' => 'Vienu reizi var likt vērtējumu.',

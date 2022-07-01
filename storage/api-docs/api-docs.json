@@ -756,6 +756,9 @@
                         }
                     },
                     "400": {
+                        "description": "Nevar novērtēt pats sevi."
+                    },
+                    "401": {
                         "description": "Vienu reizi var likt vērtējumu."
                     }
                 },
