@@ -12,7 +12,13 @@ class AuthController extends Controller
 {
     public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->stateless()->redirect();
+        $url = Socialite::driver('facebook')->stateless()->redirect()->getTargetUrl();
+
+        return response()->json([
+            'data' => [
+                'redirect_url' => $url,
+            ]
+        ]);
     }
 
     public function handleProviderCallback()
