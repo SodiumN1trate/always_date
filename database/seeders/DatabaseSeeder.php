@@ -16,19 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            "name"=>"Test user",
-            "email"=>"tester@rvt.lv",
-            "provider_id"=>1231232414112312
-        ]);
         User::factory()->times(1000)->create();
-
-        RatingLog::create([
-            "user_id"=> 1,
-            "rater_id"=> 2,
-            "rating"=> 5
-        ]);
-
-        LifeSchool::factory()->times(100)->create();
+//        User::create([
+//            "name"=>"Test user",
+//            "email"=>"tester@rvt.lv",
+//            "provider_id"=>1231232414112312
+//        ]);
+//
+//        RatingLog::create([
+//            "user_id"=> 1,
+//            "rater_id"=> 2,
+//            "rating"=> 5
+//        ]);
+//
+//        LifeSchool::factory()->times(100)->create();
     }
 }

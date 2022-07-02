@@ -14,8 +14,22 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $userAvatars = [
+            "https://this-person-does-not-exist.com/img/avatar-64006504bd22fc3d75ec5794dde62343.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-a0c3eed44c9a02a2e3d744a2f592b820.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-5c358f4704dc9ed665fa2f4d87fa0a85.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-25525f06b2c50e7dcaabee128a44fd60.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-51073a0eb5d4d4af8590089166f16998.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-1ca35f3fdd3b73186c7a55d5802ab0f0.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-2a390a0ceafd780d4403a9456c01b968.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-6d52b21c25192d7bd67ad04f36cbf804.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-a12564cef62e3ccc20f89b5af30c5946.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-43b04353b58663377d3f368a1daf9ef6.jpg",
+            "https://this-person-does-not-exist.com/img/avatar-1f86b21124e5d93e8cc1606f1cf2d385.jpg",
+        ];
+        shuffle($userAvatars);
         return [
-            'avatar' => "https://thispersondoesnotexist.com/",
+            'avatar' => $userAvatars[0],
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'gender' => rand(0,1),
