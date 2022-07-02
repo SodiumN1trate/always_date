@@ -11,20 +11,55 @@ use Illuminate\Http\Request;
 class LifeSchoolController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/life_school",
+     *      operationId="getLifeSchool",
+     *      tags={"Life school"},
+     *      summary="Iegūst visus life school, tikai pēc gender",
+     *      description="Iegūst visas dzīves skolas rakstus, bet atgriežot dzīves skolas tiek filtrētas pēc lietotāja dzimuma",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
      */
     public function index()
     {
         return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)->get());
     }
-
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/life_school",
+     *      operationId="postLifeSchool",
+     *      tags={"Life school"},
+     *      summary="Izveido jaunu ierakstu par life school",
+     *      description="Izveido jaunu ierakstu life school",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/LifeSchoolRequest",
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Nevar noteikt dzimumu.",
+     *      )
+     *)
      */
     public function store(LifeSchoolRequest $request)
     {
@@ -40,10 +75,32 @@ class LifeSchoolController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/life_school/{id}",
+     *      operationId="getLifeSchoolById",
+     *      tags={"Life school"},
+     *      summary="Atgriež dzīves skolas rakstu pēc id",
+     *      description="Atgriež dzīves skolas rakstu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchool id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Nedrīkst skatīt cita dzimuma dzīves skolu",
+     *      ),
+     * )
      */
     public function show(LifeSchool $lifeSchool)
     {
@@ -59,11 +116,41 @@ class LifeSchoolController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *      path="/life_school/{id}",
+     *      operationId="updateLifeSchool",
+     *      tags={"Life school"},
+     *      summary="Atjaunina datus dzīves skolai",
+     *      description="Atjauno datus dzīves skolai pēc ievadītā id iekš uri",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchool id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  ref="#components/schemas/LifeSchoolRequest"
+     *              )
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
      */
     public function update(LifeSchoolRequest $request, LifeSchool $lifeSchool)
     {
@@ -72,10 +159,32 @@ class LifeSchoolController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *      path="/life_school/{id}",
+     *      operationId="deleteLifeSchool",
+     *      tags={"Life school"},
+     *      summary="Izdzēš ārā dzīves skolas rakstu",
+     *      description="Dzēš ārā dzīves skolas rakstu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="LifeSchool id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      */
     public function destroy(LifeSchool $lifeSchool)
     {

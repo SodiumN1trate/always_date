@@ -11,9 +11,23 @@ use Illuminate\Http\Request;
 class ChatRoomController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/chat_room",
+     *      operationId="getChatRoom",
+     *      tags={"Chat room"},
+     *      summary="Atgriež sarakstes grupas",
+     *      description="Atgriež visas sarakstes grupas",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      )
+     *)
      */
     public function index()
     {
@@ -21,10 +35,37 @@ class ChatRoomController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *      path="/chat_room",
+     *      operationId="postChatRoom",
+     *      tags={"Chat room"},
+     *      summary="Izvedo sarakstes grupu",
+     *      description="Izveido sarakstes grupu starp 2 cilvēkiem, autorizēto lietotāju un otru izvēlēto lietotāju",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required = {"user2_id"},
+     *                  @OA\Property(format="integer", description="Otra lietotāja id ar kuru tiks izveidota sarakstes grupa", property="user2_id"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Nevar izveidot saraksti ja user1_id un user2_id ir vienādi.",
+     *      ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Chat room jau pastāv starp šiem diviem lietotājiem.",
+     *      )
+     *)
      */
     public function store(Request $request)
     {
@@ -54,10 +95,32 @@ class ChatRoomController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/chat_room/{id}",
+     *      operationId="getChatRoomById",
+     *      tags={"Chat room"},
+     *      summary="Atgriež saraksti",
+     *      description="Atgriež konkrētu saraksti pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Chat room id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated.",
+     *      ),
+     * )
      */
     public function show(ChatRoom $chatRoom)
     {
@@ -65,11 +128,42 @@ class ChatRoomController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *      path="/chat_room/{id}",
+     *      operationId="updateChatRoom",
+     *      tags={"Chat room"},
+     *      summary="Rediģē sarakstes grupu",
+     *      description="Rediģē konkrētu sarakstes grupu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Chat room id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(format="integer", description="Pirmā lietotāja id", property="user1_id"),
+     *                  @OA\Property(format="integer", description="Otrā lietotāja id", property="user2_id"),
+     *              )
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
      */
     public function update(Request $request, ChatRoom $chatRoom)
     {
@@ -82,10 +176,32 @@ class ChatRoomController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *      path="/chat_room/{id}",
+     *      operationId="deleteChatRoom",
+     *      tags={"Chat room"},
+     *      summary="Izdzēš sarakstes grupu",
+     *      description="Izdzēs konkrētu sarakstes grupu pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Chat room id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      */
     public function destroy(ChatRoom $chatRoom)
     {

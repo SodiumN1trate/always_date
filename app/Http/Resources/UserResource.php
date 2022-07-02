@@ -5,6 +5,14 @@ namespace App\Http\Resources;
 use App\Models\LifeSchool;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @OA\Schema(
+ *     title="User resource",
+ *     description="User resource",
+ *     @OA\Xml(
+ *         name="UserResource"
+ *     )
+ * )
+ */
 class UserResource extends JsonResource
 {
     /**

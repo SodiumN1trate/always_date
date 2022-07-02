@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
 
     Route::apiResource('/match', MatchLogController::class);
+    Route::get('/random_user/{user_id?}', [MatchLogController::class, 'randomUser']);
 
     Route::apiResource('/report_type', ReportTypeController::class);
     Route::apiResource('/report_log', ReportLogController::class);

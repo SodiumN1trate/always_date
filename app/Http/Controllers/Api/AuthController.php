@@ -25,9 +25,10 @@ class AuthController extends Controller
     {
         $driverUser = Socialite::driver('facebook')->stateless()->user();
         $user = User::whereEmail($driverUser->email)->first();
+
         if(!$user) {
             $user = User::create([
-                'avatar' => $driverUser->avatar,
+                'avatar' => $driverUser->avatar_original,
                 'name' => $driverUser->name,
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
@@ -45,6 +46,21 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/logout",
+     *      operationId="userLogout",
+     *      tags={"Auth"},
+     *      summary="Lietotaja izrakstīšanās",
+     *      description="Lietotaja izrakstīšanās no konta",
+     *      security={{ "bearer": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Veiksmīga izrakstīšanās.",
+     *          @OA\JsonContent()
+     *      )
+     *)
+     */
     public function logout() {
         auth()->user()->token()->revoke();
 

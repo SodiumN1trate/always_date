@@ -14,6 +14,7 @@ class CreateRatingLogsTable extends Migration
     public function up()
     {
         Schema::create('rating_logs', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('rater_id');
             $table->integer('rating');

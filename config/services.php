@@ -33,6 +33,10 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+<<<<<<< HEAD
         'redirect' => env('FACEBOOK_REDIRECT'),
+=======
+        'redirect' => 'http://localhost:80/api/v1/callback-url',
+>>>>>>> af18236aacca01417ec3eccf375a9bcb58f34110
     ],
 ];

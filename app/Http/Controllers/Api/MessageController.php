@@ -11,6 +11,36 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/messages",
+     *      operationId="postMessages",
+     *      tags={"Message"},
+     *      summary="Nosūta ziņu",
+     *      description="Nosūta ziņu citam lietotājam",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required = {"chat_room_id", "message"},
+     *                  @OA\Property(format="integer", description="Saraktes grupas id", property="chat_room_id"),
+     *                  @OA\Property(format="string", description="Ziņa kura tiks nosūtita otram lietotājam", property="message"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MessageResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Nevar nosūtīt ziņu svešā chat room.",
+     *      )
+     *)
+     */
     public function message(Request $request) {
         $validated = $request->validate([
             'chat_room_id' => 'required',
@@ -43,6 +73,35 @@ class MessageController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *      path="/chat_room_messages",
+     *      operationId="post",
+     *      tags={"Message"},
+     *      summary="Atgriež ziņas",
+     *      description="Atgriež visas ziņas no konkrētas grupas ar pagināciju - 10",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required = {"chat_room_id"},
+     *                  @OA\Property(format="integer", description="Saraktes grupas id", property="chat_room_id"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MessageResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated.",
+     *      )
+     *)
+     */
     public function chatRoomMessages(Request $request) {
         $validated = $request->validate([
             'chat_room_id' => 'required',
