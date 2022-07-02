@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if(!$user) {
             $user = User::create([
-                'avatar' => $driverUser->avatar_original,
+                'avatar' => $driverUser->avatar,
                 'name' => $driverUser->name,
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
