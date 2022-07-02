@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MatchLogResource;
+use App\Http\Resources\UserResource;
 use App\Models\MatchLog;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -175,5 +176,13 @@ class MatchLogController extends Controller
     {
         $match->delete();
         return new MatchLogResource($match);
+    }
+
+    public function randomUser($skippedUserId = null){
+        $randomMatchingUser = User::inRandomOrder()->where('id', '!=', $skippedUserId)
+            ->where('id', '!=', auth()->user()->id)
+            ->where('gender', '!=', auth()->user()->gender)->first();
+
+        return new UserResource($randomMatchingUser);
     }
 }
