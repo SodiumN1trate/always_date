@@ -32,8 +32,11 @@ class UserFactory extends Factory
             'avatar' => $userAvatars[0],
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'gender' => rand(0,1),
+            'gender' => $this->faker->numberBetween($min = 0, $max = 1),
             'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),
+            'about_me' => $this->faker->text(350),
+            'rating' => $this->faker->randomFloat(2,0, 10),
+            'read_school_exp' => rand(0, 100),
         ];
     }
 
