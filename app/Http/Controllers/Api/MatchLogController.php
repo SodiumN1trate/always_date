@@ -178,7 +178,7 @@ class MatchLogController extends Controller
         return new MatchLogResource($match);
     }
 
-    public function nextRandomUser($skippedUserId = null){
+    public function randomUser($skippedUserId = null){
         $randomMatchingUser = User::inRandomOrder()->where('id', '<>', $skippedUserId)
             ->where('id', '!=', auth()->user()->id)
             ->where('gender', '!=', auth()->user()->gender)->first();
