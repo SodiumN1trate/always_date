@@ -15,8 +15,11 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'avatar' => "https://thispersondoesnotexist.com/",
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'gender' => rand(0,1),
+            'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),
         ];
     }
 
