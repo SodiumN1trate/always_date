@@ -180,8 +180,7 @@ class MatchLogController extends Controller
 
     public function randomUser($skippedUserId = null){
         $randomMatchingUser = User::inRandomOrder()->where('id', '!=', $skippedUserId)
-            ->where('id', '!=', auth()->user()->id)
-            ->where('gender', '!=', auth()->user()->gender)->first();
+            ->where('id', '!=', auth()->user()->id)->first();
 
         return new UserResource($randomMatchingUser);
     }
