@@ -7,7 +7,6 @@ use App\Http\Resources\MatchLogResource;
 use App\Http\Resources\UserResource;
 use App\Models\MatchLog;
 use App\Models\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
 
 class MatchLogController extends Controller
@@ -36,82 +35,6 @@ class MatchLogController extends Controller
         return MatchLogResource::collection(MatchLog::all());
     }
 
-//    /**
-//     * @OA\Post(
-//     *      path="/match",
-//     *      operationId="postMatchLog",
-//     *      tags={"Match log"},
-//     *      summary="Izveido vai atjauno jaunu sakritības ierakstu",
-//     *      description="Izveido vai atjauno jaunu sakritības ierakstu",
-//     *      security={{ "bearer": {} }},
-//     *      @OA\RequestBody(
-//     *          @OA\MediaType(
-//     *              mediaType="application/x-www-form-urlencoded",
-//     *              @OA\Schema(
-//     *                  type="object",
-//     *                  required = {"user_2"},
-//     *                  @OA\Property(format="integer", description="Lietotājs kuram tiks likts vērtējums", property="user_2"),
-//     *                  @OA\Property(format="boolean", description="Vērtējums 1 - true, 0 - false", property="mark"),
-//     *              )
-//     *          )
-//     *      ),
-//     *      @OA\Response(
-//     *          response=200,
-//     *          description="Successful operation",
-//     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
-//     *      ),
-//     *      @OA\Response(
-//     *          response=400,
-//     *          description="Nevar novērtēt pats sevi.",
-//     *      ),
-//     *      @OA\Response(
-//     *          response=401,
-//     *          description="Vienu reizi var likt vērtējumu.",
-//     *      )
-//     *)
-//     */
-//    public function store(Request $request)
-//    {
-//        $matchLog = $request->validate([
-//            'user_2' => 'required',
-//            'mark' => '',
-//        ]);
-//
-//        $isMatchExist1 = MatchLog::where('user_1', auth()->user()->id)
-//            ->where('user_2', $matchLog['user_2'])->first();
-//
-//        $isMatchExist2 = MatchLog::where('user_2', auth()->user()->id)
-//            ->where('user_1', $matchLog['user_2'])->first();
-//
-//        if ($matchLog['user_2'] == auth()->user()->id){
-//            return response()->json([
-//                'error' =>[
-//                    'data' => 'Nevar novērtēt pats sevi.',
-//                ]
-//            ]);
-//        } elseif($isMatchExist1) {
-//            return response()->json([
-//                'error' => [
-//                    'data' => 'Vienu reizi var likt vērtējumu.',
-//                ]
-//            ], 400);
-//        } elseif ($isMatchExist2) {
-//            if($matchLog['mark'] >= 1 && $isMatchExist2->is_match === 1) {
-//                $isMatchExist2->is_match = 1;
-//            } else {
-//                $isMatchExist2->is_match = 0;
-//            }
-//            $isMatchExist2->update(array($isMatchExist2));
-//            return new MatchLogResource($isMatchExist2);
-//        } else {
-//            $matchLog['user_1'] = auth()->user()->id;
-//            $matchLog['is_match'] = ($matchLog['mark'] >= 1) ? 1 : 0;
-//            unset($matchLog['mark']);
-//            $match = MatchLog::create($matchLog);
-//            return new MatchLogResource($match);
-//        }
-//    }
-
     public function store(Request $request) {
         $validated = $request->validate([
             'user_2' => 'required',
@@ -125,14 +48,14 @@ class MatchLogController extends Controller
             ->where('user_2', $validated['user_1'])->first();
         $match = ($isMatchLogExist1) ? $isMatchLogExist1 : $isMatchLogExist2;
 
-        if ($validated['user_2' == auth()->user()->id]) {
+        if ($validated['user_2'] == auth()->user()->id) {
             return response()->json([
                 'error' => [
                     'data' => 'Nevar novērtēt pats sevi.'
                 ]
             ]);
         } elseif($match) {
-            if (!$match['user_1'] == auth()->user()->id) {
+            if ($match['user_1'] != auth()->user()->id) {
                 $match->update(array(
                     'user_2' => $validated['user_2'],
                     'user_1' => $validated['user_1'],
