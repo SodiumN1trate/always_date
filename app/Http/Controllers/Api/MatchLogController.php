@@ -36,6 +36,40 @@ class MatchLogController extends Controller
         return MatchLogResource::collection(MatchLog::all());
     }
 
+    /**
+     * @OA\Post(
+     *      path="/match",
+     *      operationId="postMatchLog",
+     *      tags={"Match log"},
+     *      summary="Izveido vai atjauno jaunu sakritības ierakstu",
+     *      description="Ja nepastāv datubāzē ieraksts, tad tiek izveidots jauns, bet ja ieraksts pastāv, tad to ierakstu modificēs",
+     *      security={{ "bearer": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required = {"user_2", "user_1_rating"},
+     *                  @OA\Property(format="integer", description="Lietotājs kuram tiks likts vērtējums", property="user_2"),
+     *                  @OA\Property(format="boolean", description="Vērtējums true vai false", property="user_1_rating"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MatchLogResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Nevar novērtēt pats sevi.",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Novērtēts ar nezināmu vērtējumu.",
+     *      )
+     *)
+     */
     public function store(Request $request) {
         $validated = $request->validate([
             'user_2' => 'required',
@@ -43,24 +77,23 @@ class MatchLogController extends Controller
         ]);
         $validated['user_1'] = auth()->user()->id;
 
-        $isMatchLogExist1 = MatchLog::where('user_1', $validated['user_1'])
-            ->where('user_2', $validated['user_2'])->first();
-        $isMatchLogExist2 = MatchLog::where('user_1', $validated['user_2'])
+        $match = MatchLog::where('user_1', $validated['user_1'])
+            ->where('user_2', $validated['user_2'])
+            ->orWhere('user_1', $validated['user_2'])
             ->where('user_2', $validated['user_1'])->first();
-        $match = ($isMatchLogExist1) ? $isMatchLogExist1 : $isMatchLogExist2;
 
         if ($validated['user_2'] == $validated['user_1']) {
             return response()->json([
                 'error' => [
                     'data' => 'Nevar novērtēt pats sevi.'
                 ]
-            ]);
-        } elseif ($validated['user_1_rating'] <= -1 || $validated['user_1_rating'] >= 2) {
+            ], 400);
+        } elseif (!is_bool($validated['user_1_rating'])) {
             return response()->json([
                 'error' => [
                     'data' => 'Novērtēts ar nezināmu vērtējumu.'
                 ]
-            ]);
+            ], 400);
         } elseif ($match) {
             if ($match['user_1'] != $validated['user_1']) {
                 $match->update(array(
@@ -74,9 +107,7 @@ class MatchLogController extends Controller
                 'user_1_rating' => $validated['user_1_rating']
             ));
 
-            if ($match['user_2_rating'] == 1 && $match['user_1_rating'] == 1) {
-                $match->update(array('is_match' => 1));
-            }
+            $match->update(array('is_match' => $match['user_2_rating'] == 1 && $match['user_1_rating'] == 1));
         } else {
             $match = MatchLog::create($validated);
         }

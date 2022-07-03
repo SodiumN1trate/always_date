@@ -720,22 +720,23 @@
                     "Match log"
                 ],
                 "summary": "Izveido vai atjauno jaunu sakritības ierakstu",
-                "description": "Izveido vai atjauno jaunu sakritības ierakstu",
+                "description": "Ja nepastāv datubāzē ieraksts, tad tiek izveidots jauns, bet ja ieraksts pastāv, tad to ierakstu modificēs",
                 "operationId": "postMatchLog",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "required": [
-                                    "user_2"
+                                    "user_2",
+                                    "user_1_rating"
                                 ],
                                 "properties": {
                                     "user_2": {
                                         "description": "Lietotājs kuram tiks likts vērtējums",
                                         "format": "integer"
                                     },
-                                    "mark": {
-                                        "description": "Vērtējums 1 - true, 0 - false",
+                                    "user_1_rating": {
+                                        "description": "Vērtējums true vai false",
                                         "format": "boolean"
                                     }
                                 },
@@ -759,7 +760,7 @@
                         "description": "Nevar novērtēt pats sevi."
                     },
                     "401": {
-                        "description": "Vienu reizi var likt vērtējumu."
+                        "description": "Novērtēts ar nezināmu vērtējumu."
                     }
                 },
                 "security": [
@@ -1395,6 +1396,47 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst lietotāju",
+                "description": "Iegūst konkrētu lietotāju pēc id",
+                "operationId": "getUsersById",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "Lietotāja id.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
