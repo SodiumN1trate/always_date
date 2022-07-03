@@ -19,8 +19,8 @@ class CreateMatchLogsTable extends Migration
                 ->constrained('users');
             $table->foreignId('user_2')
                 ->constrained('users');
-            $table->tinyInteger('user_1_rating')->default(-1);
-            $table->tinyInteger('user_2_rating')->default(-1);
+            $table->boolean('user_1_rating')->nullable();
+            $table->boolean('user_2_rating')->nullable();
             $table->boolean('is_match')->nullable();
             $table->timestamps();
         });

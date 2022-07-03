@@ -7,6 +7,7 @@ use App\Http\Resources\MatchLogResource;
 use App\Http\Resources\UserResource;
 use App\Models\MatchLog;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class MatchLogController extends Controller
@@ -48,14 +49,20 @@ class MatchLogController extends Controller
             ->where('user_2', $validated['user_1'])->first();
         $match = ($isMatchLogExist1) ? $isMatchLogExist1 : $isMatchLogExist2;
 
-        if ($validated['user_2'] == auth()->user()->id) {
+        if ($validated['user_2'] == $validated['user_1']) {
             return response()->json([
                 'error' => [
                     'data' => 'Nevar novērtēt pats sevi.'
                 ]
             ]);
-        } elseif($match) {
-            if ($match['user_1'] != auth()->user()->id) {
+        } elseif ($validated['user_1_rating'] <= -1 || $validated['user_1_rating'] >= 2) {
+            return response()->json([
+                'error' => [
+                    'data' => 'Novērtēts ar nezināmu vērtējumu.'
+                ]
+            ]);
+        } elseif ($match) {
+            if ($match['user_1'] != $validated['user_1']) {
                 $match->update(array(
                     'user_2' => $validated['user_2'],
                     'user_1' => $validated['user_1'],
@@ -69,8 +76,6 @@ class MatchLogController extends Controller
 
             if ($match['user_2_rating'] == 1 && $match['user_1_rating'] == 1) {
                 $match->update(array('is_match' => 1));
-            } elseif($match['user_2_rating'] == 0 || $match['user_1_rating'] == 0) {
-                $match->update(array('is_match' => 0));
             }
         } else {
             $match = MatchLog::create($validated);
