@@ -12,6 +12,8 @@ class MatchLog extends Model
     protected $fillable = [
         'user_1',
         'user_2',
+        'user_1_rating',
+        'user_2_rating',
         'is_match',
     ];
 }

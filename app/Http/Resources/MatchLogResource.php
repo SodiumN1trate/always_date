@@ -26,6 +26,8 @@ class MatchLogResource extends JsonResource
             'id' => $this->id,
             'user_1' => $this->user_1,
             'user_2' => $this->user_2,
+            'user_1_rating' => $this->user_1_rating,
+            'user_2_rating' => $this->user_2_rating,
             'is_match' => $this->is_match,
         ];
     }
