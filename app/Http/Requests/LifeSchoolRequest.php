@@ -17,15 +17,13 @@ use Illuminate\Foundation\Http\FormRequest;
  *      }
  * )
  */
-class LifeSchoolRequest extends FormRequest
-{
+class LifeSchoolRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -36,12 +34,12 @@ class LifeSchoolRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'title' => 'required',
             'gender' => 'required',
             'description' => 'required',
         ];
     }
+
 }

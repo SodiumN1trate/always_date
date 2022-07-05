@@ -9,8 +9,7 @@ use App\Models\RatingLog;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     /**
      * @OA\Get(
      *      path="/me",
@@ -30,8 +29,7 @@ class UserController extends Controller
      *      )
      *)
      */
-    public function user()
-    {
+    public function user() {
         return new UserResource(auth()->user());
     }
 
@@ -67,8 +65,7 @@ class UserController extends Controller
      *      ),
      *)
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $users = User::filter($request->all())->paginate(10);
         return UserResource::collection($users);
     }
@@ -101,7 +98,7 @@ class UserController extends Controller
      *      ),
      *)
      */
-    public function show(User $user){
+    public function show(User $user) {
         return new UserResource($user);
     }
 
@@ -133,8 +130,7 @@ class UserController extends Controller
      *      ),
      *)
      */
-    public function update(UserRequest $request)
-    {
+    public function update(UserRequest $request) {
         auth()->user()->update($request->validated());
         return new UserResource(auth()->user());
     }
@@ -172,8 +168,7 @@ class UserController extends Controller
      *      )
      *)
      */
-    public function rate(Request $request)
-    {
+    public function rate(Request $request) {
         $validated = $request->validate([
             'user_id' => 'required',
             'rating' => 'required',
@@ -273,4 +268,5 @@ class UserController extends Controller
         }
         return UserResource::collection($users);
     }
+
 }

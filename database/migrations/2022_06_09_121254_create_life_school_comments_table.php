@@ -4,15 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLifeSchoolCommentsTable extends Migration
-{
+class CreateLifeSchoolCommentsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('life_school_comments', function (Blueprint $table) {
             $table->id();
             $table->integer('owner_id');
@@ -29,8 +27,7 @@ class CreateLifeSchoolCommentsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('life_school_comments');
     }
 }

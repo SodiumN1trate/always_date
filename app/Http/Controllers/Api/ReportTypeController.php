@@ -8,8 +8,7 @@ use App\Http\Resources\ReportTypeResource;
 use App\Models\ReportType;
 use Illuminate\Http\Request;
 
-class ReportTypeController extends Controller
-{
+class ReportTypeController extends Controller {
     /**
      * @OA\Get(
      *      path="/report_type",
@@ -29,8 +28,7 @@ class ReportTypeController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return ReportTypeResource::collection(ReportType::all());
     }
 
@@ -62,8 +60,7 @@ class ReportTypeController extends Controller
      *      )
      *)
      */
-    public function store(ReportTypeRequest $request)
-    {
+    public function store(ReportTypeRequest $request) {
         $ReportType = ReportType::create($request->validated());
         return new ReportTypeResource($ReportType);
     }
@@ -96,8 +93,7 @@ class ReportTypeController extends Controller
      *      ),
      * )
      */
-    public function show(ReportType $reportType)
-    {
+    public function show(ReportType $reportType) {
         return new ReportTypeResource($reportType);
     }
 
@@ -138,8 +134,7 @@ class ReportTypeController extends Controller
      *      ),
      *)
      */
-    public function update(ReportTypeRequest $request, ReportType $ReportType)
-    {
+    public function update(ReportTypeRequest $request, ReportType $ReportType) {
         $ReportType->update($request->validated());
         return new ReportTypeResource($ReportType);
     }
@@ -172,9 +167,9 @@ class ReportTypeController extends Controller
      *      ),
      * )
      */
-    public function destroy(ReportType $ReportType)
-    {
+    public function destroy(ReportType $ReportType) {
         $ReportType->delete();
         return new ReportTypeResource($ReportType);
     }
+
 }

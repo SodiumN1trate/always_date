@@ -5,15 +5,13 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class UserFactory extends Factory
-{
+class UserFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array
      */
-    public function definition()
-    {
+    public function definition() {
         $userAvatars = [
             "https://this-person-does-not-exist.com/img/avatar-64006504bd22fc3d75ec5794dde62343.jpg",
             "https://this-person-does-not-exist.com/img/avatar-a0c3eed44c9a02a2e3d744a2f592b820.jpg",
@@ -45,8 +43,7 @@ class UserFactory extends Factory
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function unverified()
-    {
+    public function unverified() {
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,

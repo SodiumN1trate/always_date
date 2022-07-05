@@ -15,15 +15,13 @@ use Illuminate\Foundation\Http\FormRequest;
  *      }
  * )
  */
-class CommentRatingRequest extends FormRequest
-{
+class CommentRatingRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -33,11 +31,11 @@ class CommentRatingRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'life_school_comment_id' => 'required',
             'rating' => 'required',
         ];
     }
+
 }

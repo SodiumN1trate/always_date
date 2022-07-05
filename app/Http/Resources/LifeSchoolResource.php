@@ -12,16 +12,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     )
  * )
  */
-class LifeSchoolResource extends JsonResource
-{
+class LifeSchoolResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
-    {
+    public function toArray($request) {
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -29,4 +27,5 @@ class LifeSchoolResource extends JsonResource
             'description' => $this->description,
         ];
     }
+
 }

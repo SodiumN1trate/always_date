@@ -10,8 +10,7 @@ use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
 
-class MatchLogController extends Controller
-{
+class MatchLogController extends Controller {
     /**
      * @OA\Get(
      *      path="/match",
@@ -31,8 +30,7 @@ class MatchLogController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return MatchLogResource::collection(MatchLog::all());
     }
 
@@ -142,8 +140,7 @@ class MatchLogController extends Controller
      *      ),
      * )
      */
-    public function show(MatchLog $match)
-    {
+    public function show(MatchLog $match) {
         return new MatchLogResource($match);
     }
 
@@ -175,16 +172,16 @@ class MatchLogController extends Controller
      *      ),
      * )
      */
-    public function destroy(MatchLog $match)
-    {
+    public function destroy(MatchLog $match) {
         $match->delete();
         return new MatchLogResource($match);
     }
 
-    public function randomUser($skippedUserId = null){
+    public function randomUser($skippedUserId = null) {
         $randomMatchingUser = User::inRandomOrder()->where('id', '!=', $skippedUserId)
             ->where('id', '!=', auth()->user()->id)->first();
 
         return new UserResource($randomMatchingUser);
     }
+
 }

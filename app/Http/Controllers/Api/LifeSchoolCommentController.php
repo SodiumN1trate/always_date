@@ -12,8 +12,7 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
-class LifeSchoolCommentController extends Controller
-{
+class LifeSchoolCommentController extends Controller {
     /**
      * @OA\Get(
      *      path="/life_school_comment",
@@ -33,8 +32,7 @@ class LifeSchoolCommentController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return LifeSchoolCommentResource::collection(LifeSchoolComment::all());
     }
 
@@ -66,8 +64,7 @@ class LifeSchoolCommentController extends Controller
      *      )
      *)
      */
-    public function store(LifeSchoolCommentRequest $request)
-    {
+    public function store(LifeSchoolCommentRequest $request) {
         $lifeSchoolComment = LifeSchoolComment::create($request->validated());
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
@@ -100,8 +97,7 @@ class LifeSchoolCommentController extends Controller
      *      ),
      * )
      */
-    public function show(LifeSchoolComment $lifeSchoolComment)
-    {
+    public function show(LifeSchoolComment $lifeSchoolComment) {
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
 
@@ -142,8 +138,7 @@ class LifeSchoolCommentController extends Controller
      *      ),
      *)
      */
-    public function update(LifeSchoolCommentRequest $request, LifeSchoolComment $lifeSchoolComment)
-    {
+    public function update(LifeSchoolCommentRequest $request, LifeSchoolComment $lifeSchoolComment) {
         $lifeSchoolComment->update($request->validated());
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
@@ -176,8 +171,7 @@ class LifeSchoolCommentController extends Controller
      *      ),
      * )
      */
-    public function destroy(LifeSchoolComment $lifeSchoolComment)
-    {
+    public function destroy(LifeSchoolComment $lifeSchoolComment) {
         $lifeSchoolComment->delete();
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
@@ -247,4 +241,5 @@ class LifeSchoolCommentController extends Controller
         ]);
         return new LifeSchoolCommentResource($LifeSchoolComment);
     }
+
 }
