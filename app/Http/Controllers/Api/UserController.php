@@ -74,6 +74,38 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/users/{user}",
+     *      operationId="getUsersById",
+     *      tags={"User"},
+     *      summary="Iegūst lietotāju",
+     *      description="Iegūst konkrētu lietotāju pēc id",
+     *      security={{ "bearer": {} }},
+     *      @OA\Parameter(
+     *          name="user",
+     *          description="Lietotāja id.",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unauthenticated",
+     *      ),
+     *)
+     */
+    public function show(User $user){
+        return new UserResource($user);
+    }
+
+    /**
      * @OA\Put(
      *      path="/me",
      *      operationId="updateMe",

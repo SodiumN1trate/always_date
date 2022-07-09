@@ -29,23 +29,24 @@ Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/me', [UserController::class, 'user']);
     Route::put('/me', [UserController::class, 'update']);
-    Route::get('/users', [UserController::class, 'index']);
+//    Route::get('/users', [UserController::class, 'index']);
+    Route::resource('users', UserController::class);
     Route::post('/user/rate', [UserController::class, 'rate']);
     Route::get('/user_rated', [UserController::class, 'userRated']);
     Route::get('/rated_user', [UserController::class, 'ratedUser']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('/life_school', LifeSchoolController::class);
-    Route::apiResource('/life_school_comment', LifeSchoolCommentController::class);
+    Route::resource('life_school', LifeSchoolController::class);
+    Route::resource('life_school_comment', LifeSchoolCommentController::class);
     Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
 
-    Route::apiResource('/match', MatchLogController::class);
+    Route::resource('match', MatchLogController::class);
     Route::get('/random_user/{user_id?}', [MatchLogController::class, 'randomUser']);
 
-    Route::apiResource('/report_type', ReportTypeController::class);
-    Route::apiResource('/report_log', ReportLogController::class);
+    Route::resource('report_type', ReportTypeController::class);
+    Route::resource('report_log', ReportLogController::class);
 
-    Route::apiResource('/chat_room', ChatRoomController::class);
+    Route::resource('chat_room', ChatRoomController::class);
     Route::post('/messages', [MessageController::class, 'message']);
     Route::post('/chat_room_messages', [MessageController::class, 'chatRoomMessages']);
 });
