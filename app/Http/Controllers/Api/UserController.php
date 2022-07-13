@@ -75,23 +75,19 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/users{filter}",
-     *      operationId="getUsersByFilter",
+     *      path="/users/{user}",
+     *      operationId="getUsersById",
      *      tags={"User"},
-     *      summary="Iegūst lietotājus",
-     *      description="Iegūst lietotājus pēc filtrācijas. Filtrācijas piemēri:<br/>
-     *          Kārtošana - ?sort[]=name&sort[]=desc/asc;<br/>
-     *          Iegūt pēc filtrācijas - ?name=Alberts<br/>
-     *          Iegūt starp skaitļiem(getBetween) - ?age[]=1&age[]=11;<br/>
-     *          Kombinēti(combined) - ?age[]=1&age[]=11&name=Alberts&sort[]=name&sort[]=asc;",
+     *      summary="Iegūst lietotāju",
+     *      description="Iegūst konkrētu lietotāju pēc id",
      *      security={{ "bearer": {} }},
      *      @OA\Parameter(
-     *          name="filter",
-     *          description="Filtrācija un kārtošana izmantojot augstāk dotos piemērus.",
+     *          name="user",
+     *          description="Lietotāja id.",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
-     *              type="string",
+     *              type="integer",
      *          )
      *      ),
      *      @OA\Response(
@@ -109,7 +105,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-        /**
+    /**
      * @OA\Put(
      *      path="/me",
      *      operationId="updateMe",
