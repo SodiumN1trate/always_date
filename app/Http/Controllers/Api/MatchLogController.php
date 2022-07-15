@@ -75,7 +75,7 @@ class MatchLogController extends Controller
             'user_2' => 'required',
             'user_1_rating' => 'required'
         ]);
-        $validated['user_1'] = 1005;
+        $validated['user_1'] = 3274;
 
         $match = MatchLog::where('user_1', $validated['user_1'])
             ->where('user_2', $validated['user_2'])
@@ -95,19 +95,25 @@ class MatchLogController extends Controller
                 ]
             ], 400);
         } elseif ($match) {
-            if ($match['user_1'] != $validated['user_1']) {
-                $match->update(array(
-                    'user_2' => $validated['user_2'],
+            if ($validated['user_1'] == $match['user_1']) {
+                $match->update([
                     'user_1' => $validated['user_1'],
-                    'user_2_rating' => $match['user_1_rating'],
+                    'user_2' => $validated['user_2'],
                     'user_1_rating' => $validated['user_1_rating'],
-                ));
+                    ]);
+            } elseif ($validated['user_1'] == $match['user_2']) {
+                $match->update([
+                    'user_1' => $validated['user_2'],
+                    'user_2' => $validated['user_1'],
+                    'user_2_rating' => $validated['user_1_rating'],
+                    ]);
             }
-            $match->update(array(
-                'user_1_rating' => $validated['user_1_rating']
-            ));
 
-            $match->update(array('is_match' => $match['user_2_rating'] == 1 && $match['user_1_rating'] == 1));
+            if ($match['user_1_rating'] && $match['user_2_rating']) {
+                $match->update(['is_match' => true]);
+            } else {
+                $match->update(['is_match' => false]);
+            }
         } else {
             $match = MatchLog::create($validated);
         }
@@ -179,6 +185,54 @@ class MatchLogController extends Controller
     {
         $match->delete();
         return new MatchLogResource($match);
+    }
+
+    public function ratedMatchUser() {
+        $ratingsAsUser1 = MatchLog::where('user_1', auth()->user()->id)->get();
+        $ratingsAsUser2 = MatchLog::where('user_2', auth()->user()->id)->get();
+
+        $users = [];
+        $uniqueUser = [];
+
+        foreach ($ratingsAsUser1 as $match) {
+            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
+                $users[] = User::where('id', $match['user_2'])->first();
+                $uniqueUser[] = $match['user_2'];
+            }
+        }
+
+        foreach ($ratingsAsUser2 as $match) {
+            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_2_rating'])) {
+                $users[] = User::where('id', $match['user_1'])->first();
+                $uniqueUser[] = $match['user_1'];
+            }
+        }
+
+        return UserResource::collection($users);
+    }
+
+    public function userMatchRated() {
+        $ratingsAsUser1 = MatchLog::where('user_1', auth()->user()->id)->get();
+        $ratingsAsUser2 = MatchLog::where('user_2', auth()->user()->id)->get();
+
+        $users = [];
+        $uniqueUser = [];
+
+        foreach ($ratingsAsUser1 as $match) {
+            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_2_rating'])) {
+                $users[] = User::where('id', $match['user_2'])->first();
+                $uniqueUser[] = $match['user_2'];
+            }
+        }
+
+        foreach ($ratingsAsUser2 as $match) {
+            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_1_rating'])) {
+                $users[] = User::where('id', $match['user_1'])->first();
+                $uniqueUser[] = $match['user_1'];
+            }
+        }
+
+        return UserResource::collection($users);
     }
 
     public function randomUser($skippedUserId = null) {
