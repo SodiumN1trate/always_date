@@ -75,7 +75,7 @@ class MatchLogController extends Controller
             'user_2' => 'required',
             'user_1_rating' => 'required'
         ]);
-        $validated['user_1'] = 3274;
+        $validated['user_1'] = auth()->user()->id;
 
         $match = MatchLog::where('user_1', $validated['user_1'])
             ->where('user_2', $validated['user_2'])
