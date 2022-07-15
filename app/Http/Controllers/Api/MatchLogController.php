@@ -75,7 +75,7 @@ class MatchLogController extends Controller
             'user_2' => 'required',
             'user_1_rating' => 'required'
         ]);
-        $validated['user_1'] = auth()->user()->id;
+        $validated['user_1'] = 1005;
 
         $match = MatchLog::where('user_1', $validated['user_1'])
             ->where('user_2', $validated['user_2'])
@@ -181,10 +181,25 @@ class MatchLogController extends Controller
         return new MatchLogResource($match);
     }
 
-    public function randomUser($skippedUserId = null){
-        $randomMatchingUser = User::inRandomOrder()->where('id', '!=', $skippedUserId)
-            ->where('id', '!=', auth()->user()->id)->first();
+    public function randomUser($skippedUserId = null) {
+        while(true) {
+            $user = User::inRandomOrder()->where('id', '!=', $skippedUserId)
+                ->where('id', '!=', auth()->user()->id)
+                ->first();
 
-        return new UserResource($randomMatchingUser);
+            $match = MatchLog::where('user_1', $user->id)
+                ->where('user_2', auth()->user()->id)
+                ->orWhere('user_1', auth()->user()->id)
+                ->where('user_2', $user->id)->first();
+
+
+            if (   (isset($match) && ($match->user_1 == auth()->user()->id && $match->user_1_rating == null)
+                 || isset($match) && ($match->user_2 == auth()->user()->id && $match->user_2_rating == null))
+                 || !isset($match)
+            ) {
+                return new UserResource($user);
+            }
+        }
     }
+
 }
