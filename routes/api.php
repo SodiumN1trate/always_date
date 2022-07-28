@@ -28,6 +28,7 @@ Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/me', [UserController::class, 'user']);
+    Route::post('/me', [UserController::class, 'store']);
     Route::put('/me', [UserController::class, 'update']);
 //    Route::get('/users', [UserController::class, 'index']);
     Route::resource('users', UserController::class);

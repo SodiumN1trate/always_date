@@ -10,7 +10,8 @@ use Illuminate\Foundation\Http\FormRequest;
  *      description="",
  *      type="object",
  *      required={
- *          "name",
+ *          "firstname",
+ *          "lastname",
  *          "email",
  *          "provider_id",
  *      }
@@ -30,7 +31,8 @@ class UserRequest extends FormRequest
 
     /**
      * @OA\Property(format="string", description="Lietotāja profila bilde", property="avatar"),
-     * @OA\Property(format="string", description="Lietotāja pilnais vārds un uzvārds", property="name"),
+     * @OA\Property(format="string", description="Lietotāja pilnais vārds", property="firstname"),
+     * @OA\Property(format="string", description="Lietotāja pilnais uzvārds", property="lastname"),
      * @OA\Property(format="string", description="Lietotāja epasts", property="email"),
      * @OA\Property(format="integer", description="", property="provider_id"),
      * @OA\Property(format="integer", description="Lietotāja vecums", property="age"),
@@ -44,10 +46,11 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar' => 'required',
-            'name' => 'required',
-            'email' => 'required|email',
-            'provider_id' => 'required',
+            'avatar' => 'sometimes',
+            'firstname' => '',
+            'lastname' => '',
+            'email' => 'sometimes|email|unique:users',
+            'provider_id' => 'sometimes',
             'age' => '',
             'birthday' => 'required',
             'gender' => 'required',

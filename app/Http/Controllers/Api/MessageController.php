@@ -58,7 +58,7 @@ class MessageController extends Controller
                 ]
             ]);
         } else {
-            event(new MessageEvent(auth()->user()->name, $validated['chat_room_id'], $validated['message']));
+            event(new MessageEvent(auth()->user()->firstname.' '.auth()->user()->lastname, $validated['chat_room_id'], $validated['message']));
 
             $savedMessage = Message::create([
                 'user_id' => auth()->user()->id,
