@@ -41,15 +41,15 @@ class UserRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'avatar' => '',
+            'avatar' => 'required',
             'name' => 'required',
             'email' => 'required|email',
             'provider_id' => 'required',
             'age' => '',
-            'birthday' => '',
-            'gender' => '',
-            'about_me' => '',
-            'language' => '',
+            'birthday' => 'required',
+            'gender' => 'required',
+            'about_me' => 'required',
+            'language' => 'required',
         ];
     }
 

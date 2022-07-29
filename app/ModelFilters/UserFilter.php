@@ -18,6 +18,10 @@ class UserFilter extends ModelFilter
         $this->orderBy($order[0], $order[1]);
     }
 
+    public function withoutUser($id) {
+        return $this->where('id', '!=', $id);
+    }
+
     public function name($name) {
         return $this->whereLike('name', $name);
     }
@@ -43,6 +47,7 @@ class UserFilter extends ModelFilter
     }
 
     public function rating($rating) {
-        return $this->whereBetween('rating', $rating);
+        return $this->where('rating', '>', 0)
+            ->whereBetween('rating', $rating);
     }
 }

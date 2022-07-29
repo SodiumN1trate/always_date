@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
@@ -130,9 +131,19 @@ class UserController extends Controller {
      *      ),
      *)
      */
-    public function update(UserRequest $request) {
+
+    public function update(UserRequest $request)
+    {
+        $today = date_create(date('Y/m/d'));
+        $birthday = date_create($request['birthday']);
+        $age = $today->diff($birthday)->format('%Y');
         auth()->user()->update($request->validated());
+        auth()->user()->update(['age' => $age]);
         return new UserResource(auth()->user());
+    }
+
+    public function register(UserRequest $request) {
+
     }
 
     /**
