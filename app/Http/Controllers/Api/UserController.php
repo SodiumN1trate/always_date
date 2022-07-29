@@ -71,6 +71,7 @@ class UserController extends Controller {
         return UserResource::collection($users);
     }
 
+
     /**
      * @OA\Get(
      *      path="/users/{user}",
@@ -134,16 +135,20 @@ class UserController extends Controller {
 
     public function update(UserRequest $request)
     {
-        $today = date_create(date('Y/m/d'));
-        $birthday = date_create($request['birthday']);
-        $age = $today->diff($birthday)->format('%Y');
-        auth()->user()->update($request->validated());
+        $validated = $request->validated();
+        error_log($request['avatar']);
+        error_log($validated['avatar']);
+        if ($request->file('avatar') !== null) {
+            $file = $request['avatar'];
+            $file->store('public/avatars');
+            $filename = $file->hashName();
+            $validated['avatar'] = $filename;
+        }
+        $age = date_create(date('Y/m/d'))->diff(date_create($validated['birthday']))->format('%Y');
+        auth()->user()->update($validated);
         auth()->user()->update(['age' => $age]);
+        error_log(auth()->user());
         return new UserResource(auth()->user());
-    }
-
-    public function register(UserRequest $request) {
-
     }
 
     /**
