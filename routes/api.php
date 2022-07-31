@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
 
     Route::resource('match', MatchLogController::class);
-    Route::get('/random_user/{user_id?}', [MatchLogController::class, 'randomUser']);
+    Route::get('/random_user', [MatchLogController::class, 'randomUser']);
     Route::get('/rated_match_user', [MatchLogController::class, 'ratedMatchUser']);
     Route::get('/user_match_rated', [MatchLogController::class, 'userMatchRated']);
 
