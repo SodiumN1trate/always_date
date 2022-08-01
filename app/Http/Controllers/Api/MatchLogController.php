@@ -9,6 +9,7 @@ use App\Models\MatchLog;
 use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class MatchLogController extends Controller {
     /**
@@ -189,7 +190,7 @@ class MatchLogController extends Controller {
 
         $users = [];
         $uniqueUser = [];
-
+        
         foreach ($ratingsAsUser1 as $match) {
             if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
                 $users[] = User::where('id', $match['user_2'])->first();
@@ -203,7 +204,6 @@ class MatchLogController extends Controller {
                 $uniqueUser[] = $match['user_1'];
             }
         }
-
         return UserResource::collection($users);
     }
 
@@ -230,24 +230,31 @@ class MatchLogController extends Controller {
 
         return UserResource::collection($users);
     }
+    
+    public function randomUser(Request $request) {
+        try {
+            while(true) {
+                $user = User::filter($request->all())->inRandomOrder()
+                    ->where('id', '!=', auth()->user()->id)
+                    ->first();
 
-    public function randomUser($skippedUserId = null) {
-        while(true) {
-            $user = User::inRandomOrder()->where('id', '!=', $skippedUserId)
-                ->where('id', '!=', auth()->user()->id)
-                ->first();
+                $match = MatchLog::where('user_1', $user->id)
+                    ->where('user_2', auth()->user()->id)
+                    ->orWhere('user_1', auth()->user()->id)
+                    ->where('user_2', $user->id)->first();
 
-            $match = MatchLog::where('user_1', $user->id)
-                ->where('user_2', auth()->user()->id)
-                ->orWhere('user_1', auth()->user()->id)
-                ->where('user_2', $user->id)->first();
 
-            if (   (isset($match) && ($match->user_1 == auth()->user()->id && $match->user_1_rating == null)
-                 || isset($match) && ($match->user_2 == auth()->user()->id && $match->user_2_rating == null))
-                 || !isset($match)
-            ) {
-                return new UserResource($user);
+                if (   (isset($match) && ($match->user_1 == auth()->user()->id && $match->user_1_rating == null)
+                        || isset($match) && ($match->user_2 == auth()->user()->id && $match->user_2_rating == null))
+                    || !isset($match)
+                ) {
+                    return new UserResource($user);
+                }
             }
+        } catch (Exception $e) {
+            return response()->json([
+                 'message' => $e,
+                ], 400);
         }
     }
 

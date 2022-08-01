@@ -31,27 +31,31 @@ class UserFilter extends ModelFilter
     }
 
     public function email($email) {
-        return $this->where('email', $email);
+        $this->where('email', $email);
     }
 
     public function age($age) {
-        return $this->whereBetween('age', $age);
+        $this->whereBetween('age', $age);
+    }
+
+    public function readSchoolExp($exp) {
+        $this->whereBetween('read_school_exp', $exp);
     }
 
     public function birthday($birthday) {
-        return $this->where('birthday', $birthday);
+        $this->where('birthday', $birthday);
     }
 
     public function gender($gender) {
-        return $this->where('gender', $gender);
+        $this->where('gender', $gender);
     }
 
     public function language($language) {
-        return $this->whereLike('language', $language);
+        $this->whereLike('language', $language);
     }
 
     public function rating($rating) {
-        return $this->where('rating', '>', 0)
+        $this->where('rating', '>', 0)
             ->whereBetween('rating', $rating);
     }
 }
