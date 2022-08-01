@@ -136,8 +136,7 @@ class UserController extends Controller {
     public function update(UserRequest $request)
     {
         $validated = $request->validated();
-        error_log($request['avatar']);
-        error_log($validated['avatar']);
+        error_log($request['birthday']);
         if ($request->file('avatar') !== null) {
             $file = $request['avatar'];
             $file->store('public/avatars');
