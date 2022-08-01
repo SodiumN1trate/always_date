@@ -11,8 +11,7 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 
-class MatchLogController extends Controller
-{
+class MatchLogController extends Controller {
     /**
      * @OA\Get(
      *      path="/match",
@@ -32,8 +31,7 @@ class MatchLogController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return MatchLogResource::collection(MatchLog::all());
     }
 
@@ -149,8 +147,7 @@ class MatchLogController extends Controller
      *      ),
      * )
      */
-    public function show(MatchLog $match)
-    {
+    public function show(MatchLog $match) {
         return new MatchLogResource($match);
     }
 
@@ -182,8 +179,7 @@ class MatchLogController extends Controller
      *      ),
      * )
      */
-    public function destroy(MatchLog $match)
-    {
+    public function destroy(MatchLog $match) {
         $match->delete();
         return new MatchLogResource($match);
     }
@@ -194,7 +190,7 @@ class MatchLogController extends Controller
 
         $users = [];
         $uniqueUser = [];
-
+        
         foreach ($ratingsAsUser1 as $match) {
             if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
                 $users[] = User::where('id', $match['user_2'])->first();
@@ -208,7 +204,6 @@ class MatchLogController extends Controller
                 $uniqueUser[] = $match['user_1'];
             }
         }
-
         return UserResource::collection($users);
     }
 
@@ -235,7 +230,7 @@ class MatchLogController extends Controller
 
         return UserResource::collection($users);
     }
-
+    
     public function randomUser(Request $request) {
         try {
             while(true) {

@@ -8,8 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 
-class AuthController extends Controller
-{
+class AuthController extends Controller {
     public function redirectToProvider()
     {
         $url = Socialite::driver('facebook')->stateless()->redirect()->getTargetUrl();
@@ -21,15 +20,17 @@ class AuthController extends Controller
         ]);
     }
 
-    public function handleProviderCallback()
-    {
+    public function handleProviderCallback() {
         $driverUser = Socialite::driver('facebook')->stateless()->user();
         $user = User::whereEmail($driverUser->email)->first();
-
+        $firstname = explode(' ', $driverUser->name);
+        $lastname = array_pop($firstname);
+        $firstname = implode(" ", $firstname);
         if(!$user) {
             $user = User::create([
-                'avatar' => $driverUser->avatar."&access_token={$driverUser->token}",
-                'name' => $driverUser->name,
+                'avatar' => $driverUser->avatar.'&access_token='.$driverUser->token,
+                'firstname' => $firstname,
+                'lastname' => $lastname,
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
             ]);
@@ -71,4 +72,5 @@ class AuthController extends Controller
            ]
         ]);
     }
+
 }

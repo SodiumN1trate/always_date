@@ -19,11 +19,15 @@ class UserFilter extends ModelFilter
     }
 
     public function withoutUser($id) {
-        $this->where('id', '!=', $id);
+        return $this->where('id', '!=', $id);
     }
 
-    public function name($name) {
-        $this->whereLike('name', $name);
+    public function firstname($firstname) {
+        return $this->whereLike('firstname', $firstname);
+    }
+
+    public function lastname($lastname) {
+        return $this->whereLike('lastname', $lastname);
     }
 
     public function email($email) {

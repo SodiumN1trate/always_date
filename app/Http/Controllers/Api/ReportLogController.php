@@ -7,8 +7,7 @@ use App\Http\Resources\ReportLogResource;
 use App\Models\ReportLog;
 use Illuminate\Http\Request;
 
-class ReportLogController extends Controller
-{
+class ReportLogController extends Controller {
     /**
      * @OA\Get(
      *      path="/report_log",
@@ -28,8 +27,7 @@ class ReportLogController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return ReportLogResource::collection(ReportLog::all());
     }
 
@@ -71,8 +69,7 @@ class ReportLogController extends Controller
      *      )
      *)
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $reportLog = $request->validate([
             'profile_id' => 'required',
             'report_type' => 'required',
@@ -128,8 +125,7 @@ class ReportLogController extends Controller
      *      ),
      * )
      */
-    public function show(ReportLog $reportLog)
-    {
+    public function show(ReportLog $reportLog) {
         return new ReportLogResource($reportLog);
     }
 
@@ -161,9 +157,9 @@ class ReportLogController extends Controller
      *      ),
      * )
      */
-    public function destroy(ReportLog $reportLog)
-    {
+    public function destroy(ReportLog $reportLog) {
         $reportLog->delete();
         return new ReportLogResource($reportLog);
     }
+
 }

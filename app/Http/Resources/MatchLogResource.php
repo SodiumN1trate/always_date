@@ -12,16 +12,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     )
  * )
  */
-class MatchLogResource extends JsonResource
-{
+class MatchLogResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
-    {
+    public function toArray($request) {
         return [
             'id' => $this->id,
             'user_1' => $this->user_1,
@@ -31,4 +29,5 @@ class MatchLogResource extends JsonResource
             'is_match' => $this->is_match,
         ];
     }
+
 }

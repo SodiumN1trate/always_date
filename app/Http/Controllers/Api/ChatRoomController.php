@@ -8,8 +8,7 @@ use App\Http\Resources\ChatRoomResource;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 
-class ChatRoomController extends Controller
-{
+class ChatRoomController extends Controller {
     /**
      * @OA\Get(
      *      path="/chat_room",
@@ -29,8 +28,7 @@ class ChatRoomController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return ChatRoomResource::collection(ChatRoom::all());
     }
 
@@ -67,8 +65,7 @@ class ChatRoomController extends Controller
      *      )
      *)
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validated = $request->validate([
             'user2_id' => 'required'
         ]);
@@ -122,8 +119,7 @@ class ChatRoomController extends Controller
      *      ),
      * )
      */
-    public function show(ChatRoom $chatRoom)
-    {
+    public function show(ChatRoom $chatRoom) {
         return new ChatRoomResource($chatRoom);
     }
 
@@ -165,8 +161,7 @@ class ChatRoomController extends Controller
      *      ),
      *)
      */
-    public function update(Request $request, ChatRoom $chatRoom)
-    {
+    public function update(Request $request, ChatRoom $chatRoom) {
         $chatRoom->update($request->validate([
             'user1_id' => '',
             'user2_id' => '',
@@ -203,9 +198,9 @@ class ChatRoomController extends Controller
      *      ),
      * )
      */
-    public function destroy(ChatRoom $chatRoom)
-    {
+    public function destroy(ChatRoom $chatRoom) {
         $chatRoom->delete();
         return new ChatRoomResource($chatRoom);
     }
+
 }

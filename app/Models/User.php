@@ -10,8 +10,7 @@ use Laravel\Passport\HasApiTokens;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable, Filterable;
 
     /**
@@ -21,7 +20,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'avatar',
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'age',
         'birthday',
@@ -53,13 +53,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function ratings()
-    {
+    public function ratings() {
         return $this->hasMany(RatingLog::class);
     }
 
-    public function modelFilter()
-    {
+    public function modelFilter() {
         return $this->provideFilter(\App\ModelFilters\UserFilter::class);
     }
 }

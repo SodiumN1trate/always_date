@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     /**
      * @OA\Get(
      *      path="/me",
@@ -30,8 +30,7 @@ class UserController extends Controller
      *      )
      *)
      */
-    public function user()
-    {
+    public function user() {
         return new UserResource(auth()->user());
     }
 
@@ -67,11 +66,11 @@ class UserController extends Controller
      *      ),
      *)
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $users = User::filter($request->all())->paginate(10);
         return UserResource::collection($users);
     }
+
 
     /**
      * @OA\Get(
@@ -101,7 +100,7 @@ class UserController extends Controller
      *      ),
      *)
      */
-    public function show(User $user){
+    public function show(User $user) {
         return new UserResource($user);
     }
 
@@ -133,9 +132,21 @@ class UserController extends Controller
      *      ),
      *)
      */
+
     public function update(UserRequest $request)
     {
-        auth()->user()->update($request->validated());
+        $validated = $request->validated();
+        error_log($request['birthday']);
+        if ($request->file('avatar') !== null) {
+            $file = $request['avatar'];
+            $file->store('public/avatars');
+            $filename = $file->hashName();
+            $validated['avatar'] = $filename;
+        }
+        $age = date_create(date('Y/m/d'))->diff(date_create($validated['birthday']))->format('%Y');
+        auth()->user()->update($validated);
+        auth()->user()->update(['age' => $age]);
+        error_log(auth()->user());
         return new UserResource(auth()->user());
     }
 
@@ -172,8 +183,7 @@ class UserController extends Controller
      *      )
      *)
      */
-    public function rate(Request $request)
-    {
+    public function rate(Request $request) {
         $validated = $request->validate([
             'user_id' => 'required',
             'rating' => 'required',
@@ -273,4 +283,5 @@ class UserController extends Controller
         }
         return UserResource::collection($users);
     }
+
 }

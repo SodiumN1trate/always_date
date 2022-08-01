@@ -16,15 +16,13 @@ use Illuminate\Foundation\Http\FormRequest;
  *      }
  * )
  */
-class LifeSchoolCommentRequest extends FormRequest
-{
+class LifeSchoolCommentRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -35,8 +33,7 @@ class LifeSchoolCommentRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'owner_id' => 'required',
             'description' => 'required',
@@ -45,4 +42,5 @@ class LifeSchoolCommentRequest extends FormRequest
             'dislikes' => '',
         ];
     }
+
 }

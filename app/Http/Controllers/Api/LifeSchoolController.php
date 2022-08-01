@@ -8,8 +8,7 @@ use App\Http\Resources\LifeSchoolResource;
 use App\Models\LifeSchool;
 use Illuminate\Http\Request;
 
-class LifeSchoolController extends Controller
-{
+class LifeSchoolController extends Controller {
     /**
      * @OA\Get(
      *      path="/life_school",
@@ -29,8 +28,7 @@ class LifeSchoolController extends Controller
      *      )
      *)
      */
-    public function index()
-    {
+    public function index() {
         return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)->get());
     }
     /**
@@ -61,8 +59,7 @@ class LifeSchoolController extends Controller
      *      )
      *)
      */
-    public function store(LifeSchoolRequest $request)
-    {
+    public function store(LifeSchoolRequest $request) {
         if ($request['gender'] <= -1 || $request['gender'] >= 2) {
             return response()->json([
                 'error' => [
@@ -102,8 +99,7 @@ class LifeSchoolController extends Controller
      *      ),
      * )
      */
-    public function show(LifeSchool $lifeSchool)
-    {
+    public function show(LifeSchool $lifeSchool) {
         if ($lifeSchool['gender'] != auth()->user()->gender) {
             return response()->json([
                'error' => [
@@ -152,8 +148,7 @@ class LifeSchoolController extends Controller
      *      ),
      *)
      */
-    public function update(LifeSchoolRequest $request, LifeSchool $lifeSchool)
-    {
+    public function update(LifeSchoolRequest $request, LifeSchool $lifeSchool) {
         $lifeSchool->update($request->validated());
         return new LifeSchoolResource($lifeSchool);
     }
@@ -186,9 +181,9 @@ class LifeSchoolController extends Controller
      *      ),
      * )
      */
-    public function destroy(LifeSchool $lifeSchool)
-    {
+    public function destroy(LifeSchool $lifeSchool) {
         $lifeSchool->delete();
         return new LifeSchoolResource($lifeSchool);
     }
+
 }

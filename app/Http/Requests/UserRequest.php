@@ -10,27 +10,27 @@ use Illuminate\Foundation\Http\FormRequest;
  *      description="",
  *      type="object",
  *      required={
- *          "name",
+ *          "firstname",
+ *          "lastname",
  *          "email",
  *          "provider_id",
  *      }
  * )
  */
-class UserRequest extends FormRequest
-{
+class UserRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
     /**
      * @OA\Property(format="string", description="Lietotāja profila bilde", property="avatar"),
-     * @OA\Property(format="string", description="Lietotāja pilnais vārds un uzvārds", property="name"),
+     * @OA\Property(format="string", description="Lietotāja pilnais vārds", property="firstname"),
+     * @OA\Property(format="string", description="Lietotāja pilnais uzvārds", property="lastname"),
      * @OA\Property(format="string", description="Lietotāja epasts", property="email"),
      * @OA\Property(format="integer", description="", property="provider_id"),
      * @OA\Property(format="integer", description="Lietotāja vecums", property="age"),
@@ -41,18 +41,19 @@ class UserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'avatar' => '',
-            'name' => 'required',
-            'email' => 'required|email',
-            'provider_id' => 'required',
+            'avatar' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'sometimes|email|unique:users',
+            'provider_id' => 'sometimes',
             'age' => '',
-            'birthday' => '',
-            'gender' => '',
-            'about_me' => '',
-            'language' => '',
+            'birthday' => 'required|date|before:-18 years|after:-100 years',
+            'gender' => 'required',
+            'about_me' => 'required|max:1024',
+            'language' => 'required',
         ];
     }
+
 }
