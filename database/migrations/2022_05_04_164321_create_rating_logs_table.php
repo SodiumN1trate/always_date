@@ -17,7 +17,6 @@ class CreateRatingLogsTable extends Migration {
             $table->foreignId('rater_id')->constrained('users')->onDelete('cascade');
             $table->integer('rating');
             $table->timestamps();
-            // $table->foreign('rater_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
