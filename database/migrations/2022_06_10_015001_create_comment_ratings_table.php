@@ -14,7 +14,7 @@ class CreateCommentRatingsTable extends Migration {
         Schema::create('comment_ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('life_school_comment_id')->constrained('life_school_comments');
-            $table->integer('rater_id');
+            $table->foreignId('rater_id')->constrained('users');
             $table->tinyInteger('rating')->nullable();
             $table->timestamps();
         });

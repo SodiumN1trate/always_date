@@ -13,8 +13,8 @@ class CreateChatRoomsTable extends Migration {
     public function up() {
         Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id();
-            $table->integer('user1_id');
-            $table->integer('user2_id');
+            $table->foreignId('user1_id')->constrained('users');
+            $table->foreignId('user2_id')->constrained('users');
             $table->timestamps();
         });
     }
