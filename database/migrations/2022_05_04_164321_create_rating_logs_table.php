@@ -14,7 +14,7 @@ class CreateRatingLogsTable extends Migration {
         Schema::create('rating_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('rater_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('rater_id')->constrained('users');
             $table->integer('rating');
             $table->timestamps();
         });
