@@ -13,8 +13,8 @@ class CreateReportLogsTable extends Migration {
     public function up() {
         Schema::create('report_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('reporter_id');
-            $table->integer('profile_id');
+            $table->foreignId('reporter_id')->constrained('users');
+            $table->foreignId('profile_id')->constrained('users');
             $table->foreignId('report_type')->constrained('report_types');
             $table->timestamps();
         });
