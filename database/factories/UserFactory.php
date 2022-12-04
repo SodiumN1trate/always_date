@@ -16,7 +16,8 @@ class UserFactory extends Factory {
     {
         return [
             'avatar' => 'https://thispersondoesnotexist.com/image',
-            'name' => $this->faker->name(),
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'gender' => $this->faker->numberBetween($min = 0, $max = 1),
             'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),

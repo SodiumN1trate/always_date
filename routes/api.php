@@ -7,10 +7,12 @@ use App\Http\Controllers\Api\LifeSchoolController;
 use App\Http\Controllers\Api\MatchLogController;
 use App\Http\Controllers\Api\ReportLogController;
 use App\Http\Controllers\Api\ReportTypeController;
+use GrahamCampbell\Throttle\Http\Middleware\ThrottleMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,6 +40,9 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('life_school', LifeSchoolController::class);
     Route::resource('life_school_comment', LifeSchoolCommentController::class);
     Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
+    Route::group(['middleware' => ['throttle:20,1']], function () {
+        Route::resource('match', MatchLogController::class);
+    });
 
     Route::resource('match', MatchLogController::class);
     Route::get('/random_user', [MatchLogController::class, 'randomUser']);

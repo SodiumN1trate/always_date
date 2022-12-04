@@ -76,10 +76,6 @@ class MatchLogController extends Controller {
         ]);
         $validated['user_1'] = auth()->user()->id;
 
-        $match = MatchLog::where('user_1', $validated['user_1'])
-            ->where('user_2', $validated['user_2'])
-            ->orWhere('user_1', $validated['user_2'])
-            ->where('user_2', $validated['user_1'])->first();
 
         if ($validated['user_2'] == $validated['user_1']) {
             return response()->json([
@@ -93,7 +89,14 @@ class MatchLogController extends Controller {
                     'data' => 'Novērtēts ar nezināmu vērtējumu.'
                 ]
             ], 400);
-        } elseif ($match) {
+        }
+
+        $match = MatchLog::where('user_1', $validated['user_1'])
+            ->where('user_2', $validated['user_2'])
+            ->orWhere('user_1', $validated['user_2'])
+            ->where('user_2', $validated['user_1'])->first();
+
+        if ($match) {
             if ($validated['user_1'] == $match['user_1']) {
                 $match->update([
                     'user_1' => $validated['user_1'],
@@ -190,7 +193,7 @@ class MatchLogController extends Controller {
 
         $users = [];
         $uniqueUser = [];
-        
+
         foreach ($ratingsAsUser1 as $match) {
             if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
                 $users[] = User::where('id', $match['user_2'])->first();
@@ -230,7 +233,7 @@ class MatchLogController extends Controller {
 
         return UserResource::collection($users);
     }
-    
+
     public function randomUser(Request $request) {
         try {
             while(true) {
