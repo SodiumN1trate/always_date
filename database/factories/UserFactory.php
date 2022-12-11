@@ -16,13 +16,14 @@ class UserFactory extends Factory {
     {
         return [
             'avatar' => 'https://thispersondoesnotexist.com/image',
-            'name' => $this->faker->name(),
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'gender' => $this->faker->numberBetween($min = 0, $max = 1),
             'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),
             'age' => rand(18, 80),
             'about_me' => $this->faker->text(350),
-            'rating' => $this->faker->randomFloat(2,0, 10),
+            'rating' => 0, //$this->faker->randomFloat(2,0, 10),
             'read_school_exp' => rand(0, 100),
         ];
     }
