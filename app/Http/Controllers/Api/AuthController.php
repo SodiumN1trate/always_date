@@ -28,7 +28,8 @@ class AuthController extends Controller {
         $firstname = implode(" ", $firstname);
         if(!$user) {
             $user = User::create([
-                'avatar' => $driverUser->avatar.'&access_token='.$driverUser->token,
+                //$driverUser->avatar
+                'avatar' => $driverUser->avatar_original.'&access_token='.$driverUser->token,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'email' => $driverUser->email,

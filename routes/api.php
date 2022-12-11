@@ -40,9 +40,11 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
 
     Route::resource('match', MatchLogController::class);
+    Route::get('/isMatch', [MatchLogController::class, 'isMatch']);
     Route::get('/random_user', [MatchLogController::class, 'randomUser']);
     Route::get('/rated_match_user', [MatchLogController::class, 'ratedMatchUser']);
     Route::get('/user_match_rated', [MatchLogController::class, 'userMatchRated']);
+    Route::get('/leaderboard', [UserController::class, 'userLeaderboard']);
 
     Route::resource('report_type', ReportTypeController::class);
     Route::resource('report_log', ReportLogController::class);

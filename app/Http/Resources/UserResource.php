@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\LifeSchool;
+use App\Models\RatingLog;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @OA\Schema(
@@ -37,6 +38,7 @@ class UserResource extends JsonResource {
             'language' => $this->language,
             'read_school_exp' => $this->read_school_exp.'/'.LifeSchool::where('gender', $this->gender)->count(),
             'is_vip' => $this->is_vip,
+            'rate_count' => $this->rate_count,
         ];
     }
 

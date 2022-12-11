@@ -184,22 +184,44 @@ class MatchLogController extends Controller {
         return new MatchLogResource($match);
     }
 
+    public function isMatch() {
+        $matchedUsers = MatchLog::where('user_1', auth()->user()->id)
+            ->where('is_match', true)
+            ->orWhere('user_2', auth()->user()->id)
+            ->where('is_match', true)
+            ->get()
+            ->map(function ($match) {
+                if ($match['user_1'] === auth()->user()->id ) {
+                    return User::find($match['user_2']);
+                } else {
+                    return User::find($match['user_1']);
+                }
+            });
+        return UserResource::collection($matchedUsers);
+    }
+
     public function ratedMatchUser() {
         $ratingsAsUser1 = MatchLog::where('user_1', auth()->user()->id)->get();
         $ratingsAsUser2 = MatchLog::where('user_2', auth()->user()->id)->get();
 
         $users = [];
         $uniqueUser = [];
-        
+
         foreach ($ratingsAsUser1 as $match) {
-            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
+            if (!in_array($match['user_2'], $uniqueUser)
+                && isset($match['user_1_rating'])
+                && $match['user_1_rating'] === true
+            ) {
                 $users[] = User::where('id', $match['user_2'])->first();
                 $uniqueUser[] = $match['user_2'];
             }
         }
 
         foreach ($ratingsAsUser2 as $match) {
-            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_2_rating'])) {
+            if (!in_array($match['user_1'], $uniqueUser)
+                && isset($match['user_2_rating'])
+                && $match['user_2_rating'] === true
+            ) {
                 $users[] = User::where('id', $match['user_1'])->first();
                 $uniqueUser[] = $match['user_1'];
             }
@@ -215,14 +237,20 @@ class MatchLogController extends Controller {
         $uniqueUser = [];
 
         foreach ($ratingsAsUser1 as $match) {
-            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_2_rating'])) {
+            if (!in_array($match['user_2'], $uniqueUser)
+                && isset($match['user_2_rating'])
+                && $match['user_2_rating'] === true
+                ) {
                 $users[] = User::where('id', $match['user_2'])->first();
                 $uniqueUser[] = $match['user_2'];
             }
         }
 
         foreach ($ratingsAsUser2 as $match) {
-            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_1_rating'])) {
+            if (!in_array($match['user_1'], $uniqueUser)
+                && isset($match['user_1_rating'])
+                && $match['user_1_rating'] === true
+            ) {
                 $users[] = User::where('id', $match['user_1'])->first();
                 $uniqueUser[] = $match['user_1'];
             }
@@ -230,7 +258,7 @@ class MatchLogController extends Controller {
 
         return UserResource::collection($users);
     }
-    
+
     public function randomUser(Request $request) {
         try {
             while(true) {
