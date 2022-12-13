@@ -55,7 +55,6 @@ class UserFilter extends ModelFilter
     }
 
     public function rating($rating) {
-        $this->where('rating', '>', 0)
-            ->whereBetween('rating', $rating);
+        $this->whereBetween('rating', $rating);
     }
 }

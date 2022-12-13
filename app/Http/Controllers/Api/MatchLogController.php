@@ -239,7 +239,8 @@ class MatchLogController extends Controller {
     public function randomUser(Request $request) {
         try {
             while(true) {
-                $user = User::filter($request->all())->inRandomOrder()
+                $user = User::filter($request->all())
+                    ->inRandomOrder()
                     ->where('id', '!=', auth()->user()->id)
                     ->first();
 
@@ -247,7 +248,6 @@ class MatchLogController extends Controller {
                     ->where('user_2', auth()->user()->id)
                     ->orWhere('user_1', auth()->user()->id)
                     ->where('user_2', $user->id)->first();
-
 
                 if (   (isset($match) && ($match->user_1 == auth()->user()->id && $match->user_1_rating == null)
                         || isset($match) && ($match->user_2 == auth()->user()->id && $match->user_2_rating == null))
