@@ -187,51 +187,53 @@ class MatchLogController extends Controller {
         return new MatchLogResource($match);
     }
 
+    public function isMatch() {
+        $matchedUsers = MatchLog::where('user_1', auth()->user()->id)
+            ->where('is_match', true)
+            ->orWhere('user_2', auth()->user()->id)
+            ->where('is_match', true)
+            ->paginate(20)
+            ->through(function ($match) {
+                if ($match['user_1'] === auth()->user()->id ) {
+                    return User::find($match['user_2']);
+                } else {
+                    return User::find($match['user_1']);
+                }
+            });
+        return UserResource::collection($matchedUsers);
+    }
+    // Atgriež lietotājus kam autorizētais lietotājs uzlicis sirsniņu
     public function ratedMatchUser() {
-        $ratingsAsUser1 = MatchLog::where('user_1', auth()->user()->id)->get();
-        $ratingsAsUser2 = MatchLog::where('user_2', auth()->user()->id)->get();
-
-        $users = [];
-        $uniqueUser = [];
-
-        foreach ($ratingsAsUser1 as $match) {
-            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_1_rating'])) {
-                $users[] = User::where('id', $match['user_2'])->first();
-                $uniqueUser[] = $match['user_2'];
-            }
-        }
-
-        foreach ($ratingsAsUser2 as $match) {
-            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_2_rating'])) {
-                $users[] = User::where('id', $match['user_1'])->first();
-                $uniqueUser[] = $match['user_1'];
-            }
-        }
-        return UserResource::collection($users);
+        $users = MatchLog::where('user_1', auth()->user()->id)
+            ->where('user_1_rating', true)
+            ->orWhere('user_2', auth()->user()->id)
+            ->where('user_2_rating', true)
+            ->get()
+            ->map(function ($match) {
+                if ($match['user_1'] === auth()->user()->id) {
+                    return User::find($match['user_2']);
+                } elseif ($match['user_2'] === auth()->user()->id) {
+                    return User::find($match['user_1']);
+                }
+            });
+        return UserResource::collection($users)->paginate(20);
     }
 
+    // Atgriež lietotājus kas autorizētajam lietotājam uzlikuši sirsniņu
     public function userMatchRated() {
-        $ratingsAsUser1 = MatchLog::where('user_1', auth()->user()->id)->get();
-        $ratingsAsUser2 = MatchLog::where('user_2', auth()->user()->id)->get();
-
-        $users = [];
-        $uniqueUser = [];
-
-        foreach ($ratingsAsUser1 as $match) {
-            if (!in_array($match['user_2'], $uniqueUser) && isset($match['user_2_rating'])) {
-                $users[] = User::where('id', $match['user_2'])->first();
-                $uniqueUser[] = $match['user_2'];
-            }
-        }
-
-        foreach ($ratingsAsUser2 as $match) {
-            if (!in_array($match['user_1'], $uniqueUser) && isset($match['user_1_rating'])) {
-                $users[] = User::where('id', $match['user_1'])->first();
-                $uniqueUser[] = $match['user_1'];
-            }
-        }
-
-        return UserResource::collection($users);
+        $users = MatchLog::where('user_1', auth()->user()->id)
+            ->where('user_2_rating', true)
+            ->orWhere('user_2', auth()->user()->id)
+            ->where('user_1_rating', true)
+            ->get()
+            ->map(function ($match) {
+                if ($match['user_1'] === auth()->user()->id) {
+                    return User::find($match['user_2']);
+                } elseif ($match['user_2'] === auth()->user()->id) {
+                    return User::find($match['user_1']);
+                }
+            });
+        return UserResource::collection($users)->paginate(20);
     }
 
     public function randomUser(Request $request) {
