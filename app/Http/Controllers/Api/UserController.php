@@ -213,7 +213,10 @@ class UserController extends Controller {
             foreach ($userRates as $value) {
                 $ratingSum += $value['rating'];
             }
-            $user->update(['rating' => round($ratingSum / count($userRates), 2)]);
+
+            $user->rating = round($ratingSum / count($userRates), 2);
+            $user->rate_count = RatingLog::where('user_id', $user->id)->count();
+            $user->save();
             return new UserResource($user);
         }
     }
@@ -282,6 +285,14 @@ class UserController extends Controller {
             }
         }
         return UserResource::collection($users);
+    }
+
+    public function userLeaderboard() {
+        $sortedUsers = User::where('rating', '>', 0)
+            ->orderBy('rating', 'desc')
+            ->orderBy('rate_count', 'desc')
+            ->paginate(20);
+        return UserResource::collection($sortedUsers);
     }
 
 }

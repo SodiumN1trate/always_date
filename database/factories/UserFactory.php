@@ -23,7 +23,7 @@ class UserFactory extends Factory {
             'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),
             'age' => rand(18, 80),
             'about_me' => $this->faker->text(350),
-            'rating' => $this->faker->randomFloat(2,0, 10),
+            'rating' => 0, //$this->faker->randomFloat(2,0, 10),
             'read_school_exp' => rand(0, 100),
         ];
     }

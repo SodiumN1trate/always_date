@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder {
             'rater_id' => 2,
             'rating' => 5,
         ]);
-
         LifeSchool::factory()->times(100)->create();
     }
 }

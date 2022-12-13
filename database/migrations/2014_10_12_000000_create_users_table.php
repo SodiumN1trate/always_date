@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration {
             $table->unsignedBigInteger('provider_id')->unique();
             $table->integer('read_school_exp')->default(0);
             $table->boolean('is_vip')->default(0);
+            $table->integer('rate_count')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

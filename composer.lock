@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fee0087836636ac3b798032b2bfd47c7",
+    "content-hash": "79d649cd92bc710e9da96931ef1551ba",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4423,48 +4423,46 @@
             "time": "2022-03-27T21:42:02+00:00"
         },
         {
-            "name": "spatie/laravel-honeypot",
-            "version": "4.3.1",
+            "name": "spatie/laravel-collection-macros",
+            "version": "7.12.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spatie/laravel-honeypot.git",
-                "reference": "8879f1952c1d8a733f9b9eab439340597bcfb1ac"
+                "url": "https://github.com/spatie/laravel-collection-macros.git",
+                "reference": "d34bffff58d75eb39c0b61688756f5e36721e1fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-honeypot/zipball/8879f1952c1d8a733f9b9eab439340597bcfb1ac",
-                "reference": "8879f1952c1d8a733f9b9eab439340597bcfb1ac",
+                "url": "https://api.github.com/repos/spatie/laravel-collection-macros/zipball/d34bffff58d75eb39c0b61688756f5e36721e1fe",
+                "reference": "d34bffff58d75eb39c0b61688756f5e36721e1fe",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.0|^9.0",
-                "illuminate/encryption": "^8.0|^9.0",
-                "illuminate/http": "^8.0|^9.0",
-                "illuminate/support": "^8.0|^9.0",
-                "illuminate/validation": "^8.0|^9.0",
-                "nesbot/carbon": "^2.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.9",
-                "symfony/http-foundation": "^5.1.2|^6.0"
+                "illuminate/support": "^8.71|^9.0",
+                "php": "^8.0"
             },
             "require-dev": {
-                "livewire/livewire": "^2.10",
+                "amphp/parallel": "^1.4.1",
+                "amphp/parallel-functions": "^1.1.0",
+                "mockery/mockery": "^1.4.2",
                 "orchestra/testbench": "^6.23|^7.0",
-                "phpunit/phpunit": "^9.4",
-                "spatie/phpunit-snapshot-assertions": "^4.2",
-                "spatie/test-time": "^1.2.1"
+                "phpunit/phpunit": "^9.4.4",
+                "spatie/laravel-ray": "^1.29",
+                "symfony/stopwatch": "^5.2|^6.0"
+            },
+            "suggest": {
+                "amphp/parallel-functions": "Required when using the parallel*-macros."
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Spatie\\Honeypot\\HoneypotServiceProvider"
+                        "Spatie\\CollectionMacros\\CollectionMacroServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Spatie\\Honeypot\\": "src"
+                    "Spatie\\CollectionMacros\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4475,77 +4473,24 @@
                 {
                     "name": "Freek Van der Herten",
                     "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
+                    "homepage": "https://github.com/freekmurze",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://github.com/sebastiandedeyne",
                     "role": "Developer"
                 }
             ],
-            "description": "Preventing spam submitted through forms",
-            "homepage": "https://github.com/spatie/laravel-honeypot",
+            "description": "A set of useful Laravel collection macros",
+            "homepage": "https://github.com/spatie/laravel-collection-macros",
             "keywords": [
-                "laravel-honeypot",
+                "laravel-collection-macros",
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-honeypot/tree/4.3.1"
-            },
-            "funding": [
-                {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
-                }
-            ],
-            "time": "2022-08-03T22:31:36+00:00"
-        },
-        {
-            "name": "spatie/laravel-package-tools",
-            "version": "1.12.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/09f80fa240d44fafb1c70657c74ee44ffa929357",
-                "reference": "09f80fa240d44fafb1c70657c74ee44ffa929357",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^7.0|^8.0|^9.0",
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^5.0|^6.23|^7.0",
-                "phpunit/phpunit": "^9.4",
-                "spatie/test-time": "^1.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\LaravelPackageTools\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Tools for creating Laravel packages",
-            "homepage": "https://github.com/spatie/laravel-package-tools",
-            "keywords": [
-                "laravel-package-tools",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.12.1"
+                "source": "https://github.com/spatie/laravel-collection-macros/tree/7.12.2"
             },
             "funding": [
                 {
@@ -4553,7 +4498,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-28T14:29:26+00:00"
+            "time": "2022-11-10T16:04:38+00:00"
         },
         {
             "name": "stella-maris/clock",
