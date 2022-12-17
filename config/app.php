@@ -161,7 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        GrahamCampbell\Throttle\ThrottleServiceProvider::class,
         /*
          * Package Service Providers...
          */

@@ -77,13 +77,13 @@ class ChatRoomController extends Controller {
         if ($validated['user1_id'] == $validated['user2_id']) {
             return response()->json([
                 'error' => [
-                    'data' => 'Nevar izveidot saraksti ja user1_id un user2_id ir vienādi.',
+                    'data' => 'Nevar izveidot saraksti pats ar sevi',
                 ]
             ], 400);
         } elseif ($chatRoom) {
             return response()->json([
                 'error' => [
-                    'data' => 'Chat room jau pastāv starp šiem diviem lietotājiem.',
+                    'data' => 'Sarakste jau pastāv starp šiem diviem lietotājiem.',
                 ]
             ]);
         }
