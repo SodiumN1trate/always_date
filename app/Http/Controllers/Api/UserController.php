@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Rules\IsAdult;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Validation\Validator;
 
 class UserController extends Controller {
     /**
@@ -138,7 +140,11 @@ class UserController extends Controller {
         $validated = $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
-            'birthday' => 'required|date|before:-18 years|after:-100 years',
+            'birthday' => [
+                'required',
+                'date',
+                new IsAdult(),
+            ],
             'language' => 'required',
             'gender' => 'required',
             'about_me' => '',
