@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.13",
         "darkaonline/l5-swagger": "^8.3",
         "fruitcake/laravel-cors": "^2.0",
         "graham-campbell/throttle": "^9.0",
@@ -15,7 +16,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
-        "pusher/pusher-php-server": "^7.0",
+        "pusher/pusher-php-server": "~7.1",
         "spatie/laravel-collection-macros": "^7.12",
         "tucker-eric/eloquentfilter": "^3.1"
     },

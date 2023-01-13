@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @OA\Schema(
@@ -21,9 +22,11 @@ class MessageResource extends JsonResource {
      */
     public function toArray($request) {
         return [
-            'name' => $this->user()->first()->name,
+            'user' => $this->user->id,
             'chat_room_id' => $this->chat_room_id,
             'message' => $this->message,
+            'date' => Carbon::parse($this->created_at)->format('Y-m-d'),
+            'time' => Carbon::parse($this->created_at)->format('H:m'),
         ];
     }
 

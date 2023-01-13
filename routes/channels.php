@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('channel.{chat_room_id}', function ($chat_room_id) {
+    error_log($chat_room_id);
+    return auth()->user();
 });

@@ -56,5 +56,5 @@ Route::group(['middleware' => ['auth:api']], function() {
 
     Route::resource('chat_room', ChatRoomController::class);
     Route::post('/messages', [MessageController::class, 'message']);
-    Route::post('/chat_room_messages', [MessageController::class, 'chatRoomMessages']);
+    Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);
 });
