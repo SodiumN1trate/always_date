@@ -28,6 +28,6 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('channel.'.$this->chat_room_id);
+        return new PrivateChannel('chat.3');
     }
 }

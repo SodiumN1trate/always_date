@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('channel.{chat_room_id}', function ($chat_room_id) {
-    error_log($chat_room_id);
-    return auth()->user();
+Broadcast::channel('chat.{id}', function ($user, $id) {
+    return true;
+//    return auth()->user();
 });
