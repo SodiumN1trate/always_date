@@ -15,23 +15,17 @@ class MessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $name;
+    public $messageId;
     public $chat_room_id;
-    public $message;
 
-    public function __construct($name, $chat_room_id, $message)
+    public function __construct($messageId, $chat_room_id)
     {
-        $this->name = $name;
+        $this->messageId = $messageId;
         $this->chat_room_id = $chat_room_id;
-        $this->message = $message;
     }
 
     public function broadcastOn()
     {
-        return [$this->chat_room_id];
-    }
-
-    public function broadcastAs() {
-        return 'message';
+        return new PrivateChannel('chat.'.$this->chat_room_id);
     }
 }

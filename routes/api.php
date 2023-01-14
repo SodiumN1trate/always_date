@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('report_log', ReportLogController::class);
 
     Route::resource('chat_room', ChatRoomController::class);
-    Route::post('/messages', [MessageController::class, 'message']);
-    Route::post('/chat_room_messages', [MessageController::class, 'chatRoomMessages']);
+    Route::post('/message', [MessageController::class, 'message']);
+    Route::get('/get_message/{message}', [MessageController::class, 'getMessage']);
+    Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);
+    Route::get('/get_users_chats', [ChatRoomController::class, 'userChats']);
 });

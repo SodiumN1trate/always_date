@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Rules\IsAdult;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Validation\Validator;
 
 class UserController extends Controller {
     /**
@@ -133,9 +135,20 @@ class UserController extends Controller {
      *)
      */
 
-    public function update(UserRequest $request)
+    public function update(request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'birthday' => [
+                'required',
+                'date',
+                new IsAdult(),
+            ],
+            'language' => 'required',
+            'gender' => 'required',
+            'about_me' => '',
+        ]);
         error_log($request['birthday']);
         if ($request->file('avatar') !== null) {
             $file = $request['avatar'];
@@ -143,9 +156,13 @@ class UserController extends Controller {
             $filename = $file->hashName();
             $validated['avatar'] = $filename;
         }
-        $age = date_create(date('Y/m/d'))->diff(date_create($validated['birthday']))->format('%Y');
+        if (isset($validated['birthday'])) {
+            $age = date_create(date('Y/m/d'))->diff(date_create($validated['birthday']))->format('%Y');
+            auth()->user()->update(['age' => $age]);
+        }
+
         auth()->user()->update($validated);
-        auth()->user()->update(['age' => $age]);
+
         error_log(auth()->user());
         return new UserResource(auth()->user());
     }

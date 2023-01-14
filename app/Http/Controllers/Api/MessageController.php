@@ -46,30 +46,32 @@ class MessageController extends Controller {
             'message' => 'required',
         ]);
 
-        $chatRoom = ChatRoom::where('id', $validated['chat_room_id'])
-            ->where('user1_id', auth()->user()->id)
-            ->orWhere('user2_id', auth()->user()->id)->first();
+        $chatRoom = ChatRoom::where('id', $validated['chat_room_id'])->first();
 
         if (!$chatRoom) {
             return response()->json([
                 'error' => [
                     'data' => 'Nevar nosūtīt ziņu svešā chat room.',
                 ]
-            ]);
+            ], 400);
         } else {
-            event(new MessageEvent(auth()->user()->firstname.' '.auth()->user()->lastname, $validated['chat_room_id'], $validated['message']));
-
             $savedMessage = Message::create([
                 'user_id' => auth()->user()->id,
                 'chat_room_id' => $validated['chat_room_id'],
-                'message' => $request->input('message'),
+                'message' => $validated['message'],
             ]);
+
+            broadcast(new MessageEvent($savedMessage['id'], $validated['chat_room_id']));
 
             return response()->json([
                 'Success' => 'Ziņa tika nosūtīta.',
                 'message' => new MessageResource($savedMessage),
             ]);
         }
+    }
+
+    public function getMessage (Message $message) {
+        return new MessageResource($message);
     }
 
     /**
@@ -101,17 +103,10 @@ class MessageController extends Controller {
      *      )
      *)
      */
-    public function chatRoomMessages(Request $request) {
-        $validated = $request->validate([
-            'chat_room_id' => 'required',
-        ]);
 
-
-        $chatRoomMessages = Message::where('chat_room_id', $validated['chat_room_id'])
-            ->paginate(($pag = $request->pagination) ? $pag : 10);
-
+    public function chatRoomMessages(ChatRoom $chatRoom) {
+        $chatRoomMessages = Message::where('chat_room_id', $chatRoom->id)->get();
 
         return MessageResource::collection($chatRoomMessages);
     }
-
 }

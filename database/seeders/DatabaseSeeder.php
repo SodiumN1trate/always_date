@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ChatRoom;
 use App\Models\LifeSchool;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -27,6 +28,21 @@ class DatabaseSeeder extends Seeder {
             'rater_id' => 2,
             'rating' => 5,
         ]);
+
+        ChatRoom::create([
+            'user1_id' => 1,
+            'user2_id' => 2,
+        ]);
+        ChatRoom::create([
+            'user1_id' => 3,
+            'user2_id' => 4,
+        ]);
+
         LifeSchool::factory()->times(100)->create();
+
+        ChatRoom::create([
+            'user1_id' => 1002,
+            'user2_id' => 1003,
+        ]);
     }
 }
