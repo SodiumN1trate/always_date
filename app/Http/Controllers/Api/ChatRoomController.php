@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChatRoomRequest;
 use App\Http\Resources\ChatRoomResource;
+use App\Http\Resources\UserResource;
 use App\Models\ChatRoom;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatRoomController extends Controller {
@@ -160,4 +162,22 @@ class ChatRoomController extends Controller {
         return new ChatRoomResource($chatRoom);
     }
 
+    public function userChats() {
+        $usersChat = ChatRoom::where('user1_id', auth()->user()->id)
+            ->orWhere('user2_id', auth()->user()->id)
+            ->get()
+            ->map(function ($chatRoom) {
+                $user = User::find($chatRoom['user1_id'] == auth()->user()->id ? $chatRoom['user2_id'] : $chatRoom['user1_id']);
+                return [
+                    'id' => $user['id'],
+                    'avatar' => $user['avatar'],
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
+                    'chat_room_id' => $chatRoom['id'],
+                ];
+            });
+        return response()->json([
+            'data' => $usersChat,
+        ]);
+    }
 }

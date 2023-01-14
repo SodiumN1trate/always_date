@@ -56,19 +56,23 @@ class MessageController extends Controller {
             ], 400);
         } else {
             // TODO
-            broadcast(new MessageEvent(auth()->user()->id, $validated['chat_room_id'], $validated['message']));
-
             $savedMessage = Message::create([
                 'user_id' => auth()->user()->id,
                 'chat_room_id' => $validated['chat_room_id'],
                 'message' => $validated['message'],
             ]);
 
+            broadcast(new MessageEvent($savedMessage['id'], $validated['chat_room_id']));
+
             return response()->json([
                 'Success' => 'Ziņa tika nosūtīta.',
                 'message' => new MessageResource($savedMessage),
             ]);
         }
+    }
+
+    public function getMessage (Message $message) {
+        return new MessageResource($message);
     }
 
     /**
@@ -106,5 +110,4 @@ class MessageController extends Controller {
 
         return MessageResource::collection($chatRoomMessages);
     }
-
 }
