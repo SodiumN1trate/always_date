@@ -55,7 +55,6 @@ class MessageController extends Controller {
                 ]
             ], 400);
         } else {
-            // TODO
             $savedMessage = Message::create([
                 'user_id' => auth()->user()->id,
                 'chat_room_id' => $validated['chat_room_id'],
@@ -104,7 +103,7 @@ class MessageController extends Controller {
      *      )
      *)
      */
-    // TODO
+
     public function chatRoomMessages(ChatRoom $chatRoom) {
         $chatRoomMessages = Message::where('chat_room_id', $chatRoom->id)->get();
 
