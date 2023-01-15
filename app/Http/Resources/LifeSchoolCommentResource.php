@@ -24,8 +24,7 @@ class LifeSchoolCommentResource extends JsonResource {
             'id' => $this->id,
             'owner_id' => $this->owner_id,
             'description' => $this->description,
-            'likes' => $this->likes,
-            'dislikes' => $this->dislikes,
+            'votes' => $this->votes,
         ];
     }
 
