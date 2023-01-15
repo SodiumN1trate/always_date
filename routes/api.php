@@ -28,6 +28,8 @@ use App\Http\Controllers\Api\UserController;
 Route::get('/authorize', [AuthController::class, 'redirectToProvider']);
 Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 
+Route::get('user/image/{user}', [UserController::class, 'getFile'])->name('user.image');
+
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/me', [UserController::class, 'user']);
     Route::put('/me', [UserController::class, 'update']);

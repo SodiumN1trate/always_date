@@ -29,8 +29,7 @@ class LifeSchoolCommentResource extends JsonResource {
                 'avatar' => $this->user->avatar,
             ],
             'description' => $this->description,
-            'likes' => $this->likes,
-            'dislikes' => $this->dislikes,
+            'votes' => $this->votes,
             'article_id' => $this->article_id,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
         ];

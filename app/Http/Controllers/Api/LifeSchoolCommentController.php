@@ -8,6 +8,7 @@ use App\Http\Requests\LifeSchoolCommentRequest;
 use App\Http\Resources\LifeSchoolCommentResource;
 use App\Models\CommentRating;
 use App\Models\LifeSchoolComment;
+use App\Models\RatingLog;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -217,33 +218,22 @@ class LifeSchoolCommentController extends Controller {
             ->where('rater_id', auth()->user()->id)->first();
 
         if ($ratedComment) {
-            if (!is_bool($rate['rating'])) {
-                return response()->json([
-                    'error' => [
-                        'data' => 'Nevar novērtēt komentāru ar nezinānu vērtējumu.',
-                    ]
-                ], 400);
-            } elseif ($ratedComment->rating === $rate['rating']) {
-                $ratedComment->rating = !$rate['rating'];
-            } else {
-                $ratedComment->rating = $rate['rating'];
-            }
+            $ratedComment->rating = $request['rating'];
             $ratedComment->save();
+        } else {
+            CommentRating::create($rate);
         }
 
         CommentRating::create($rate);
 
         $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
         $LifeSchoolLikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
-            ->where('rating', 1)->get();
+            ->where('rating', 1)->count();
         $LifeSchoolDislikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
-            ->where('rating', 0)->get();
+            ->where('rating', 0)->count();
 
-        $LifeSchoolComment->update([
-            'likes' => count($LifeSchoolLikes),
-            'dislikes' => count($LifeSchoolDislikes),
-        ]);
+        $LifeSchoolComment->votes = $LifeSchoolLikes - $LifeSchoolDislikes;
+        $LifeSchoolComment->save();
         return new LifeSchoolCommentResource($LifeSchoolComment);
     }
-
 }
