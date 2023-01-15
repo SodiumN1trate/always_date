@@ -32,8 +32,8 @@ class LifeSchoolCommentController extends Controller {
      *      )
      *)
      */
-    public function index() {
-        return LifeSchoolCommentResource::collection(LifeSchoolComment::all());
+    public function index(Request $request) {
+        return LifeSchoolCommentResource::collection(LifeSchoolComment::where('article_id', $request->article_id)->get());
     }
 
     /**
@@ -65,7 +65,11 @@ class LifeSchoolCommentController extends Controller {
      *)
      */
     public function store(LifeSchoolCommentRequest $request) {
-        $lifeSchoolComment = LifeSchoolComment::create($request->validated());
+        $validated = $request->validated();
+        $validated['owner_id'] = auth()->user()->id;
+        $validated['likes'] = 0;
+        $validated['dislikes'] = 0;
+        $lifeSchoolComment = LifeSchoolComment::create($validated);
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
 
@@ -97,9 +101,9 @@ class LifeSchoolCommentController extends Controller {
      *      ),
      * )
      */
-    public function show(LifeSchoolComment $lifeSchoolComment) {
-        return new LifeSchoolCommentResource($lifeSchoolComment);
-    }
+//    public function show(LifeSchoolComment $lifeSchoolComment) {
+//        return new LifeSchoolCommentResource($lifeSchoolComment);
+//    }
 
     /**
      * @OA\Put(
@@ -213,23 +217,23 @@ class LifeSchoolCommentController extends Controller {
             ->where('rater_id', auth()->user()->id)->first();
 
         if ($ratedComment) {
-            if ($rate['rating'] <= -1 || $rate['rating'] >= 2) {
+            if (!is_bool($rate['rating'])) {
                 return response()->json([
                     'error' => [
                         'data' => 'Nevar novērtēt komentāru ar nezinānu vērtējumu.',
                     ]
                 ], 400);
-            } elseif ($ratedComment['rating'] == $rate['rating']) {
-                $ratedComment['rating'] = -1;
+            } elseif ($ratedComment->rating === $rate['rating']) {
+                $ratedComment->rating = !$rate['rating'];
             } else {
-                $ratedComment['rating'] = $rate['rating'];
+                $ratedComment->rating = $rate['rating'];
             }
-            $ratedComment->update();
-        } else {
-            CommentRating::create($rate);
+            $ratedComment->save();
         }
 
-       $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
+        CommentRating::create($rate);
+
+        $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
         $LifeSchoolLikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
             ->where('rating', 1)->get();
         $LifeSchoolDislikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])

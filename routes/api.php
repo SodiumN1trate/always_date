@@ -37,9 +37,9 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/rated_user', [UserController::class, 'ratedUser']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
-    Route::resource('life_school', LifeSchoolController::class);
-    Route::resource('life_school_comment', LifeSchoolCommentController::class);
-    Route::post('/life_school_comment/rate', [LifeSchoolCommentController::class, 'rate']);
+    Route::resource('life_schools', LifeSchoolController::class);
+    Route::resource('life_school_comments', LifeSchoolCommentController::class);
+    Route::post('/life_school_comments/rate', [LifeSchoolCommentController::class, 'rate']);
     Route::group(['middleware' => ['throttle:20,1']], function () {
         Route::resource('match', MatchLogController::class);
     });

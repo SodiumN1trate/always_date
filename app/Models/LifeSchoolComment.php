@@ -15,4 +15,8 @@ class LifeSchoolComment extends Model {
         'likes',
         'dislikes',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }
