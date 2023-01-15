@@ -37,8 +37,6 @@ class LifeSchoolCommentRequest extends FormRequest {
         return [
             'description' => 'required',
             'article_id' => 'required',
-            'likes' => '',
-            'dislikes' => '',
         ];
     }
 

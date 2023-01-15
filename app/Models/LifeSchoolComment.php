@@ -12,11 +12,14 @@ class LifeSchoolComment extends Model {
         'owner_id',
         'description',
         'article_id',
-        'likes',
-        'dislikes',
+        'votes',
     ];
 
     public function user() {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function voters() {
+        return $this->hasMany(CommentRating::class);
     }
 }

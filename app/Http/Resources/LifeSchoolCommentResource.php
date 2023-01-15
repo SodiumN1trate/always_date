@@ -29,10 +29,15 @@ class LifeSchoolCommentResource extends JsonResource {
                 'avatar' => $this->user->avatar,
             ],
             'description' => $this->description,
-            'likes' => $this->likes,
-            'dislikes' => $this->dislikes,
             'article_id' => $this->article_id,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
+            'votes' => $this->votes,
+            'voted' => $this->voters->contains('rater_id', auth()->user()->id) ? $this->voters->map(function ($voter) {
+                error_log($voter);
+                if ($voter->rater_id === auth()->user()->id) {
+                    return $voter;
+                }
+            })[0]->rating : null,
         ];
     }
 

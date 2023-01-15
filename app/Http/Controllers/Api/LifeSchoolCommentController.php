@@ -8,6 +8,7 @@ use App\Http\Requests\LifeSchoolCommentRequest;
 use App\Http\Resources\LifeSchoolCommentResource;
 use App\Models\CommentRating;
 use App\Models\LifeSchoolComment;
+use App\Models\RatingLog;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -67,43 +68,12 @@ class LifeSchoolCommentController extends Controller {
     public function store(LifeSchoolCommentRequest $request) {
         $validated = $request->validated();
         $validated['owner_id'] = auth()->user()->id;
-        $validated['likes'] = 0;
-        $validated['dislikes'] = 0;
+        $validated['votes'] = 0;
         $lifeSchoolComment = LifeSchoolComment::create($validated);
+        error_log($lifeSchoolComment->votes);
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
 
-    /**
-     * @OA\Get(
-     *      path="/life_school_comment/{id}",
-     *      operationId="getLifeSchoolCommentById",
-     *      tags={"Life school comment"},
-     *      summary="Iegūst konkrētu komentāru",
-     *      description="Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
-     *      security={{ "bearer": {} }},
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="LifeSchoolComment id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer",
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/LifeSchoolCommentResource")
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Unauthenticated",
-     *      ),
-     * )
-     */
-//    public function show(LifeSchoolComment $lifeSchoolComment) {
-//        return new LifeSchoolCommentResource($lifeSchoolComment);
-//    }
 
     /**
      * @OA\Put(
@@ -217,33 +187,24 @@ class LifeSchoolCommentController extends Controller {
             ->where('rater_id', auth()->user()->id)->first();
 
         if ($ratedComment) {
-            if (!is_bool($rate['rating'])) {
-                return response()->json([
-                    'error' => [
-                        'data' => 'Nevar novērtēt komentāru ar nezinānu vērtējumu.',
-                    ]
-                ], 400);
-            } elseif ($ratedComment->rating === $rate['rating']) {
-                $ratedComment->rating = !$rate['rating'];
+            if ($ratedComment->rating === $request['rating']) {
+                $ratedComment->rating = null;
             } else {
-                $ratedComment->rating = $rate['rating'];
+                $ratedComment->rating = $request['rating'];
             }
             $ratedComment->save();
+        } else {
+            CommentRating::create($rate);
         }
 
-        CommentRating::create($rate);
+        $lifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
+        $lifeSchoolLikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
+            ->where('rating', 1)->count();
+        $lifeSchoolDislikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
+            ->where('rating', 0)->count();
 
-        $LifeSchoolComment = LifeSchoolComment::where('id', $rate['life_school_comment_id'])->first();
-        $LifeSchoolLikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
-            ->where('rating', 1)->get();
-        $LifeSchoolDislikes = CommentRating::where('life_school_comment_id', $rate['life_school_comment_id'])
-            ->where('rating', 0)->get();
-
-        $LifeSchoolComment->update([
-            'likes' => count($LifeSchoolLikes),
-            'dislikes' => count($LifeSchoolDislikes),
-        ]);
-        return new LifeSchoolCommentResource($LifeSchoolComment);
+        $lifeSchoolComment->votes = $lifeSchoolLikes - $lifeSchoolDislikes;
+        $lifeSchoolComment->save();
+        return new LifeSchoolCommentResource($lifeSchoolComment);
     }
-
 }
