@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\RatingLog;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
 class UserController extends Controller {
@@ -138,6 +139,7 @@ class UserController extends Controller {
     public function update(request $request)
     {
         $validated = $request->validate([
+            'avatar' => 'file',
             'firstname' => 'required',
             'lastname' => 'required',
             'birthday' => [
@@ -149,7 +151,6 @@ class UserController extends Controller {
             'gender' => 'required',
             'about_me' => '',
         ]);
-        error_log($request['birthday']);
         if ($request->file('avatar') !== null) {
             $file = $request['avatar'];
             $file->store('public/avatars');
@@ -312,4 +313,10 @@ class UserController extends Controller {
         return UserResource::collection($sortedUsers);
     }
 
+    public function getFile (Request $request, User $user)
+    {
+        if(!$request->hasValidSignature()) return abort(401);
+        $user->avatar = Storage::disk('local')->path('public/avatars/'.$user->avatar);
+        return response()->file($user->avatar);
+    }
 }

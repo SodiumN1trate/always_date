@@ -16,8 +16,7 @@ class CreateLifeSchoolCommentsTable extends Migration {
             $table->integer('owner_id');
             $table->text('description');
             $table->foreignId('article_id')->constrained('life_schools');
-            $table->integer('likes')->default(0);
-            $table->integer('dislikes')->default(0);
+            $table->integer('votes')->default(0);
             $table->timestamps();
         });
     }

@@ -34,7 +34,7 @@ class CommentRatingRequest extends FormRequest {
     public function rules() {
         return [
             'life_school_comment_id' => 'required',
-            'rating' => 'required',
+            'rating' => 'required|boolean',
         ];
     }
 

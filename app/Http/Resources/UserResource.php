@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\LifeSchool;
 use App\Models\RatingLog;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 /** @OA\Schema(
  *     title="User resource",
@@ -24,7 +25,7 @@ class UserResource extends JsonResource {
     public function toArray($request) {
         return [
             'id' => $this->id,
-            'avatar' => $this->avatar,
+            'avatar' => isset(parse_url($this->avatar)['host']) == 'graph.facebook.com' ? $this->avatar : URL::signedRoute('user.image', ['user' => $this->id, date('his')]),
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
