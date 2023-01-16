@@ -70,7 +70,6 @@ class LifeSchoolCommentController extends Controller {
         $validated['owner_id'] = auth()->user()->id;
         $validated['votes'] = 0;
         $lifeSchoolComment = LifeSchoolComment::create($validated);
-        error_log($lifeSchoolComment->votes);
         return new LifeSchoolCommentResource($lifeSchoolComment);
     }
 
