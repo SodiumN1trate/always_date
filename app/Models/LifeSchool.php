@@ -12,5 +12,7 @@ class LifeSchool extends Model {
         'title',
         'gender',
         'description',
+        'reading_time',
+        'number',
     ];
 }
