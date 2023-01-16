@@ -61,7 +61,7 @@ class MessageController extends Controller {
                 'message' => $validated['message'],
             ]);
 
-            broadcast(new MessageEvent($savedMessage['id'], $validated['chat_room_id']));
+            event(new MessageEvent($savedMessage['id'], $validated['chat_room_id']));
 
             return response()->json([
                 'Success' => 'Ziņa tika nosūtīta.',
