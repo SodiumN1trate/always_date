@@ -87,10 +87,13 @@ class ChatRoomController extends Controller {
             ], 400);
         } elseif ($chatRoom) {
             return response()->json([
-                'error' => [
+                'info' => [
+                    'user' => [
+                        'chat_room_id' => $chatRoom['id'],
+                    ],
                     'data' => 'Sarakste jau pastāv starp šiem diviem lietotājiem.',
                 ]
-            ], 400);
+            ], 200);
         }
 
         return new ChatRoomResource(ChatRoom::create($validated));
@@ -125,7 +128,18 @@ class ChatRoomController extends Controller {
      * )
      */
     public function show(ChatRoom $chatRoom) {
-        return new ChatRoomResource($chatRoom);
+        $user = User::find($chatRoom['user1_id'] == auth()->user()->id ? $chatRoom['user2_id'] : $chatRoom['user1_id']);
+        return response()->json([
+            'data' => [
+                'id' => $chatRoom['id'],
+                'user' => [
+                    'id' => $user['id'],
+                    'avatar' => $user['avatar'],
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
+                ],
+            ]
+        ]);
     }
 
 
@@ -169,11 +183,13 @@ class ChatRoomController extends Controller {
             ->map(function ($chatRoom) {
                 $user = User::find($chatRoom['user1_id'] == auth()->user()->id ? $chatRoom['user2_id'] : $chatRoom['user1_id']);
                 return [
-                    'id' => $user['id'],
-                    'avatar' => $user['avatar'],
-                    'firstname' => $user['firstname'],
-                    'lastname' => $user['lastname'],
-                    'chat_room_id' => $chatRoom['id'],
+                    'id' => $chatRoom['id'],
+                    'user' => [
+                        'id' => $user['id'],
+                        'avatar' => $user['avatar'],
+                        'firstname' => $user['firstname'],
+                        'lastname' => $user['lastname'],
+                    ],
                 ];
             });
         return response()->json([
