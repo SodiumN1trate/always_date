@@ -41,8 +41,8 @@ class DatabaseSeeder extends Seeder {
         LifeSchool::factory()->times(100)->create();
 
         ChatRoom::create([
-            'user1_id' => 1002,
-            'user2_id' => 1003,
+            'user1_id' => 999,
+            'user2_id' => 1000,
         ]);
     }
 }

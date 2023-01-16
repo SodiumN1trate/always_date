@@ -35,7 +35,6 @@ class LifeSchoolCommentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'owner_id' => 'required',
             'description' => 'required',
             'article_id' => 'required',
         ];
