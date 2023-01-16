@@ -307,6 +307,7 @@ class UserController extends Controller {
 
     public function userLeaderboard() {
         $sortedUsers = User::where('rating', '>', 0)
+            ->where('rate_count', '>=', 50)
             ->orderBy('rating', 'desc')
             ->orderBy('rate_count', 'desc')
             ->paginate(20);
