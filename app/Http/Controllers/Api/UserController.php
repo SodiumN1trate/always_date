@@ -147,7 +147,7 @@ class UserController extends Controller {
                 'date',
                 new IsAdult(),
             ],
-            'language' => 'required',
+            'language' => '',
             'gender' => 'required',
             'about_me' => '',
         ]);

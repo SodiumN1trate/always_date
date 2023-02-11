@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class ChatRoomController extends Controller {
     /**
@@ -134,7 +135,7 @@ class ChatRoomController extends Controller {
                 'id' => $chatRoom['id'],
                 'user' => [
                     'id' => $user['id'],
-                    'avatar' => $user['avatar'],
+                    'avatar' => isset(parse_url($user['avatar'])['host']) == 'graph.facebook.com' ? $user['avatar'] : URL::signedRoute('user.image', ['user' => $user['id'], date('his')]),
                     'firstname' => $user['firstname'],
                     'lastname' => $user['lastname'],
                 ],
@@ -186,7 +187,7 @@ class ChatRoomController extends Controller {
                     'id' => $chatRoom['id'],
                     'user' => [
                         'id' => $user['id'],
-                        'avatar' => $user['avatar'],
+                        'avatar' => isset(parse_url($user['avatar'])['host']) == 'graph.facebook.com' ? $user['avatar'] : URL::signedRoute('user.image', ['user' => $user['id'], date('his')]),
                         'firstname' => $user['firstname'],
                         'lastname' => $user['lastname'],
                     ],

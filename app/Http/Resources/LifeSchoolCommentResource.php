@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 /** @OA\Schema(
  *     title="Life school comment resource",
@@ -26,14 +27,13 @@ class LifeSchoolCommentResource extends JsonResource {
             'author' => [
                 'firstname' => $this->user->firstname,
                 'lastname' => $this->user->lastname,
-                'avatar' => $this->user->avatar,
+                'avatar' => isset(parse_url($this->user->avatar)['host']) == 'graph.facebook.com' ? $this->user->avatar : URL::signedRoute('user.image', ['user' => $this->user->id, date('his')])
             ],
             'description' => $this->description,
             'article_id' => $this->article_id,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
             'votes' => $this->votes,
             'voted' => $this->voters->contains('rater_id', auth()->user()->id) ? $this->voters->map(function ($voter) {
-                error_log($voter);
                 if ($voter->rater_id === auth()->user()->id) {
                     return $voter;
                 }
