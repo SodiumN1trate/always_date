@@ -22,8 +22,8 @@ class ReportLogResource extends JsonResource {
     public function toArray($request) {
         return [
             'id' => $this->id,
-            'reporter_id' => $this->reporter_id,
-            'profile_id' => $this->profile_id,
+            'reporter_id' => new UserResource($this->reporter),
+            'profile_id' =>  new UserResource($this->profile),
             'report_type' => new ReportTypeResource($this->reportType()->first()),
         ];
     }

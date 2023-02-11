@@ -70,8 +70,13 @@ class UserController extends Controller {
      *)
      */
     public function index(Request $request) {
-        $users = User::filter($request->all())->paginate(10);
-        return UserResource::collection($users);
+        if(isset(request()->page)) {
+            return UserResource::collection(User::filter($request->all())
+                ->paginate(20));
+        }
+        return UserResource::collection(User::filter($request->all())
+            ->get());
+
     }
 
 

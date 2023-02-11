@@ -7,6 +7,8 @@ use App\Models\LifeSchool;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\RatingLog;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder {
     /**
@@ -15,7 +17,28 @@ class DatabaseSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        User::factory()->times(1000)->create();
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        Permission::create(['name' => 'edit.life_school']);
+        Permission::create(['name' => 'delete.life_school']);
+        Permission::create(['name' => 'view.life_school']);
+        Permission::create(['name' => 'create.life_school']);
+
+        $role = Role::create(['name' => 'Administrators'])
+            ->givePermissionTo([
+                    'edit.life_school',
+                    'delete.life_school',
+                    'view.life_school',
+                    'create.life_school',
+                ]);
+        $role = Role::create(['name' => 'Lietotājs'])
+            ->givePermissionTo([
+                    'view.life_school',
+                ]);
+        $users = User::factory()->times(1000)->create();
+        foreach ($users as $user) {
+            $user->assignRole('Lietotājs');
+        }
         User::create([
             'firstname' =>'Test',
             'lastname' => 'user',

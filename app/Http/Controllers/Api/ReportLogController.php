@@ -28,6 +28,9 @@ class ReportLogController extends Controller {
      *)
      */
     public function index() {
+        if(isset(request()->page)) {
+            return ReportLogResource::collection(ReportLog::paginate(20));
+        }
         return ReportLogResource::collection(ReportLog::all());
     }
 
