@@ -24,7 +24,7 @@ class ReportLogResource extends JsonResource {
             'id' => $this->id,
             'reporter_id' => $this->reporter_id,
             'profile_id' => $this->profile_id,
-            'report_type' => new ReportTypeResource($this->reportType()->first()),
+            'report_type' => new ReportTypeResource($this->reportType),
         ];
     }
 
