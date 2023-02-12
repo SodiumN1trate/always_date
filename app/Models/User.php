@@ -9,9 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable {
-    use HasApiTokens, HasFactory, Notifiable, Filterable;
+    use HasApiTokens, HasFactory, Notifiable, Filterable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -60,5 +61,9 @@ class User extends Authenticatable {
 
     public function modelFilter() {
         return $this->provideFilter(\App\ModelFilters\UserFilter::class);
+    }
+
+    public function reports() {
+        return $this->belongsToMany(ReportType::class, 'report_logs', 'profile_id', 'id');
     }
 }

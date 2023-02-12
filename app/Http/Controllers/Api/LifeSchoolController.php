@@ -29,7 +29,16 @@ class LifeSchoolController extends Controller {
      *)
      */
     public function index() {
-        return LifeSchoolResource::collection(LifeSchool::orderBy('number')->get());
+        if(isset(request()->page)) {
+            return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+                ->gender()
+                ->orderBy('number')
+                ->paginate(20));
+        }
+        return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+            ->gender()
+            ->orderBy('number')
+            ->get());
     }
     /**
      * @OA\Post(

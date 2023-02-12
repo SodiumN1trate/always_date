@@ -40,6 +40,9 @@ class UserResource extends JsonResource {
             'read_school_exp' => $this->read_school_exp.'/'.LifeSchool::where('gender', $this->gender)->count(),
             'is_vip' => $this->is_vip,
             'rate_count' => $this->rate_count,
+            'reports' => $this->reports->count(),
+            'roles' => $this->getRoleNames(),
+            'permissions' => $this->getAllPermissions(),
         ];
     }
 
