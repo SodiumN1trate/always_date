@@ -43,20 +43,20 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('life_school_comments', LifeSchoolCommentController::class);
     Route::post('/life_school_comments/rate', [LifeSchoolCommentController::class, 'rate']);
     Route::group(['middleware' => ['throttle:20,1']], function () {
-        Route::resource('match', MatchLogController::class);
+        Route::resource('matches', MatchLogController::class);
     });
 
-    Route::resource('match', MatchLogController::class);
+    Route::resource('matches', MatchLogController::class);
     Route::get('/is_match', [MatchLogController::class, 'isMatch']);
     Route::get('/random_user', [MatchLogController::class, 'randomUser']);
     Route::get('/rated_match_user', [MatchLogController::class, 'ratedMatchUser']);
     Route::get('/user_match_rated', [MatchLogController::class, 'userMatchRated']);
     Route::get('/leaderboard', [UserController::class, 'userLeaderboard']);
 
-    Route::resource('report_type', ReportTypeController::class);
-    Route::resource('report_log', ReportLogController::class);
+    Route::resource('report_types', ReportTypeController::class);
+    Route::resource('report_logs', ReportLogController::class);
 
-    Route::resource('chat_room', ChatRoomController::class);
+    Route::resource('chat_rooms', ChatRoomController::class);
     Route::post('/message', [MessageController::class, 'message']);
     Route::get('/get_message/{message}', [MessageController::class, 'getMessage']);
     Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);
