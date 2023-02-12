@@ -23,10 +23,7 @@ class LifeSchool extends Model {
         if(auth()->user()->hasRole('Administrators')) {
             return $query;
         }
-        if(auth()->user()->gender) {
-            return $query->where('gender', 1);
-            }
-            return $query->where('gender', 0);
+        return $query->where('gender', auth()->user()->gender);
     }
 
     public function modelFilter() {

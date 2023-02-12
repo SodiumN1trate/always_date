@@ -31,14 +31,17 @@ class DatabaseSeeder extends Seeder {
                     'view.life_school',
                     'create.life_school',
                 ]);
-        $role = Role::create(['name' => 'Lietotājs'])
+        Role::create(['name' => 'Lietotājs'])
             ->givePermissionTo([
                     'view.life_school',
                 ]);
-        $users = User::factory()->times(1000)->create();
-        foreach ($users as $user) {
-            $user->assignRole('Lietotājs');
-        }
+        User::factory()
+            ->times(1000)
+            ->create()
+            ->map(function ($user) {
+                $user->assignRole('Lietotājs');
+            });
+
         User::create([
             'firstname' =>'Test',
             'lastname' => 'user',
