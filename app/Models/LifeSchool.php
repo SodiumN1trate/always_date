@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Scopes\Ancient33Scope;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LifeSchool extends Model {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'title',
@@ -24,7 +25,11 @@ class LifeSchool extends Model {
         }
         if(auth()->user()->gender) {
             return $query->where('gender', 1);
-        }
-        return $query->where('gender', 0);
+            }
+            return $query->where('gender', 0);
+    }
+
+    public function modelFilter() {
+        return $this->provideFilter(\App\ModelFilters\LifeSchoolFilter::class);
     }
 }

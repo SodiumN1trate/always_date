@@ -30,11 +30,13 @@ class LifeSchoolController extends Controller {
      */
     public function index() {
         if(isset(request()->page)) {
-            return LifeSchoolResource::collection(LifeSchool::gender()
+            return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+                ->gender()
                 ->orderBy('number')
                 ->paginate(20));
         }
-        return LifeSchoolResource::collection(LifeSchool::gender()
+        return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+            ->gender()
             ->orderBy('number')
             ->get());
     }

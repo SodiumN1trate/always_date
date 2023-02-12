@@ -35,7 +35,7 @@ class UserFilter extends ModelFilter
     }
 
     public function age($age) {
-        $this->whereBetween('age', $age);
+        $this->where('age', $age);
     }
 
     public function readSchoolExp($exp) {
@@ -56,5 +56,9 @@ class UserFilter extends ModelFilter
 
     public function rating($rating) {
         $this->whereBetween('rating', $rating);
+    }
+
+    public function reports($report) {
+        $this->has('reports', $report);
     }
 }
