@@ -46,7 +46,6 @@ Route::group(['middleware' => ['auth:api']], function() {
         Route::resource('matches', MatchLogController::class);
     });
 
-    Route::resource('matches', MatchLogController::class);
     Route::get('/is_match', [MatchLogController::class, 'isMatch']);
     Route::get('/random_user', [MatchLogController::class, 'randomUser']);
     Route::get('/rated_match_user', [MatchLogController::class, 'ratedMatchUser']);
