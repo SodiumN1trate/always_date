@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Rules\IsAdult;
+use Carbon\Carbon;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Models\RatingLog;
@@ -312,6 +313,22 @@ class UserController extends Controller {
             ->orderBy('rate_count', 'desc')
             ->paginate(20);
         return UserResource::collection($sortedUsers);
+    }
+
+    public function userReadSchoolExp(){
+
+        if (auth()->user()->next_read_school_beginning >= Carbon::now()){
+            return response()->json([
+                'message' => 'Please wait 24h to check next life school ;)'
+            ], 400);
+        }
+
+        auth()->user()->update([
+            'read_school_exp' => auth()->user()->read_school_exp + 1,
+            'next_read_school_beginning' => Carbon::now()->addDay(),
+        ]);
+        return new UserResource(auth()->user());
+
     }
 
     public function getFile (Request $request, User $user)

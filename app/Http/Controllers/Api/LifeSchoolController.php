@@ -29,7 +29,9 @@ class LifeSchoolController extends Controller {
      *)
      */
     public function index() {
-        return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)->orderBy('number')->get());
+        return LifeSchoolResource::collection(LifeSchool::where('gender', auth()->user()->gender)
+            ->where('number','<=',auth()->user()->read_school_exp)
+            ->orderBy('number')->get());
     }
     /**
      * @OA\Post(

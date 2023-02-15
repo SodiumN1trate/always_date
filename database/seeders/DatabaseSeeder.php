@@ -38,6 +38,11 @@ class DatabaseSeeder extends Seeder {
             'user2_id' => 4,
         ]);
 
-        LifeSchool::factory()->times(100)->create();
+        LifeSchool::factory()->times(100)->create([
+            'gender' => 0,
+        ]);
+        LifeSchool::factory()->times(100)->create([
+            'gender' => 1,
+        ]);
     }
 }

@@ -32,6 +32,7 @@ class User extends Authenticatable {
         'wallet',
         'rating',
         'read_school_exp',
+        'next_read_school_beginning',
         'rate_count',
     ];
 
