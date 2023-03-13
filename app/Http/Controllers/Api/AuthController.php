@@ -32,7 +32,7 @@ class AuthController extends Controller {
                 'firstname' => implode(" ", $full_name),
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
-            ]);
+            ])->assignRole('Lietotājs');
         }
 
         $userToken = $user->createToken('login')->accessToken;
