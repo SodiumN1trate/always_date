@@ -323,7 +323,7 @@ class UserController extends Controller {
 
         if (auth()->user()->next_read_school_beginning >= Carbon::now()){
             return response()->json([
-                'message' => 'Please wait 24h to check next life school ;)'
+                'message' => 'Nav vēl pagājušas 24h, lai lasītu nākamo rakstu',
             ], 400);
         }
 
