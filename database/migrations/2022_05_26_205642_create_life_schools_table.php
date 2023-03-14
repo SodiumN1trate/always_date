@@ -17,7 +17,7 @@ class CreateLifeSchoolsTable extends Migration {
             $table->boolean('gender');
             $table->text('description');
             $table->integer('reading_time');
-            $table->integer('number')->unique();
+            $table->integer('number');
             $table->timestamps();
         });
     }

@@ -38,6 +38,7 @@ class UserResource extends JsonResource {
             'about_me' => $this->about_me,
             'language' => $this->language,
             'read_school_exp' => $this->read_school_exp.'/'.LifeSchool::where('gender', $this->gender)->count(),
+            'next_read_school_beginning' => $this->next_read_school,
             'is_vip' => $this->is_vip,
             'rate_count' => $this->rate_count,
             'reports' => $this->reports->count(),
