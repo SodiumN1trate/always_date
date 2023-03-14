@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('life_schools', LifeSchoolController::class);
     Route::resource('life_school_comments', LifeSchoolCommentController::class);
     Route::post('/life_school_comments/rate', [LifeSchoolCommentController::class, 'rate']);
+    Route::get('/life_school_experience', [UserController::class,'userReadSchoolExp']);
     Route::group(['middleware' => ['throttle:20,1']], function () {
         Route::resource('matches', MatchLogController::class);
     });

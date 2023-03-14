@@ -25,7 +25,8 @@ class CreateUsersTable extends Migration {
             $table->float('rating')->default(0);
             $table->decimal('wallet')->default(0);
             $table->unsignedBigInteger('provider_id')->unique();
-            $table->integer('read_school_exp')->default(0);
+            $table->integer('read_school_exp')->default(1);
+            $table->timestamp('next_read_school_beginning')->default(now());
             $table->boolean('is_vip')->default(0);
             $table->integer('rate_count')->default(0);
             $table->rememberToken();
