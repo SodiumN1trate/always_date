@@ -15,7 +15,7 @@ class UserFactory extends Factory {
     public function definition()
     {
         return [
-            'avatar' => 'https://thispersondoesnotexist.com/image',
+            'avatar' => 'https://ui-avatars.com/api/?size=528&name=' . $this->faker->text(5),
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
