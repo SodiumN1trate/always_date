@@ -72,7 +72,7 @@ class MatchLogController extends Controller {
     public function store(Request $request) {
         $validated = $request->validate([
             'user_2' => 'required',
-            'user_1_rating' => 'required'
+            'user_1_rating' => 'required',
         ]);
         $validated['user_1'] = auth()->user()->id;
 
@@ -80,13 +80,13 @@ class MatchLogController extends Controller {
         if ($validated['user_2'] == $validated['user_1']) {
             return response()->json([
                 'error' => [
-                    'data' => 'Nevar novērtēt pats sevi.'
+                    'data' => 'Nevar novērtēt pats sevi.',
                 ]
             ], 400);
         } elseif (!is_bool($validated['user_1_rating'])) {
             return response()->json([
                 'error' => [
-                    'data' => 'Novērtēts ar nezināmu vērtējumu.'
+                    'data' => 'Novērtēts ar nezināmu vērtējumu.',
                 ]
             ], 400);
         }
