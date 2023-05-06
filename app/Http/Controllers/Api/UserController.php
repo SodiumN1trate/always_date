@@ -341,12 +341,4 @@ class UserController extends Controller {
         return response()->file($user->avatar);
     }
 
-
-    public function destroy(User $user) {
-        $user->delete();
-        return response()->json([
-            'message' => 'Lietotājs tika dzēsts',
-        ], 203);
-
-    }
 }
