@@ -197,4 +197,15 @@ class LifeSchoolController extends Controller {
         return new LifeSchoolResource($lifeSchool);
     }
 
+    public function getLifeSchools() {
+        if(isset(request()->page)) {
+            return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+                ->orderBy('number')
+                ->paginate(20));
+        }
+        return LifeSchoolResource::collection(LifeSchool::filter(request()->all())
+            ->orderBy('number')
+            ->get());
+    }
+
 }

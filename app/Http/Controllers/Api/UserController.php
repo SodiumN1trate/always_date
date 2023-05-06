@@ -77,7 +77,6 @@ class UserController extends Controller {
         }
         return UserResource::collection(User::filter($request->all())
             ->get());
-
     }
 
 
@@ -340,5 +339,14 @@ class UserController extends Controller {
         if(!$request->hasValidSignature()) return abort(401);
         $user->avatar = Storage::disk('local')->path('public/avatars/'.$user->avatar);
         return response()->file($user->avatar);
+    }
+
+
+    public function destroy(User $user) {
+        $user->delete();
+        return response()->json([
+            'message' => 'Lietotājs tika dzēsts',
+        ], 203);
+
     }
 }

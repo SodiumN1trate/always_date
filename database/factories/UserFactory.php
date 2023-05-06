@@ -14,14 +14,16 @@ class UserFactory extends Factory {
 
     public function definition()
     {
+        $gender = $this->faker->numberBetween($min = 0, $max = 1);
+        $age = rand(18, 100);
         return [
-            'avatar' => 'https://thispersondoesnotexist.com/image',
+            'avatar' => 'https://xsgames.co/randomusers/avatar.php?g=' . ($gender === 1 ? 'female' : 'male') . '&y=' . $age,
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'gender' => $this->faker->numberBetween($min = 0, $max = 1),
+            'gender' => $gender,
             'provider_id' => $this->faker->unique()->numberBetween($min = 100000, $max = 1000000),
-            'age' => rand(18, 100),
+            'age' => $age,
             'rate_count' => rand(0, 100),
             'about_me' => $this->faker->text(350),
             'rating' => $this->faker->randomFloat(2,0, 10),
