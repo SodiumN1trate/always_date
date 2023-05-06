@@ -53,10 +53,10 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/user_match_rated', [MatchLogController::class, 'userMatchRated']);
     Route::get('/leaderboard', [UserController::class, 'userLeaderboard']);
 
-    Route::resource('report_type', ReportTypeController::class);
-    Route::resource('report_log', ReportLogController::class);
+    Route::resource('report_types', ReportTypeController::class);
+    Route::resource('report_logs', ReportLogController::class);
 
-    Route::resource('chat_room', ChatRoomController::class);
+    Route::resource('chat_rooms', ChatRoomController::class);
     Route::post('/message', [MessageController::class, 'message']);
     Route::get('/get_message/{message}', [MessageController::class, 'getMessage']);
     Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);

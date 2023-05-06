@@ -29,10 +29,10 @@ class AuthController extends Controller {
                 //$driverUser->avatar
                 'avatar' => $driverUser->avatar_original.'&access_token='.$driverUser->token,
                 'lastname' => array_pop($full_name),
-                'firstname' => implode(" ", $full_name),
+                'firstname' => implode(' ', $full_name),
                 'email' => $driverUser->email,
                 'provider_id' => $driverUser->id,
-            ]);
+            ])->assignRole('Lietotājs');
         }
 
         $userToken = $user->createToken('login')->accessToken;
