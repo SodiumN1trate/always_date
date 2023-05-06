@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder {
                     'view.life_school',
                     'create.life_school',
                 ]);
+
         Role::create(['name' => 'Lietotājs'])
             ->givePermissionTo([
                     'view.life_school',

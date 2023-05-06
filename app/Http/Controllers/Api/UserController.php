@@ -77,7 +77,6 @@ class UserController extends Controller {
         }
         return UserResource::collection(User::filter($request->all())
             ->get());
-
     }
 
 
@@ -341,4 +340,5 @@ class UserController extends Controller {
         $user->avatar = Storage::disk('local')->path('public/avatars/'.$user->avatar);
         return response()->file($user->avatar);
     }
+
 }

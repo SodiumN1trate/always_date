@@ -35,7 +35,7 @@ class LifeSchoolCommentRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'description' => 'required',
+            'description' => 'required|max:255',
             'article_id' => 'required',
         ];
     }

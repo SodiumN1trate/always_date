@@ -61,4 +61,5 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/get_message/{message}', [MessageController::class, 'getMessage']);
     Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);
     Route::get('/get_users_chats', [ChatRoomController::class, 'userChats']);
+    Route::get('/get_life_schools', [LifeSchoolController::class, 'getLifeSchools']);
 });

@@ -20,9 +20,6 @@ class LifeSchool extends Model {
 
     public function scopeGender($query)
     {
-        if(auth()->user()->hasRole('Administrators')) {
-            return $query;
-        }
         return $query->where('gender', auth()->user()->gender);
     }
 
