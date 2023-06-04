@@ -8,6 +8,7 @@ use App\Models\ChatRoom;
 use App\Models\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class MessageController extends Controller {
     /**
@@ -42,36 +43,33 @@ class MessageController extends Controller {
      */
     public function message(Request $request) {
         $validated = $request->validate([
-            'chat_room_id' => 'required',
-            'message' => 'required',
+            'chat_room_id' => 'required|integer',
+            'message' => 'required|max:255',
         ]);
 
         $chatRoom = ChatRoom::where('id', $validated['chat_room_id'])->first();
-
-        if (!$chatRoom) {
-            return response()->json([
-                'error' => [
-                    'data' => 'Nevar nosūtīt ziņu svešā chat room.',
-                ]
-            ], 400);
-        } else {
-            $savedMessage = Message::create([
-                'user_id' => auth()->user()->id,
-                'chat_room_id' => $validated['chat_room_id'],
-                'message' => $validated['message'],
-            ]);
-
-            event(new MessageEvent($savedMessage['id'], $validated['chat_room_id']));
-
-            return response()->json([
-                'Success' => 'Ziņa tika nosūtīta.',
-                'message' => new MessageResource($savedMessage),
-            ]);
+        if (!$chatRoom->isUserIn()) {
+            abort(404);
         }
+
+        $message = Message::create([
+            'user_id' => auth()->user()->id,
+            'chat_room_id' => $validated['chat_room_id'],
+            'message' => $validated['message'],
+        ]);
+
+        event(new MessageEvent($message['id'], $validated['chat_room_id']));
+
+        return response()->json([
+            'data' => new MessageResource($message),
+        ]);
     }
 
-    public function getMessage (Message $message) {
-        return new MessageResource($message);
+    public function getMessage(Message $message) {
+        if ($message->chatRoom->isUserIn()) {
+            return new MessageResource($message);
+        }
+        abort(404);
     }
 
     /**
@@ -105,8 +103,32 @@ class MessageController extends Controller {
      */
 
     public function chatRoomMessages(ChatRoom $chatRoom) {
-        $chatRoomMessages = Message::where('chat_room_id', $chatRoom->id)->get();
-
-        return MessageResource::collection($chatRoomMessages);
+        if (!$chatRoom->isUserIn()) {
+            abort(404);
+        }
+        $chatRoomMessages = Message::where('chat_room_id', $chatRoom->id)
+            ->orderBy('created_at')
+            ->get()
+            ->toArray();
+        $result = [];
+        foreach ($chatRoomMessages as $key => $message) {
+            $previousMessageDate = Carbon::parse($result[$key-1]['created_at'] ?? null)->format('Y-m-d');
+            $currentMessageDate = Carbon::parse($message['created_at'])->format('Y-m-d');
+            if (isset($previousMessageDate) && $previousMessageDate !== $currentMessageDate) {
+                $result[] = [
+                    'created_at' => $currentMessageDate,
+                ];
+            }
+            $result[] = [
+                'id' => $message['id'],
+                'user' => $message['user_id'],
+                'chat_room_id' => $message['chat_room_id'],
+                'message' => $message['message'],
+                'created_at' => $message['created_at'],
+            ];
+        }
+        return response()->json([
+            'data' => $result,
+        ]);
     }
 }

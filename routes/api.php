@@ -56,10 +56,12 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('report_types', ReportTypeController::class);
     Route::resource('report_logs', ReportLogController::class);
 
+    Route::get('/get_life_schools', [LifeSchoolController::class, 'getLifeSchools']);
+
+    // Chats
     Route::resource('chat_rooms', ChatRoomController::class);
-    Route::post('/message', [MessageController::class, 'message']);
+    Route::post('/send_message', [MessageController::class, 'message']);
     Route::get('/get_message/{message}', [MessageController::class, 'getMessage']);
     Route::get('/chat_room_messages/{chat_room}', [MessageController::class, 'chatRoomMessages']);
     Route::get('/get_users_chats', [ChatRoomController::class, 'userChats']);
-    Route::get('/get_life_schools', [LifeSchoolController::class, 'getLifeSchools']);
 });

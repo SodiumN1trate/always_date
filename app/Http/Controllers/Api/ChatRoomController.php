@@ -13,29 +13,6 @@ use Illuminate\Support\Facades\URL;
 
 class ChatRoomController extends Controller {
     /**
-     * @OA\Get(
-     *      path="/chat_room",
-     *      operationId="getChatRoom",
-     *      tags={"Chat room"},
-     *      summary="Atgriež sarakstes grupas",
-     *      description="Atgriež visas sarakstes grupas",
-     *      security={{ "bearer": {} }},
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Unauthenticated",
-     *      )
-     *)
-     */
-    public function index() {
-        return ChatRoomResource::collection(ChatRoom::all());
-    }
-
-    /**
      * @OA\Post(
      *      path="/chat_room",
      *      operationId="postChatRoom",
@@ -70,15 +47,9 @@ class ChatRoomController extends Controller {
      */
     public function store(Request $request) {
         $validated = $request->validate([
-            'user2_id' => 'required'
+            'user2_id' => 'required',
         ]);
         $validated['user1_id'] = auth()->user()->id;
-
-        $chatRoom = ChatRoom::where('user1_id', auth()->user()->id)
-            ->where('user2_id', $validated['user2_id'])
-            ->orWhere('user2_id', auth()->user()->id)
-            ->where('user1_id', $validated['user2_id'])
-            ->first();
 
         if ($validated['user1_id'] == $validated['user2_id']) {
             return response()->json([
@@ -86,95 +57,15 @@ class ChatRoomController extends Controller {
                     'data' => 'Nevar izveidot saraksti pats ar sevi',
                 ]
             ], 400);
-        } elseif ($chatRoom) {
-            return response()->json([
-                'info' => [
-                    'user' => [
-                        'chat_room_id' => $chatRoom['id'],
-                    ],
-                    'data' => 'Sarakste jau pastāv starp šiem diviem lietotājiem.',
-                ]
-            ], 200);
         }
 
+        $chatRoom = ChatRoom::where('user1_id', auth()->user()->id)
+            ->orWhere('user2_id', auth()->user()->id)
+            ->firstOrFail();
+        if($chatRoom) {
+            abort(404);
+        }
         return new ChatRoomResource(ChatRoom::create($validated));
-    }
-
-    /**
-     * @OA\Get(
-     *      path="/chat_room/{id}",
-     *      operationId="getChatRoomById",
-     *      tags={"Chat room"},
-     *      summary="Atgriež saraksti",
-     *      description="Atgriež konkrētu saraksti pēc id",
-     *      security={{ "bearer": {} }},
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="Chat room id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer",
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Unauthenticated.",
-     *      ),
-     * )
-     */
-    public function show(ChatRoom $chatRoom) {
-        $user = User::find($chatRoom['user1_id'] == auth()->user()->id ? $chatRoom['user2_id'] : $chatRoom['user1_id']);
-        return response()->json([
-            'data' => [
-                'id' => $chatRoom['id'],
-                'user' => [
-                    'id' => $user['id'],
-                    'avatar' => isset(parse_url($user['avatar'])['host']) == 'graph.facebook.com' ? $user['avatar'] : URL::signedRoute('user.image', ['user' => $user['id'], date('his')]),
-                    'firstname' => $user['firstname'],
-                    'lastname' => $user['lastname'],
-                ],
-            ]
-        ]);
-    }
-
-
-    /**
-     * @OA\Delete(
-     *      path="/chat_room/{id}",
-     *      operationId="deleteChatRoom",
-     *      tags={"Chat room"},
-     *      summary="Izdzēš sarakstes grupu",
-     *      description="Izdzēs konkrētu sarakstes grupu pēc id",
-     *      security={{ "bearer": {} }},
-     *      @OA\Parameter(
-     *          name="id",
-     *          description="Chat room id",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="integer",
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/ChatRoomResource")
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Unauthenticated",
-     *      ),
-     * )
-     */
-    public function destroy(ChatRoom $chatRoom) {
-        $chatRoom->delete();
-        return new ChatRoomResource($chatRoom);
     }
 
     public function userChats() {
@@ -182,12 +73,24 @@ class ChatRoomController extends Controller {
             ->orWhere('user2_id', auth()->user()->id)
             ->get()
             ->map(function ($chatRoom) {
-                $user = User::find($chatRoom['user1_id'] == auth()->user()->id ? $chatRoom['user2_id'] : $chatRoom['user1_id']);
+                if($chatRoom->user1_id === auth()->user()->id) {
+                    $user = $chatRoom->user2_id;
+                } else {
+                    $user = $chatRoom->user1_id;
+                }
+
+                $user = User::find($user);
+                if (isset(parse_url($user->avatar)['host']) == 'graph.facebook.com') {
+                    $avatar = $user->avatar;
+                } else {
+                    $avatar = URL::signedRoute('user.image', ['user' => $user['id']]);
+                }
+
                 return [
                     'id' => $chatRoom['id'],
                     'user' => [
                         'id' => $user['id'],
-                        'avatar' => isset(parse_url($user['avatar'])['host']) == 'graph.facebook.com' ? $user['avatar'] : URL::signedRoute('user.image', ['user' => $user['id'], date('his')]),
+                        'avatar' => $avatar,
                         'firstname' => $user['firstname'],
                         'lastname' => $user['lastname'],
                     ],

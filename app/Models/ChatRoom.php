@@ -12,4 +12,16 @@ class ChatRoom extends Model {
         'user1_id',
         'user2_id',
     ];
+
+    public function isUserIn() {
+        if ($this->user1_id === auth()->user()->id) {
+            return true;
+        }
+
+        if ($this->user2_id === auth()->user()->id) {
+            return true;
+        }
+
+        return false;
+    }
 }
