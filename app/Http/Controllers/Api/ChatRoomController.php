@@ -87,13 +87,11 @@ class ChatRoomController extends Controller {
                 }
 
                 return [
-                    'id' => $chatRoom['id'],
-                    'user' => [
-                        'id' => $user['id'],
-                        'avatar' => $avatar,
-                        'firstname' => $user['firstname'],
-                        'lastname' => $user['lastname'],
-                    ],
+                    'chat_room_id' => $chatRoom['id'],
+                    'id' => $user['id'],
+                    'avatar' => $avatar,
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
                 ];
             });
         return response()->json([

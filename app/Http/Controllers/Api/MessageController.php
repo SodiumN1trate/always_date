@@ -124,7 +124,8 @@ class MessageController extends Controller {
                 'user' => $message['user_id'],
                 'chat_room_id' => $message['chat_room_id'],
                 'message' => $message['message'],
-                'created_at' => $message['created_at'],
+                'date' => Carbon::parse($message['created_at'])->format('Y-m-d'),
+                'time' => Carbon::parse($message['created_at'])->format('H:m'),
             ];
         }
         return response()->json([
