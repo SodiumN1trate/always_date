@@ -47,7 +47,8 @@ class MessageController extends Controller {
             'message' => 'required|max:255',
         ]);
 
-        $chatRoom = ChatRoom::where('id', $validated['chat_room_id'])->first();
+        $chatRoom = ChatRoom::find($validated['chat_room_id']);
+
         if (!$chatRoom->isUserIn()) {
             abort(404);
         }
@@ -103,6 +104,7 @@ class MessageController extends Controller {
      */
 
     public function chatRoomMessages(ChatRoom $chatRoom) {
+//        return $chatRoom;
         if (!$chatRoom->isUserIn()) {
             abort(404);
         }

@@ -61,11 +61,22 @@ class ChatRoomController extends Controller {
 
         $chatRoom = ChatRoom::where('user1_id', auth()->user()->id)
             ->orWhere('user2_id', auth()->user()->id)
-            ->firstOrFail();
-        if($chatRoom) {
+            ->first();
+        if(!isset($chatRoom)) {
+            ChatRoom::create($validated);
+        }
+        return new ChatRoomResource($chatRoom);
+    }
+
+    public function show(ChatRoom $chatRoom) {
+        $chatRooms = ChatRoom::where('user1_id', auth()->user()->id)
+            ->orWhere('user2_id', auth()->user()->id)
+            ->get()->pluck('id');
+
+        if(!in_array($chatRoom->id, $chatRooms->toArray())) {
             abort(404);
         }
-        return new ChatRoomResource(ChatRoom::create($validated));
+        return new ChatRoomResource($chatRoom);
     }
 
     public function userChats() {
@@ -87,11 +98,13 @@ class ChatRoomController extends Controller {
                 }
 
                 return [
-                    'chat_room_id' => $chatRoom['id'],
-                    'id' => $user['id'],
-                    'avatar' => $avatar,
-                    'firstname' => $user['firstname'],
-                    'lastname' => $user['lastname'],
+                    'id' => $chatRoom['id'],
+                    'user' => [
+                        'id' => $user['id'],
+                        'avatar' => $avatar,
+                        'firstname' => $user['firstname'],
+                        'lastname' => $user['lastname'],
+                    ],
                 ];
             });
         return response()->json([

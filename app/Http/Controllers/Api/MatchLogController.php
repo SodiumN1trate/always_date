@@ -243,7 +243,7 @@ class MatchLogController extends Controller {
                     ->inRandomOrder()
                     ->where('id', '!=', auth()->user()->id)
                     ->first();
-
+//                return $user;
                 $match = MatchLog::where('user_1', $user->id)
                     ->where('user_2', auth()->user()->id)
                     ->orWhere('user_1', auth()->user()->id)

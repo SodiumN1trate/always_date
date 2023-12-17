@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class MessageEvent implements ShouldBroadcast
 {
@@ -26,6 +27,7 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
+        Log::info($this->chat_room_id);
         return new PrivateChannel('chat.'.$this->chat_room_id);
     }
 }
