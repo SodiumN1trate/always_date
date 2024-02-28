@@ -7,11 +7,11 @@ Timekļa iepazīšanas portāli risina problēmu, saistītu ar tradicionālās i
 
 Pašreizējā situācija Latvijas iepazīšanās tirgū raksturojas ar tradicionālajām iepazīšanās metodēmām, kas var būt ierobežotas un ne tik efektīvas.  Esošai Latvijas konkurents ir otrapuse.lv, kas jau ir novecojis risinājums, tāpēc tiek veidota uzlabotāka versija.
 Ir plānotas vairākas funkcijas:
- - saderības piemeklēšanas algoritms - balstoties uz kalkulācijām piemeklēs cilvēkiem pārus;
- - sarakste - lietotājiem būs iespēja savstarpēji sarakstītes;
- - lietotāju publicēto attēlu vērtēšana;
- - veikals - būs iespējams iegādāties VIP statusu, reitinga punktus u.c.;
- - tops - tiks izvadīts saraksts ar lietotājiem ar augstāko reitingu.
+- saderības piemeklēšanas algoritms - balstoties uz kalkulācijām piemeklēs cilvēkiem pārus;
+- sarakste - lietotājiem būs iespēja savstarpēji sarakstītes;
+- lietotāju publicēto attēlu vērtēšana;
+- veikals - būs iespējams iegādāties VIP statusu, reitinga punktus u.c.;
+- tops - tiks izvadīts saraksts ar lietotājiem ar augstāko reitingu.
 
 
 ## Izmantotās tehnoloģijas
