@@ -1,0 +1,1773 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Always_date_api documentation",
+        "description": "Always date documentation for back-end",
+        "contact": {
+            "name": "FlokY#0101"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1/api/v1",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Lietotaja izrakstīšanās",
+                "description": "Lietotaja izrakstīšanās no konta",
+                "operationId": "userLogout",
+                "responses": {
+                    "200": {
+                        "description": "Veiksmīga izrakstīšanās.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/chat_room": {
+            "get": {
+                "tags": [
+                    "Chat room"
+                ],
+                "summary": "Atgriež sarakstes grupas",
+                "description": "Atgriež visas sarakstes grupas",
+                "operationId": "getChatRoom",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatRoomResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Chat room"
+                ],
+                "summary": "Izvedo sarakstes grupu",
+                "description": "Izveido sarakstes grupu starp 2 cilvēkiem, autorizēto lietotāju un otru izvēlēto lietotāju",
+                "operationId": "postChatRoom",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "user2_id"
+                                ],
+                                "properties": {
+                                    "user2_id": {
+                                        "description": "Otra lietotāja id ar kuru tiks izveidota sarakstes grupa",
+                                        "format": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatRoomResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nevar izveidot saraksti ja user1_id un user2_id ir vienādi."
+                    },
+                    "401": {
+                        "description": "Chat room jau pastāv starp šiem diviem lietotājiem."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/chat_room/{id}": {
+            "get": {
+                "tags": [
+                    "Chat room"
+                ],
+                "summary": "Atgriež saraksti",
+                "description": "Atgriež konkrētu saraksti pēc id",
+                "operationId": "getChatRoomById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Chat room id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatRoomResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Chat room"
+                ],
+                "summary": "Rediģē sarakstes grupu",
+                "description": "Rediģē konkrētu sarakstes grupu pēc id",
+                "operationId": "updateChatRoom",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Chat room id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "user1_id": {
+                                        "description": "Pirmā lietotāja id",
+                                        "format": "integer"
+                                    },
+                                    "user2_id": {
+                                        "description": "Otrā lietotāja id",
+                                        "format": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatRoomResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Chat room"
+                ],
+                "summary": "Izdzēš sarakstes grupu",
+                "description": "Izdzēs konkrētu sarakstes grupu pēc id",
+                "operationId": "deleteChatRoom",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Chat room id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatRoomResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/life_school_comment": {
+            "get": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Iegūst visus dzīves skolas komentārus",
+                "description": "Iegūst visus dzīves skolas komentārus",
+                "operationId": "getLifeSchoolComment",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Tiek uzrakstīts un saglabāts komentārs dzīves skolas rakstam",
+                "description": "Ievada komentāru zem kādas dzīves skolas raksta, komentārs glabājas un, glabā visus nepiciešamos datus, lai būtu saistīts ar konkrētu komentāru.",
+                "operationId": "postLifeSchoolComment",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolCommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/life_school_comment/{id}": {
+            "get": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Iegūst konkrētu komentāru",
+                "description": "Iegūst konkrētu komentāru, ar tā komentāra palīdzību",
+                "operationId": "getLifeSchoolCommentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchoolComment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Atjauno vai reģidē komentāru",
+                "description": "Atjauno vai reģidē komentāru pēc id",
+                "operationId": "updateLifeSchoolComment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchoolComment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolCommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Izdzēš komentāru",
+                "description": "Dzēš komentāru pēc id",
+                "operationId": "deleteLifeSchoolComment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchoolComment id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/life_school_comment/rate": {
+            "post": {
+                "tags": [
+                    "Life school comment"
+                ],
+                "summary": "Komentāru vērtēšana",
+                "description": "Lietotās spēj novērtēt komentāru ar like vai dislike. Viss tiek validēts tā, lai lietotājs nevar novērtēt komentru ar nezināmu vērtējumu vai ar 2 vērtējumiem vienlaicīgi",
+                "operationId": "rateLifeSchoolComment",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/CommentRatingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolCommentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nevar novērtēt komentāru ar nezinānu vērtējumu."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/life_school": {
+            "get": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Iegūst visus life school, tikai pēc gender",
+                "description": "Iegūst visas dzīves skolas rakstus, bet atgriežot dzīves skolas tiek filtrētas pēc lietotāja dzimuma",
+                "operationId": "getLifeSchool",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Izveido jaunu ierakstu par life school",
+                "description": "Izveido jaunu ierakstu life school",
+                "operationId": "postLifeSchool",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nevar noteikt dzimumu."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/life_school/{id}": {
+            "get": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Atgriež dzīves skolas rakstu pēc id",
+                "description": "Atgriež dzīves skolas rakstu pēc id",
+                "operationId": "getLifeSchoolById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchool id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nedrīkst skatīt cita dzimuma dzīves skolu"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Atjaunina datus dzīves skolai",
+                "description": "Atjauno datus dzīves skolai pēc ievadītā id iekš uri",
+                "operationId": "updateLifeSchool",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchool id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/LifeSchoolRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Life school"
+                ],
+                "summary": "Izdzēš ārā dzīves skolas rakstu",
+                "description": "Dzēš ārā dzīves skolas rakstu pēc id",
+                "operationId": "deleteLifeSchool",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "LifeSchool id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LifeSchoolResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/match": {
+            "get": {
+                "tags": [
+                    "Match log"
+                ],
+                "summary": "Atgriež sakritības ierakstus",
+                "description": "Atgriež visus sakritības ierakstus",
+                "operationId": "getMatchLog",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MatchLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Match log"
+                ],
+                "summary": "Izveido vai atjauno jaunu sakritības ierakstu",
+                "description": "Ja nepastāv datubāzē ieraksts, tad tiek izveidots jauns, bet ja ieraksts pastāv, tad to ierakstu modificēs",
+                "operationId": "postMatchLog",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "user_2",
+                                    "user_1_rating"
+                                ],
+                                "properties": {
+                                    "user_2": {
+                                        "description": "Lietotājs kuram tiks likts vērtējums",
+                                        "format": "integer"
+                                    },
+                                    "user_1_rating": {
+                                        "description": "Vērtējums true vai false",
+                                        "format": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MatchLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nevar novērtēt pats sevi."
+                    },
+                    "401": {
+                        "description": "Novērtēts ar nezināmu vērtējumu."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/match/{id}": {
+            "get": {
+                "tags": [
+                    "Match log"
+                ],
+                "summary": "Iegūst sakritības ierakstu",
+                "description": "Iegūst konkrētu sakritības ierakstu pēc id",
+                "operationId": "getMatchLogById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "MatchLog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MatchLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Match log"
+                ],
+                "summary": "Izdzēš sakritības ierakstu",
+                "description": "Izdzēš sakritības ierakstu pēc id",
+                "operationId": "deleteMatchLog",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "MatchLog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MatchLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/messages": {
+            "post": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Nosūta ziņu",
+                "description": "Nosūta ziņu citam lietotājam",
+                "operationId": "postMessages",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "chat_room_id",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "chat_room_id": {
+                                        "description": "Saraktes grupas id",
+                                        "format": "integer"
+                                    },
+                                    "message": {
+                                        "description": "Ziņa kura tiks nosūtita otram lietotājam",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nevar nosūtīt ziņu svešā chat room."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/chat_room_messages": {
+            "post": {
+                "tags": [
+                    "Message"
+                ],
+                "summary": "Atgriež ziņas",
+                "description": "Atgriež visas ziņas no konkrētas grupas ar pagināciju - 10",
+                "operationId": "post",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "chat_room_id"
+                                ],
+                                "properties": {
+                                    "chat_room_id": {
+                                        "description": "Saraktes grupas id",
+                                        "format": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/report_log": {
+            "get": {
+                "tags": [
+                    "Report log"
+                ],
+                "summary": "Iegūst nosūtītās sūdzības",
+                "description": "Iegūst visas nosūtītās sūdzibas",
+                "operationId": "getReportLog",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Report log"
+                ],
+                "summary": "Izveido sūdzības par lietotāju",
+                "description": "Izveido jaunu sūdzību par kādu lietotāju",
+                "operationId": "postReportLog",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "profile_id",
+                                    "report_type"
+                                ],
+                                "properties": {
+                                    "profile_id": {
+                                        "description": "Lietotāja id par kuru tiks nosūtīta sūdzība",
+                                        "format": "integer"
+                                    },
+                                    "report_type": {
+                                        "description": "Sūdzības veida id",
+                                        "format": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    },
+                    "401": {
+                        "description": "Nevar nosūtīt sūdzību par sevi."
+                    },
+                    "402": {
+                        "description": "Nevar nosūtīt vairāk par vienu sūdzību."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/report_log/{id}": {
+            "get": {
+                "tags": [
+                    "Report log"
+                ],
+                "summary": "Iegūst nosūtīto sūdzību",
+                "description": "Iegūst konkrēto nosūtīto sūdzību par lietotāju",
+                "operationId": "getReportLogById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ReportLog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Report log"
+                ],
+                "summary": "Izdzēš sūdzību par lietotāju",
+                "description": "Izdzēs sūdzību par lietotāju pēc id",
+                "operationId": "deleteReportLog",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ReportLog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportLogResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/report_type": {
+            "get": {
+                "tags": [
+                    "Report type"
+                ],
+                "summary": "Iegūst sūdzība ierakstus",
+                "description": "Iegūst visus sūdzība veidus",
+                "operationId": "getReportType",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportTypeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Report type"
+                ],
+                "summary": "Izvedio jaunu sūdzības ierakstu",
+                "description": "Izveido jaunu sūdzības ierakstu",
+                "operationId": "postReportType",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/ReportTypeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportTypeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/report_type/{id}": {
+            "get": {
+                "tags": [
+                    "Report type"
+                ],
+                "summary": "Iegūst sūdzību ierakstu",
+                "description": "Iegūst sūdzību pēc id",
+                "operationId": "getReportTypeById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ReportType id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportTypeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Report type"
+                ],
+                "summary": "Atjauno kādu sūdzības ierakstu",
+                "description": "Atjauno kādu sūdzības ierakstu pēc id",
+                "operationId": "updatReportType",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ReportType id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/ReportTypeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportTypeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Report type"
+                ],
+                "summary": "Izdzēš sūdzības ierakstu",
+                "description": "Izdzēš sūdzības ierakstu pēc id",
+                "operationId": "deleteReportType",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ReportType id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportTypeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst lietotāja datus",
+                "description": "Iegūst autorizētā",
+                "operationId": "getUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Rediģē lietotāja datus",
+                "description": "Rediģē autorizētā lietotāja datus",
+                "operationId": "updateMe",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users{filter}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst lietotājus",
+                "description": "Iegūst lietotājus pēc filtrācijas. Filtrācijas piemēri:<br/>\n     *          Kārtošana - ?sort[]=name&sort[]=desc/asc;<br/>\n     *          Iegūt pēc filtrācijas - ?name=Alberts<br/>\n     *          Iegūt starp skaitļiem(getBetween) - ?age[]=1&age[]=11;<br/>\n     *          Kombinēti(combined) - ?age[]=1&age[]=11&name=Alberts&sort[]=name&sort[]=asc;",
+                "operationId": "getUsersByFilter",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "path",
+                        "description": "Filtrācija un kārtošana izmantojot augstāk dotos piemērus.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst lietotāju",
+                "description": "Iegūst konkrētu lietotāju pēc id",
+                "operationId": "getUsersById",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "Lietotāja id.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/user/rate": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Lietotāju vērtēšana",
+                "description": "Lietotāju vērtēšana, kur kāds lietotājs, novērtē kādu citu lietoāju",
+                "operationId": "postUserRate",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "description": "Lietotāja id, kurš tiek vēretēts",
+                                        "format": "integer"
+                                    },
+                                    "rating": {
+                                        "description": "Vērtējums ar skaitli",
+                                        "format": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Jūs jau esat novērtējuši."
+                    },
+                    "401": {
+                        "description": "Nevar novērtēt pats sevi."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/rated_user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst visus kas novērtēja autorizēto lietotāju",
+                "description": "Iegūst visus lietotājus, kuri ir novērtējuši autorizētā lietotāja profilu.",
+                "operationId": "getRatedUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/user_rated": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Iegūst lietotājusi, kuri tika novērtēti ar autorizēto lietotāju",
+                "description": "Iegūst visus lietotājus, kur autorizētais lietotājs ir novērtējis, kādu citu lietotāju.",
+                "operationId": "getUserRated",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CommentRatingRequest": {
+                "title": "Comment rating request",
+                "description": "",
+                "required": [
+                    "life_school_comment_id",
+                    "rating"
+                ],
+                "properties": {
+                    "life_school_comment_id": {
+                        "description": "Dzīves skolas raksta komentāra id",
+                        "format": "integer"
+                    },
+                    "rating": {
+                        "description": "Vērtējums komentāram Like - true, Dislike - flalse",
+                        "format": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "LifeSchoolCommentRequest": {
+                "title": "Life school comment request",
+                "description": "",
+                "required": [
+                    "owner_id",
+                    "description",
+                    "article_id"
+                ],
+                "properties": {
+                    "owner_id": {
+                        "description": "Dzīves skolas raksta komentāta autora id",
+                        "format": "integer"
+                    },
+                    "description": {
+                        "description": "Dzīves skolas raksta komentāra apraksts",
+                        "format": "string"
+                    },
+                    "article_id": {
+                        "description": "Dzīves skolas raksta id",
+                        "format": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "LifeSchoolRequest": {
+                "title": "Life school request",
+                "description": "",
+                "required": [
+                    "title",
+                    "gender",
+                    "description"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Dzīves skolas virsraksts",
+                        "format": "string"
+                    },
+                    "gender": {
+                        "description": "Dzimums priekš dzīves skolas raksta",
+                        "format": "boolean"
+                    },
+                    "description": {
+                        "description": "Dzīves skolas raksta apraksts",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ReportTypeRequest": {
+                "title": "Report type request",
+                "description": "",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Sūdzības veids/īss skaidrojums",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "User request",
+                "description": "",
+                "required": [
+                    "name",
+                    "email",
+                    "provider_id"
+                ],
+                "properties": {
+                    "avatar": {
+                        "description": "Lietotāja profila bilde",
+                        "format": "string"
+                    },
+                    "name": {
+                        "description": "Lietotāja pilnais vārds un uzvārds",
+                        "format": "string"
+                    },
+                    "email": {
+                        "description": "Lietotāja epasts",
+                        "format": "string"
+                    },
+                    "provider_id": {
+                        "description": "",
+                        "format": "integer"
+                    },
+                    "age": {
+                        "description": "Lietotāja vecums",
+                        "format": "integer"
+                    },
+                    "birthday": {
+                        "description": "Lietotaja dzimšanas diena(MM-DD-YYYY)",
+                        "format": "string"
+                    },
+                    "gender": {
+                        "description": "Lietotāja dzimums: true - sieviete, false - vīrietis",
+                        "format": "boolean"
+                    },
+                    "about_me": {
+                        "description": "Īss raksts par lietotāju",
+                        "format": "string"
+                    },
+                    "language": {
+                        "description": "Lietotāja lietojamā valoda",
+                        "format": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ChatRoomResource": {
+                "title": "Chat room resource",
+                "description": "Chat room resource",
+                "xml": {
+                    "name": "ChatRoomResource"
+                }
+            },
+            "LifeSchoolCommentResource": {
+                "title": "Life school comment resource",
+                "description": "Life School comment resource",
+                "xml": {
+                    "name": "LifeSchoolCommentResource"
+                }
+            },
+            "LifeSchoolResource": {
+                "title": "Life school resource",
+                "description": "Life school resource",
+                "xml": {
+                    "name": "LifeSchoolResource"
+                }
+            },
+            "MatchLogResource": {
+                "title": "Match log resource",
+                "description": "Match log resource",
+                "xml": {
+                    "name": "MatchLogResource"
+                }
+            },
+            "MessageResource": {
+                "title": "Message resource",
+                "description": "Message resource",
+                "xml": {
+                    "name": "MessageResource"
+                }
+            },
+            "ReportLogResource": {
+                "title": "Report log resource",
+                "description": "Report log resource",
+                "xml": {
+                    "name": "ReportLogResource"
+                }
+            },
+            "ReportTypeResource": {
+                "title": "Report type resource",
+                "description": "Report type resource",
+                "xml": {
+                    "name": "ReportTypeResource"
+                }
+            },
+            "UserResource": {
+                "title": "User resource",
+                "description": "User resource",
+                "xml": {
+                    "name": "UserResource"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
