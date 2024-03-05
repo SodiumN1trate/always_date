@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
-
+use App\Http\Controllers\Api\RegionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,6 +31,9 @@ Route::get('/callback-url', [AuthController::class, 'handleProviderCallback']);
 Route::get('user/image/{user}', [UserController::class, 'getFile'])->name('user.image');
 
 Route::group(['middleware' => ['auth:api']], function() {
+    // Return regions
+    Route::get('/regions', [RegionController::class, 'index']);
+
     Route::get('/me', [UserController::class, 'user']);
     Route::put('/me', [UserController::class, 'update']);
     Route::resource('users', UserController::class);

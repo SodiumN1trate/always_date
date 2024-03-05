@@ -35,6 +35,7 @@ class User extends Authenticatable {
         'read_school_exp',
         'next_read_school_beginning',
         'rate_count',
+        'region',
     ];
 
     /**

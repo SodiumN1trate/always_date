@@ -144,24 +144,27 @@ class UserController extends Controller {
     public function update(User $user, request $request)
     {
         $validated = $request->validate([
-            'avatar' => 'file',
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'avatar' => 'sometimes|file',
+            'firstname' => 'sometimes',
+            'lastname' => 'sometimes',
             'birthday' => [
-                'required',
+                'sometimes',
                 'date',
                 new IsAdult(),
             ],
             'language' => '',
-            'gender' => 'required',
+            'gender' => 'sometimes',
             'about_me' => '',
+            'region' => 'sometimes',
         ]);
+
         if ($request->file('avatar') !== null) {
             $file = $request['avatar'];
             $file->store('public/avatars');
             $filename = $file->hashName();
             $validated['avatar'] = $filename;
         }
+
         if (isset($validated['birthday'])) {
             $age = date_create(date('Y/m/d'))->diff(date_create($validated['birthday']))->format('%Y');
             auth()->user()->update(['age' => $age]);

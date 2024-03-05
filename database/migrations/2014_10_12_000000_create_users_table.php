@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration {
             $table->timestamp('next_read_school_beginning')->default(now());
             $table->boolean('is_vip')->default(0);
             $table->integer('rate_count')->default(0);
+            $table->string('region')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
